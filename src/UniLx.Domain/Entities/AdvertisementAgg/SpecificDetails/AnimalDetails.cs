@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
-using UniLx.Domain.Entities.AdvertisementAgg.ValueObj;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {

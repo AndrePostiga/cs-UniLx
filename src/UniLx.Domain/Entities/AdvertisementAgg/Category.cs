@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using UniLx.Domain.Entities.AdvertisementAgg.ValueObj;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg

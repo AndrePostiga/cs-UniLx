@@ -1,6 +1,6 @@
 ﻿using Carter;
 
-namespace UniLx.ApiService.Accounts
+namespace UniLx.ApiService.Controllers.Accounts
 {
     public class PublicControllers : ICarterModule
     {
@@ -8,7 +8,7 @@ namespace UniLx.ApiService.Accounts
         {
             app.MapGet("/accounts", async () =>
             {
-                
+
             })
             .RequireAuthorization();
         }

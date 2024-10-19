@@ -16,4 +16,8 @@
     <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\AdvertisementAgg\ValueObj\" />
+  </ItemGroup>
+
 </Project>

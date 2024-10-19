@@ -15,7 +15,7 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
             Value = value;
         }
 
-        private static bool IsValid(string cpf)
+        public static bool IsValid(string cpf)
         {
             // Remove non-numeric characters
             cpf = CpfSymbolsRegex().Replace(cpf, string.Empty);

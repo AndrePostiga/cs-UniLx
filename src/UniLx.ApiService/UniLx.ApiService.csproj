@@ -4,16 +4,22 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>3a121758-e3d6-4ecc-883b-710964d32f8a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql" Version="8.2.1" />
     <PackageReference Include="Carter" Version="8.2.1" />
     <PackageReference Include="Marten" Version="7.30.1" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Supabase" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UniLx.Application\UniLx.Application.csproj" />
     <ProjectReference Include="..\UniLx.Domain\UniLx.Domain.csproj" />
+    <ProjectReference Include="..\UniLx.Infra.Data\UniLx.Infra.Data.csproj" />
+    <ProjectReference Include="..\UniLx.Infra.Services\UniLx.Infra.Services.csproj" />
     <ProjectReference Include="..\UniLx.ServiceDefaults\UniLx.ServiceDefaults.csproj" />
   </ItemGroup>
 

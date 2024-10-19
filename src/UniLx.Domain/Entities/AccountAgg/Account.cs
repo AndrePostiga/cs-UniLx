@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using UniLx.Domain.Entities.AccountAgg.ValueObj;
 using UniLx.Domain.Entities.AdvertisementAgg;
-using UniLx.Domain.Entities.AdvertisementAgg.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AccountAgg
@@ -16,20 +15,20 @@ namespace UniLx.Domain.Entities.AccountAgg
 
         public Email Email { get; private set; }
 
-        public Image ProfilePicture { get; private set; }
+        public string? ProfilePicturePath { get; private set; }
 
         public Rating Rating { get; private set; }
 
         public IReadOnlyList<string>? AdvertisementIds => _advertisementIds!.AsReadOnly();
         private List<string>? _advertisementIds = [];
 
-        public Account(string name, Email email, CPF Cpf, Image image) : base(ProduceExternalId("acc_"))
+        public Account(string name, Email email, CPF Cpf, string? profilePicturePath) : base(ProduceExternalId("acc_"))
         {
             SetName(name);
             SetDescription(Description);
             SetEmail(email);
             SetCpf(Cpf);
-            ProfilePicture = image;
+            ProfilePicturePath = profilePicturePath;
             Rating = new Rating();
         }
 

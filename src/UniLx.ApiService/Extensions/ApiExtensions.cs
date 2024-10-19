@@ -1,6 +1,4 @@
 ﻿using Carter;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 
 namespace UniLx.ApiService.Extensions
 {
@@ -8,12 +6,25 @@ namespace UniLx.ApiService.Extensions
     {
         public static WebApplicationBuilder AddApiConfiguration(this WebApplicationBuilder builder)
         {
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllAllowed",
+                    services =>
+                        services
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("Location"));
+            });
+
             builder.Services.AddCarter();
             return builder;
         }
 
         public static WebApplication UseApiConfiguration(this WebApplication webApplication)
         {
+            webApplication.UseCors("AllAllowed");
+
             webApplication
                 .MapDefaultEndpoints()
                 .MapCarter();
