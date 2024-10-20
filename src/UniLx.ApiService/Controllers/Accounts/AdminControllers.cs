@@ -24,8 +24,7 @@ namespace UniLx.ApiService.Controllers.Accounts
                 [FromServices] IMediator mediator,
                 CancellationToken ct)
         {
-            //var command = request.ToCommand();
-            var command = new CreateAccountCommand("any", "any", "any", "any", "any");
+            var command = request.ToCommand();            
             var response = await mediator.Send(command, ct);
             return response!;
         }

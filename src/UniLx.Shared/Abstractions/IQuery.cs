@@ -1,4 +1,4 @@
-﻿namespace UniLx.ApiService.Abstractions
+﻿namespace UniLx.Shared.Abstractions
 {
     public interface IQuery
     {

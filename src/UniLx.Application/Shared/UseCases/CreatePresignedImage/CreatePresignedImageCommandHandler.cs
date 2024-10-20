@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using UniLx.ApiService.Abstractions;
 using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Shared.UseCases.CreatePresignedImage
 {

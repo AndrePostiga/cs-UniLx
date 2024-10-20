@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using UniLx.ApiService.Abstractions;
 using UniLx.Domain.Entities.AccountAgg.ValueObj;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 {
@@ -24,36 +24,36 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
             Email = email;
             Description = description;
             ProfilePicturePath = profilePicturePath;
-        }
+        }        
+    }
 
-        public sealed class CreateAccountCommandValidator : AbstractValidator<CreateAccountCommand>
+    public class CreateAccountCommandValidator : AbstractValidator<CreateAccountCommand>
+    {
+        public CreateAccountCommandValidator()
         {
-            public CreateAccountCommandValidator()
-            {
-                RuleFor(x => x.Name)
-                    .NotEmpty()
-                    .WithMessage("Name is required.")
-                    .MaximumLength(100)
-                    .WithMessage("Name must be 100 characters or less.");
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .WithMessage("Name is required.")
+                .MaximumLength(100)
+                .WithMessage("Name must be 100 characters or less.");
 
-                RuleFor(x => x.Cpf)
-                    .NotEmpty()
-                    .WithMessage("CPF is required.")
-                    .Must(BeAValidCpf)
-                    .WithMessage("Invalid CPF format.");
+            RuleFor(x => x.Cpf)
+                .NotEmpty()
+                .WithMessage("CPF is required.")
+                .Must(BeAValidCpf)
+                .WithMessage("Invalid CPF format.");
 
-                RuleFor(x => x.Email)
-                    .NotEmpty()
-                    .WithMessage("Email is required.")
-                    .EmailAddress()
-                    .WithMessage("Invalid email format.");
+            RuleFor(x => x.Email)
+                .NotEmpty()
+                .WithMessage("Email is required.")
+                .EmailAddress()
+                .WithMessage("Invalid email format.");
 
-                RuleFor(x => x.Description)
-                    .MaximumLength(256)
-                    .WithMessage("Description must be 256 characters or less.");
-            }
-
-            private bool BeAValidCpf(string cpf) => CPF.IsValid(cpf);
+            RuleFor(x => x.Description)
+                .MaximumLength(256)
+                .WithMessage("Description must be 256 characters or less.");
         }
+
+        private bool BeAValidCpf(string cpf) => CPF.IsValid(cpf);
     }
 }

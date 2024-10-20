@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace UniLx.ApiService.Abstractions
+namespace UniLx.Shared.Abstractions
 {
     // Command with no return value (void command)
     public interface ICommand : IRequest<Unit> // Unit is used to represent void in MediatR

@@ -1,43 +1,50 @@
-﻿//using FluentValidation;
-//using FluentValidation.Results;
-//using MediatR;
-//using Microsoft.AspNetCore.Http;
-//namespace UniLx.Application.Behaviors;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using UniLx.Shared.Abstractions;
+namespace UniLx.Application.Behaviors;
 
-//public sealed class CommandValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-//    where TRequest : class, ICommand<TResponse, IResult>
-//{
-//    private readonly IEnumerable<IValidator<TRequest>> _validators = [];
+public sealed class CommandValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : ICommand<IResult>
+    where TResponse : IResult  
+{
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-//    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-//    {
-//        if (!_validators.Any())
-//            return await next();
+    public CommandValidatorBehavior(IEnumerable<IValidator<TRequest>> validators)
+    {
+        _validators = validators;
+    }
 
-//        var context = new ValidationContext<TRequest>(request);
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        if (!_validators.Any())
+            return await next();
 
-//        var validationResults = _validators
-//            .Select(x => x.Validate(context))
-//            .SelectMany(x => x.Errors)
-//            .Where(x => x != null)
-//            .ToList();
+        var context = new ValidationContext<TRequest>(request);
 
-//        if (validationResults.Count != 0)
-//        {
-//            var errorsDict = validationResults
-//                .GroupBy(
-//                    x => x.PropertyName,
-//                    x => x.ErrorMessage,
-//                    (propertyName, errorMessages) => new
-//                    {
-//                        Key = propertyName,
-//                        Values = errorMessages.Distinct().ToArray()
-//                    })
-//                .ToDictionary(x => x.Key, x => x.Values);
+        var validationResults = _validators
+            .Select(x => x.Validate(context))
+            .SelectMany(x => x.Errors)
+            .Where(x => x != null)
+            .ToList();
 
-//            throw new ValidationException("Validation failed.", errorsDict.SelectMany(g => g.Value.Select(v => new ValidationFailure(g.Key, v))).ToList());
-//        }
+        if (validationResults.Count != 0)
+        {
+            var errorsDict = validationResults
+                .GroupBy(
+                    x => x.PropertyName,
+                    x => x.ErrorMessage,
+                    (propertyName, errorMessages) => new
+                    {
+                        Key = propertyName,
+                        Values = errorMessages.Distinct().ToArray()
+                    })
+                .ToDictionary(x => x.Key, x => x.Values);
 
-//        return await next();
-//    }   
-//}
+            return (TResponse)Results.BadRequest(new ValidationProblemDetails(errorsDict));
+            
+        }
+
+        return await next();
+    }
+}

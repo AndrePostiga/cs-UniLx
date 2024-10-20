@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using UniLx.ApiService.Abstractions;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AccountAgg.ValueObj;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 {

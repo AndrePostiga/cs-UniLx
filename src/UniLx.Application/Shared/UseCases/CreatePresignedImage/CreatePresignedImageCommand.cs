@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using UniLx.ApiService.Abstractions;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Shared.UseCases.CreatePresignedImage
 {
