@@ -28,6 +28,7 @@ namespace UniLx.Domain.Entities.AccountAgg
 
             var newRating = ((Value * Count) + value)/(Count + 1);
             Value = newRating;
+            Count += 1;
             UpdatedAt = DateTime.UtcNow;
         }
     }

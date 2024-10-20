@@ -15,7 +15,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public Address Address { get; private set; }
         public string AccountId { get; private set; }
 
-        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account) : base(ProduceExternalId("ad_"))
+        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account) : base(ProduceExternalId("Advertisement:"))
         {
             SubCategory = subCategory;
             SetInitialStatus();

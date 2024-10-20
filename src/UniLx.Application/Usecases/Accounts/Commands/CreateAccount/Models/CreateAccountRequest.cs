@@ -1,4 +1,4 @@
-﻿namespace UniLx.Application.Usecases.Accounts.Requests
+﻿namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models
 {
     public class CreateAccountRequest
     {

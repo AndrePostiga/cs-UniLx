@@ -1,6 +1,7 @@
 ﻿using Marten;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Infra.Data.Database
 {

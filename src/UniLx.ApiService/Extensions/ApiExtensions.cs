@@ -1,4 +1,7 @@
 ﻿using Carter;
+using Microsoft.AspNetCore.Http.Json;
+using System.Text.Json.Serialization;
+using UniLx.Shared.Converters;
 
 namespace UniLx.ApiService.Extensions
 {
@@ -15,6 +18,14 @@ namespace UniLx.ApiService.Extensions
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .WithExposedHeaders("Location"));
+            });
+
+            builder.Services.Configure<JsonOptions>(options => 
+            {
+                options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
+                options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.SerializerOptions.Converters.Add(new FloatConverter(2));
+
             });
 
             builder.Services.AddCarter();

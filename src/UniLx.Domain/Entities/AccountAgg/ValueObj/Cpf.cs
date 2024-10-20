@@ -4,10 +4,12 @@ using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AccountAgg.ValueObj
 {
-    public partial record CPF
+    public class CPF
     {
         private const int CpfLength = 11;
-        public string Value { get; }
+        public string Value { get; private set; }
+
+        private static readonly Regex CpfSymbolsRegex = new Regex("[^0-9]", RegexOptions.Compiled);
 
         public CPF(string value)
         {
@@ -18,7 +20,7 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
         public static bool IsValid(string cpf)
         {
             // Remove non-numeric characters
-            cpf = CpfSymbolsRegex().Replace(cpf, string.Empty);
+            cpf = CpfSymbolsRegex.Replace(cpf, string.Empty);
 
             if (cpf.Length != CpfLength)
                 return false;
@@ -51,7 +53,6 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
             return cpf[position] - '0' == digit;
         }
 
-        [GeneratedRegex("[^0-9]")]
-        private static partial Regex CpfSymbolsRegex();
+        public override string ToString() => Value;
     }
 }

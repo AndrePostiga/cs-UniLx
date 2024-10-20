@@ -1,8 +1,10 @@
-﻿using Marten;
+﻿using Ardalis.SmartEnum.JsonNet;
+using Marten;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UniLx.Domain.Entities.AccountAgg;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Infra.Data.Database;
 using UniLx.Infra.Data.Database.Repository;
 using Weasel.Core;
@@ -31,9 +33,14 @@ namespace UniLx.Infra.Data.ServiceExtensions
                     x.Metadata.Headers.Enabled = true;
                 });
 
-                opts.UseSystemTextJsonForSerialization(
+                opts.UseNewtonsoftForSerialization(
                     casing: Casing.SnakeCase,
-                    enumStorage: EnumStorage.AsString);
+                    enumStorage: EnumStorage.AsString,
+                    nonPublicMembersStorage: NonPublicMembersStorage.NonPublicDefaultConstructor | NonPublicMembersStorage.NonPublicSetters,
+                    configure: (serializerOptions) =>
+                    {
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<StorageType, int>());
+                    }); 
 
             })
             .ApplyAllDatabaseChangesOnStartup()
@@ -53,10 +60,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         public AccountRegistry()
         {
             For<Account>()
-                .Identity(x => x.Id)
-                .Duplicate(x => x.Cpf.Value)
-                .Duplicate(x => x.Email.Value);
+                .Identity(x => x.Id);
         }
     }
-
 }

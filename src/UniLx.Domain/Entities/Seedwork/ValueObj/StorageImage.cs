@@ -28,6 +28,8 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
         public static StorageImage CreatePrivateImage(string path) => new StorageImage(StorageType.Private, true, path: path);
         public static StorageImage CreateImageWithPath(bool isPrivate, string path) => new StorageImage(StorageType.Path, isPrivate, path: path);
 
+        private StorageImage() { }
+
         private StorageImage(StorageType storageType, bool isPrivate, string? accessUrl=null, string? path=null)
         {
             StorageType = storageType;

@@ -9,15 +9,15 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.SmartEnum" Version="8.1.0" />
     <PackageReference Include="Dawn.Guard" Version="1.12.0" />
-    <PackageReference Include="Hashids.net" Version="1.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
+    <PackageReference Include="Ulid" Version="1.3.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Entities\AdvertisementAgg\ValueObj\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
   </ItemGroup>
 
 </Project>

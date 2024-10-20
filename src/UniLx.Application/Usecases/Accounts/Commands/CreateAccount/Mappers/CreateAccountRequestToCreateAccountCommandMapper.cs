@@ -1,7 +1,6 @@
-﻿using UniLx.Application.Usecases.Accounts.Commands.CreateAccount;
-using UniLx.Application.Usecases.Accounts.Requests;
+﻿using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
 
-namespace UniLx.Application.Usecases.Accounts.Mappers
+namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
 {
     public static class CreateAccountRequestToCreateAccountCommandMapper
     {

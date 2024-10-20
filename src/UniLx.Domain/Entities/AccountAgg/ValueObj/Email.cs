@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AccountAgg.ValueObj
 {
-    public partial record Email
+    public class Email
     {
         public string Value { get; }
+
+        // Define a static readonly Regex instance for email validation
+        private static readonly Regex EmailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public Email(string value)
         {
@@ -22,9 +20,6 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
 
         public override string ToString() => Value;
 
-        [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase)]
-        private static partial Regex EmailRegex();
-
-        private static bool IsValidEmail(string email) => EmailRegex().IsMatch(email); 
+        private static bool IsValidEmail(string email) => EmailRegex.IsMatch(email);
     }
 }

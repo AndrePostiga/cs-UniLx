@@ -21,7 +21,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public static Category CreateNewCategory(Category root, string name, string nameInPtBr, string? description, Image image)
             => new(root, name, nameInPtBr, description, image);
 
-        private Category(Category root, string name, string nameInPtBr, string? description, Image image) : base(ProduceExternalId("cat_"))
+        private Category(Category root, string name, string nameInPtBr, string? description, Image image) : base(ProduceExternalId("Category:"))
         {
             Root = root;
             SetName(name);
