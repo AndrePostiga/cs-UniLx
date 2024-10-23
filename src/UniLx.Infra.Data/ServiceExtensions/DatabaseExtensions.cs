@@ -10,7 +10,6 @@ using UniLx.Infra.Data.Database;
 using UniLx.Infra.Data.Database.Options;
 using UniLx.Infra.Data.Database.Repository;
 using Weasel.Core;
-using Weasel.Postgresql.Tables;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
@@ -23,16 +22,17 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(DatabaseOptions.Section));
 
 
-            builder.AddNpgsqlDataSource("database", ops =>
-            {
-                ops.ConnectionString = databaseOptions!.ConnectionString;
-            });
+            builder.AddNpgsqlDataSource("postgresdb");
+            //    , ops =>
+            //{
+            //    ops.ConnectionString = databaseOptions!.ConnectionString;
+            //});
 
             builder.Services.AddMarten(opts =>
             {
                 opts.Schema.Include<AccountRegistry>();
                 opts.DatabaseSchemaName = "UniLxDb";
-                opts.AutoCreateSchemaObjects = AutoCreate.None;
+                opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
 

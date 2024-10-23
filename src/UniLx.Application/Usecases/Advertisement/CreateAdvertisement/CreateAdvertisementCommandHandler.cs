@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using UniLx.Shared.Abstractions;
-using UniLx.Domain.Entities.AdvertisementAgg;
 
 namespace UniLx.Application.Usecases.Advertisement.CreateAdvertisement
 {
@@ -8,10 +7,7 @@ namespace UniLx.Application.Usecases.Advertisement.CreateAdvertisement
     {
         public async Task<IResult> Handle(CreateAdvertisementCommand request, CancellationToken cancellationToken)
         {
-
-            var category = new Category();
-
-            return Results.Ok(ad);
+            return Results.Ok(new { });
         }
     }
 }
