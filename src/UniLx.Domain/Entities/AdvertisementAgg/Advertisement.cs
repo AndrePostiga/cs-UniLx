@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public Details Details { get; private set; }
         public DateTime ExpiresAt { get; private set; }
         public Address Address { get; private set; }
-        public string AccountId { get; private set; }
+        public Account Owner { get; private set; }
 
         private Advertisement() { }
 
@@ -36,7 +36,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         private void SetOwner(Account account)
         {
             DomainException.ThrowIf(account is null, "Cannot create advertisement without account.");
-            AccountId = account!.Id;
+            Owner = account!;
         }
 
         private void SetDetails(Details details)

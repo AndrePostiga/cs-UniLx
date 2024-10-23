@@ -1,11 +1,11 @@
 ﻿using UniLx.Domain.Data;
-using UniLx.Domain.Entities.AccountAgg;
+using UniLx.Domain.Entities.AdvertisementAgg;
 
 namespace UniLx.Infra.Data.Database.Repository
 {
-    internal class AccountRepository : Repository<Account>, IAccountRepository
+    internal class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        public AccountRepository(IMartenContext martenContext, IUnitOfWork unitOfWork) : base(martenContext, unitOfWork)
+        public CategoryRepository(IMartenContext martenContext, IUnitOfWork unitOfWork) : base(martenContext, unitOfWork)
         {
         }
     }

@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UniLx.Domain.Entities.AccountAgg;
+using UniLx.Domain.Entities.AdvertisementAgg;
+using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Infra.Data.Database;
 using UniLx.Infra.Data.Database.Options;
@@ -35,6 +37,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
+                opts.Schema.Include<CategoryRegistry>();
 
                 //opts.Policies.ForAllDocuments(x =>
                 //{
@@ -50,6 +53,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                     configure: (serializerOptions) =>
                     {
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<StorageType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementType, int>());
                     }); 
 
             })
@@ -60,6 +64,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddSingleton<IMartenContext, MartenContext>();
             builder.Services.AddScoped<Domain.Data.IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<Domain.Data.IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<Domain.Data.ICategoryRepository, CategoryRepository>();
 
             return builder;
         }
@@ -85,6 +90,21 @@ namespace UniLx.Infra.Data.ServiceExtensions
         //    idx.Method = IndexMethod.hash;
         //    idx.IsUnique = true;
         //})
+        }
+    }
+
+    public class CategoryRegistry : MartenRegistry
+    {
+        public CategoryRegistry()
+        {
+            For<Category>()
+                .Index(x => new {x.Root, x.Id}, options =>
+                {
+                    options.IsUnique = true;
+                    options.Name = "idx_root_name_category";
+                })
+                .Duplicate(x => x.Root.Name, pgType: "varchar(100)", notNull: true)
+                .Duplicate(x => x.Name, pgType: "varchar(100)", notNull: true);
         }
     }
 }

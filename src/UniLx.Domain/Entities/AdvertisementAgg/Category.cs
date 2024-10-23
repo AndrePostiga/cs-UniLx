@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Xml.Linq;
+using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
@@ -6,35 +8,45 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 {
     public class Category : Entity
     {
-        public Category Root { get; private set; }
-
-        public IReadOnlyList<Category>? Subcategories => _subcategories?.AsReadOnly();
-        private List<Category>? _subcategories;
-
+        public AdvertisementType Root { get; private set; }
         public string Name { get; private set; }
         public string NameInPtBr { get; private set; }
         public string? Description { get; private set; }
-        public Image IconUrl { get; private set; }   
         public bool IsActive { get; private set; }
         public bool IsDeleted { get; private set; }
 
-        public static Category CreateNewCategory(Category root, string name, string nameInPtBr, string? description, Image image)
-            => new(root, name, nameInPtBr, description, image);
+        private Category() { }
 
-        private Category(Category root, string name, string nameInPtBr, string? description, Image image) : base(ProduceExternalId("Category:"))
+        public static Category CreateNewCategory(string root, string name, string nameInPtBr, string? description)
+            => new(root, name, nameInPtBr, description);
+
+        private Category(string root, string name, string nameInPtBr, string? description) : base(ProduceExternalId("category:"))
         {
-            Root = root;
+            SetRoot(root);
             SetName(name);
             SetNameInPtBr(nameInPtBr);
             SetDescription(description);
-            IconUrl = image;
             IsActive = true;
+        }
+
+        private void SetRoot(string root)
+        {
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(root), "root cannot be null.");
+
+            var hasType = AdvertisementType.TryFromName(root, true, out var rootEnum);
+            DomainException.ThrowIf(hasType is false, $"Invalid root type. Supported types are: {string.Join(", ", AdvertisementType.List)}");
+
+            Root = rootEnum;
         }
 
         private void SetName(string name)
         {            
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(name), "Name cannot be null.");
-            DomainException.ThrowIf(name.Length > 100, "Name field must have 100 characters or less");            
+            DomainException.ThrowIf(name.Length > 100, "Name field must have 100 characters or less");
+
+            var hasType = AdvertisementType.TryFromName(name, true, out _);
+            DomainException.ThrowIf(hasType, $"Invalid name. A category name cannot be the same as an advertisement type");
+
             Name = name;
         }
 
