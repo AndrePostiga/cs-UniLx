@@ -1,12 +1,14 @@
 ﻿using Carter;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using UniLx.Application.Shared.UseCases.CreatePresignedImage;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
+using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
+using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating.Models;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountById;
+using UniLx.Application.Usecases.Shared.CreatePresignedImage;
 
 namespace UniLx.ApiService.Controllers.Accounts
 {
@@ -18,6 +20,7 @@ namespace UniLx.ApiService.Controllers.Accounts
             app.MapGet("/accounts/profile-picture-sign", AdminControllerHandlers.CreateProfilePicturePresignUrl);
             app.MapGet("/accounts/{id}", AdminControllerHandlers.GetAccountById);
             app.MapPatch("/accounts/{id}/rating", AdminControllerHandlers.UpdateRating);
+            app.MapPatch("/accounts/{id}/profile-picture", AdminControllerHandlers.UpdateProfilePicture);
         }
     }
 
@@ -48,6 +51,17 @@ namespace UniLx.ApiService.Controllers.Accounts
                 CancellationToken ct)
         {
             var command = new GetAccountByIdQuery(id);
+            var response = await mediator.Send(command, ct);
+            return response!;
+        }
+
+        internal static async Task<IResult> UpdateProfilePicture(HttpContext context,
+                string id,
+                [FromBody] UpdateProfilePictureRequest request,
+                [FromServices] IMediator mediator,
+                CancellationToken ct)
+        {
+            var command = new UpdateProfilePictureCommand(request.ProfilePicture, id);
             var response = await mediator.Send(command, ct);
             return response!;
         }

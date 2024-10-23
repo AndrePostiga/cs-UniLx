@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Usecases\Advertisement\" />
     <Folder Include="Usecases\Categories\" />
   </ItemGroup>
 

@@ -22,7 +22,7 @@ namespace UniLx.Application.Usecases.Accounts.Commands.UpdateRating
 
             account.Rating.UpdateRating(request.Rating);
 
-            _accountRepository.UpdateOne(account, cancellationToken);
+            _accountRepository.UpdateOne(account);
             await _accountRepository.UnitOfWork.Commit(cancellationToken);
 
             return Results.Ok(account.Rating.ToResponse());

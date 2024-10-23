@@ -15,15 +15,12 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 
         public string? Description { get; set; }
 
-        public string? ProfilePicturePath { get; set; }
-
-        public CreateAccountCommand(string name, string cpf, string email, string? description, string? profilePicturePath)
+        public CreateAccountCommand(string name, string cpf, string email, string? description)
         {
             Name = name;
             Cpf = cpf;
             Email = email;
             Description = description;
-            ProfilePicturePath = profilePicturePath;
         }        
     }
 

@@ -8,7 +8,7 @@ namespace UniLx.Domain.Data
 
         Task<T?> FindOne(Expression<Func<T, bool>> expression, CancellationToken ct);
         Task<Tuple<IEnumerable<T>, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<Entity, bool>> expression, CancellationToken ct);
-        void UpdateOne(T entity, CancellationToken cancellationToken);
+        void UpdateOne(T entity);
         void InsertOne(T entity);
         IUnitOfWork UnitOfWork {  get; }
     }

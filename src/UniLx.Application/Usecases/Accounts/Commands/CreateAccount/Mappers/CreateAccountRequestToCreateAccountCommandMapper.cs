@@ -8,7 +8,6 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
             => new(name: source.Name,
                 cpf: source.Cpf,
                 email: source.Email,
-                description: source.Description,
-                profilePicturePath: source.ProfilePicturePath);
+                description: source.Description);
     }
 }

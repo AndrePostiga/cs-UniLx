@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\AdvertisementAgg\ValueObj\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
   </ItemGroup>
 

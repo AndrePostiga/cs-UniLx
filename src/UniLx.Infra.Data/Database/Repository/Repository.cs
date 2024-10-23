@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
-using UniLx.Shared.Abstractions;
 using IUnitOfWork = UniLx.Domain.Data.IUnitOfWork;
 
 namespace UniLx.Infra.Data.Database.Repository
@@ -41,7 +40,7 @@ namespace UniLx.Infra.Data.Database.Repository
             _unitOfWork.AddCommand(insertCommand);
         }
 
-        public void UpdateOne(T entity, CancellationToken cancellationToken)
+        public void UpdateOne(T entity)
         {
             Action<IDatabaseSession> updateCommand = (session) => session.Update(entity);
             _unitOfWork.AddCommand(updateCommand);

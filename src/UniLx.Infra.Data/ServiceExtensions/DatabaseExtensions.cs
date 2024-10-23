@@ -1,13 +1,16 @@
 ﻿using Ardalis.SmartEnum.JsonNet;
 using Marten;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Infra.Data.Database;
+using UniLx.Infra.Data.Database.Options;
 using UniLx.Infra.Data.Database.Repository;
 using Weasel.Core;
+using Weasel.Postgresql.Tables;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
@@ -16,22 +19,29 @@ namespace UniLx.Infra.Data.ServiceExtensions
         public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder)
         {
             var configuration = builder.Configuration;
-            builder.AddNpgsqlDataSource("postgresdb");
+            var databaseOptions = configuration.GetSection(DatabaseOptions.Section).Get<DatabaseOptions>();
+            builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(DatabaseOptions.Section));
+
+
+            builder.AddNpgsqlDataSource("database", ops =>
+            {
+                ops.ConnectionString = databaseOptions!.ConnectionString;
+            });
 
             builder.Services.AddMarten(opts =>
             {
                 opts.Schema.Include<AccountRegistry>();
                 opts.DatabaseSchemaName = "UniLxDb";
-                opts.AutoCreateSchemaObjects = Weasel.Core.AutoCreate.All;
+                opts.AutoCreateSchemaObjects = AutoCreate.None;
 
                 opts.Schema.Include<AccountRegistry>();
 
-                opts.Policies.ForAllDocuments(x =>
-                {
-                    x.Metadata.CausationId.Enabled = true;
-                    x.Metadata.CorrelationId.Enabled = true;
-                    x.Metadata.Headers.Enabled = true;
-                });
+                //opts.Policies.ForAllDocuments(x =>
+                //{
+                //    x.Metadata.CausationId.Enabled = true;
+                //    x.Metadata.CorrelationId.Enabled = true;
+                //    x.Metadata.Headers.Enabled = true;
+                //});
 
                 opts.UseNewtonsoftForSerialization(
                     casing: Casing.SnakeCase,
@@ -60,7 +70,21 @@ namespace UniLx.Infra.Data.ServiceExtensions
         public AccountRegistry()
         {
             For<Account>()
-                .Identity(x => x.Id);
+                .Identity(x => x.Id)
+                .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
+                .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
+
+        //configure: idx =>
+        //{
+        //    idx.Name = "idx_email";
+        //    idx.IsUnique = true;
+        //}
+        //configure: idx =>
+        //{
+        //    idx.Name = "idx_cpf";
+        //    idx.Method = IndexMethod.hash;
+        //    idx.IsUnique = true;
+        //})
         }
     }
 }

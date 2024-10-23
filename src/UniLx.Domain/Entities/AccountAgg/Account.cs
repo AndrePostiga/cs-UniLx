@@ -26,16 +26,19 @@ namespace UniLx.Domain.Entities.AccountAgg
         private Account()
         {}
 
-        public Account(string name, string email, string Cpf, string? description, string? profilePicture) : base(ProduceExternalId("account_"))
+        public Account(string name, string email, string Cpf, string? description) : base(ProduceExternalId("account_"))
         {
             SetName(name);
             SetDescription(description);
             SetEmail(email);
             SetCpf(Cpf);
             Rating = new Rating();
-            
+        }
+
+        public void UpdateProfilePicture(string profilePicture)
+        {
             if (!string.IsNullOrWhiteSpace(profilePicture))
-                ProfilePicture = StorageImage.CreatePrivateImage(profilePicture);
+                ProfilePicture = StorageImage.CreatePrivateImage(Id, profilePicture);
         }
 
         public void AddAdvertisement(Advertisement advertisement)

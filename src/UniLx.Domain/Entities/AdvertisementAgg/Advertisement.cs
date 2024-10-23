@@ -1,5 +1,4 @@
-﻿using System.Security.Principal;
-using UniLx.Domain.Entities.AccountAgg;
+﻿using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Exceptions;
 
@@ -15,7 +14,9 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public Address Address { get; private set; }
         public string AccountId { get; private set; }
 
-        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account) : base(ProduceExternalId("Advertisement:"))
+        private Advertisement() { }
+
+        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account) : base(ProduceExternalId("advertisement:"))
         {
             SubCategory = subCategory;
             SetInitialStatus();

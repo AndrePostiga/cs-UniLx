@@ -9,7 +9,7 @@ namespace UniLx.Infra.Data.Storage
     public interface IStorageRepository<TSettings>
     {
         Task<UploadSignedUrl> GeneratePreSignedUrlAsync(string fileName, int expiresInSeconds);
-        Task<string> GetImageUrl(StorageImage storageImage);
+        Task<string> GetImageUrl(StorageImage storageImage, DateTime? expiresAt = null);
     }
 
     public class StorageRepository<TSettings> : IStorageRepository<TSettings>
@@ -36,8 +36,11 @@ namespace UniLx.Infra.Data.Storage
             return signedUrl;
         }
 
-        public async Task<string> GetImageUrl(StorageImage storageImage)
+        public async Task<string> GetImageUrl(StorageImage storageImage, DateTime? expiresAt = null)
         {
+            var imageFullPath = $"{_settings.Folder}/{storageImage.FullPath}";
+            var expirationInSeconds = CalculateExpirationInSeconds(expiresAt);
+
             try
             {
                 if (storageImage.IsPrivate)
@@ -45,13 +48,13 @@ namespace UniLx.Infra.Data.Storage
                     return await _supabaseClient
                         .Storage
                         .From(_settings.BucketName!)
-                        .CreateSignedUrl(storageImage.Path!, (int)TimeSpan.FromMinutes(5).TotalSeconds);
+                        .CreateSignedUrl(imageFullPath, expirationInSeconds);
                 }
 
                 return await Task.Run(() => _supabaseClient
                         .Storage
                         .From(_settings.BucketName!)
-                        .GetPublicUrl(storageImage.Path!));
+                        .GetPublicUrl(imageFullPath));
             }
             catch (SupabaseStorageException ex)
             {
@@ -61,6 +64,21 @@ namespace UniLx.Infra.Data.Storage
                 throw;
             }
         }
-    }
 
+        private int CalculateExpirationInSeconds(DateTime? expiresAt)
+        {
+            if (!expiresAt.HasValue)
+                return (int)TimeSpan.FromMinutes(5).TotalSeconds;
+
+            // Calculate expiration in seconds from now
+            var timeSpan = expiresAt.Value - DateTime.UtcNow;
+            var expirationInSeconds = (int)timeSpan.TotalSeconds;
+
+            // Ensure expiration time is positive, otherwise default to 5 minutes
+            if (expirationInSeconds <= 0)
+                expirationInSeconds = (int)TimeSpan.FromMinutes(5).TotalSeconds;
+
+            return expirationInSeconds;
+        }
+    }
 }

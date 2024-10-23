@@ -4,7 +4,7 @@ using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;
 using UniLx.Shared.Abstractions;
 
-namespace UniLx.Application.Shared.UseCases.CreatePresignedImage
+namespace UniLx.Application.Usecases.Shared.CreatePresignedImage
 {
     public class CreatePresignedImageCommandHandler : ICommandHandler<CreatePresignedImageCommand, IResult>
     {

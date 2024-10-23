@@ -22,31 +22,20 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 
         public async Task<IResult> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-
             Expression<Func<Account, bool>> spec =
                 acc => acc.Cpf.Value == request.Cpf ||
-                acc.Email.Value == request.Email ||
-                acc.ProfilePicture!.Path == request.ProfilePicturePath;
+                acc.Email.Value == request.Email;
 
             var account = await _accountRepository.FindOne(spec, cancellationToken);
             if (account is not null)
-                return AccountErrors.Conflict.ToBadRequest();
+                return AccountErrors.AccountConflict.ToBadRequest();
 
-            account = new Account(request.Name, request.Email, request.Cpf, request.Description, request.ProfilePicturePath);
-
-            string imageUrl = string.Empty;
-            if (account.ProfilePicture is not null)
-            {
-                imageUrl = await _storageRepository.GetImageUrl(account.ProfilePicture);
-
-                if (string.IsNullOrWhiteSpace(imageUrl))
-                    return AccountErrors.ProfilePictureNotUploaded.ToBadRequest();
-            }
+            account = new Account(request.Name, request.Email, request.Cpf, request.Description);
 
             _accountRepository.InsertOne(account);
             await _accountRepository.UnitOfWork.Commit(cancellationToken);
             
-            return Results.Ok(account.ToResponse(imageUrl));
+            return Results.Ok(account.ToResponse());
         }
     }
 }
