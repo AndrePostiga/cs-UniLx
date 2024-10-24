@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public RealEstateDetails(
             string title, string description, int price, IEnumerable<Image> images,
-            string address, double squareFootage, int bedrooms) : base(title, description, price, images)
+            string address, double squareFootage, int bedrooms) : base(title, description, price)
         {
             Address = address;
             SquareFootage = squareFootage;

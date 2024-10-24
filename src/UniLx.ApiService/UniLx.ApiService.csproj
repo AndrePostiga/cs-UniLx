@@ -24,8 +24,4 @@
     <ProjectReference Include="..\UniLx.ServiceDefaults\UniLx.ServiceDefaults.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Advertisements\" />
-  </ItemGroup>
-
 </Project>

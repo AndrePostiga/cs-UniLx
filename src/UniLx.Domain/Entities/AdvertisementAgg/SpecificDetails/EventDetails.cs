@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public EventDetails(
             string title, string description, int price, IEnumerable<Image> images,
-            string eventType, DateTime eventDate, string location) : base(title, description, price, images)
+            string eventType, DateTime eventDate, string location) : base(title, description, price)
         {
             EventType = eventType;
             EventDate = eventDate;

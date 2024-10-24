@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public FashionDetails(
             string title, string description, int price, IEnumerable<Image> images,
-            string clothingType, string brand, string size) : base(title, description, price, images)
+            string clothingType, string brand, string size) : base(title, description, price)
         {
             ClothingType = clothingType;
             Brand = brand;

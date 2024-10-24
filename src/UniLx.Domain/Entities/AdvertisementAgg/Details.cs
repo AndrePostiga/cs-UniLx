@@ -11,15 +11,16 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public string Title { get; private set; }
         public string? Description { get; private set; }
         public int? Price { get; private set; }
-        public IReadOnlyList<Image>? Images => _images?.AsReadOnly();
-        private List<Image>? _images;
+        //public IReadOnlyList<Image>? Images => _images?.AsReadOnly();
+        //private List<Image>? _images;
 
-        protected Details(string title, string? description, int? price, IEnumerable<Image> images)
+        private Details() { }
+
+        protected Details(string title, string? description, int? price)
         {
             SetTittle(title);
             SetDescription(description);
             SetPrice(price);
-            _images = images.ToList();
         }
 
         private void SetPrice(int? price)

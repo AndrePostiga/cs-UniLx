@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public JobDetails(
             string title, string description, int price, IEnumerable<Image> images,
-            string position, string company, double salary) : base(title, description, price, images)
+            string position, string company, double salary) : base(title, description, price)
         {
             Position = position;
             Company = company;

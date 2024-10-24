@@ -13,7 +13,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public ToyDetails(
             string title, string description, int price, IEnumerable<Image> images,
-            string toyType, string ageRange, bool isBatteryOperated) : base(title, description, price, images)
+            string toyType, string ageRange, bool isBatteryOperated) : base(title, description, price)
         {
             ToyType = toyType;
             AgeRange = ageRange;

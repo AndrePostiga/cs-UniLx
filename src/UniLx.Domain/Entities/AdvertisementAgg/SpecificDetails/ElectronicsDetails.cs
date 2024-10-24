@@ -12,7 +12,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         public ElectronicsDetails(
             string title, string description, int price, IEnumerable<Image> images, 
-            string productType, string brand, bool isNew) : base(title, description, price, images)
+            string productType, string brand, bool isNew) : base(title, description, price)
         {
             ProductType = productType;
             Brand = brand;

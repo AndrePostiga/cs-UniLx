@@ -11,12 +11,15 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public Category SubCategory { get; private set; }
         public Details Details { get; private set; }
         public DateTime ExpiresAt { get; private set; }
-        public Address Address { get; private set; }
         public Account Owner { get; private set; }
+        public Address Address { get; private set; }
+        public double? Latitude { get; private set; }
+        public double? Longitude { get; private set; }
 
         private Advertisement() { }
 
-        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account) : base(ProduceExternalId("advertisement:"))
+        public Advertisement(string type, Category subCategory, Details details, DateTime? expiresAt, Address address, Account account, double? latitude = null,
+            double? longitude = null) : base(ProduceExternalId("advertisement:"))
         {
             SubCategory = subCategory;
             SetInitialStatus();
@@ -24,7 +27,21 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             SetType(type, subCategory);
             SetDetails(details);
             SetOwner(account);
-            SetAddress(address);
+            //SetAddress(address);
+            SetCoordinates(latitude, longitude);
+        }
+
+        private void SetCoordinates(double? latitude, double? longitude)
+        {
+            if (latitude.HasValue || longitude.HasValue)
+            {
+                DomainException.ThrowIf(!latitude.HasValue || !longitude.HasValue, "Both latitude and longitude must be provided together.");
+                DomainException.ThrowIf(latitude < -90 || latitude > 90, "Latitude must be between -90 and 90.");
+                DomainException.ThrowIf(longitude < -180 || longitude > 180, "Longitude must be between -180 and 180.");
+            }
+
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         private void SetAddress(Address address)

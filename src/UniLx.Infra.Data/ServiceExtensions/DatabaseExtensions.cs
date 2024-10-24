@@ -38,6 +38,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
 
                 opts.Schema.Include<AccountRegistry>();
                 opts.Schema.Include<CategoryRegistry>();
+                opts.Schema.Include<AdvertisementRegistry>();
 
                 //opts.Policies.ForAllDocuments(x =>
                 //{
@@ -65,6 +66,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddScoped<Domain.Data.IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<Domain.Data.IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<Domain.Data.ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<Domain.Data.IAdvertisementRepository, AdvertisementRepository>();
 
             return builder;
         }
@@ -105,6 +107,17 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 })
                 .Duplicate(x => x.Root.Name, pgType: "varchar(100)", notNull: true)
                 .Duplicate(x => x.Name, pgType: "varchar(100)", notNull: true);
+        }
+    }
+
+    public class AdvertisementRegistry : MartenRegistry
+    {
+        public AdvertisementRegistry()
+        {
+            For<Advertisement>()
+                .Index(x => x.Id)
+                .ForeignKey<Category>(x => x.SubCategory.Id)
+                .ForeignKey<Account>(x => x.Owner.Id);
         }
     }
 }
