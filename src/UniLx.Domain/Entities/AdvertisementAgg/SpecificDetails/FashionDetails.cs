@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class FashionDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.Fashion;
+        protected override AdvertisementType Type => AdvertisementType.Fashion;
         public string ClothingType { get; private set; }
         public string Brand { get; private set; }
         public string Size { get; private set; }

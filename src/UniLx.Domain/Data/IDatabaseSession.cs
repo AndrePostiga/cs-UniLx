@@ -10,6 +10,8 @@ namespace UniLx.Domain.Data
         // stores a document only in the case that it does not already exist. Otherwise a DocumentAlreadyExistsException is thrown
         void Insert<T>(T entity) where T : Entity;
 
+        void ExecuteSql(string sql, params object[] objects);
+
         // performs an update on an existing document or throws a NonExistentDocumentException in case the document cannot be found
         void Update<T>(T entity) where T : Entity;
 

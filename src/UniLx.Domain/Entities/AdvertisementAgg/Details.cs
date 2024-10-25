@@ -7,7 +7,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 {
     public abstract class Details
     {
-        public abstract AdvertisementType Type { get; }
+        protected abstract AdvertisementType Type { get; }
         public string Title { get; private set; }
         public string? Description { get; private set; }
         public int? Price { get; private set; }
@@ -22,6 +22,8 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             SetDescription(description);
             SetPrice(price);
         }
+
+        public new AdvertisementType GetType() => Type;
 
         private void SetPrice(int? price)
         {

@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class BeautyDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.Beauty;
+        protected override AdvertisementType Type => AdvertisementType.Beauty;
 
         public string? ProductType { get; set; }   // e.g., Skincare, Makeup
         public string? Brand { get; set; }         // e.g., L'Oreal, Maybelline

@@ -9,9 +9,9 @@ namespace UniLx.Infra.Data.Database.Repository
 
     internal class Repository<T>(IMartenContext martenContext, IUnitOfWork unitOfWork) : IRepository<T> where T : Entity
     {
-        private readonly IMartenContext _martenContext = martenContext ?? throw new ArgumentNullException(nameof(martenContext));
-        private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        public IUnitOfWork UnitOfWork => _unitOfWork;
+        protected readonly IMartenContext _martenContext = martenContext ?? throw new ArgumentNullException(nameof(martenContext));
+        protected readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        public IUnitOfWork UnitOfWork => _unitOfWork;        
 
         public async Task<Tuple<IEnumerable<T>?, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<Entity, bool>> expression, CancellationToken ct)
         {
@@ -29,14 +29,20 @@ namespace UniLx.Infra.Data.Database.Repository
         {
             using var session = _martenContext.QuerySession();
             return await session
-                .Query<T>()
-                .Where(expression)
-                .FirstOrDefaultAsync(ct);               
+                    .Query<T>()
+                    .Where(expression)
+                    .FirstOrDefaultAsync(token: ct);
         }
 
         public void InsertOne(T entity)
         {
             Action<IDatabaseSession> insertCommand = (session) => session.Insert(entity);
+            _unitOfWork.AddCommand(insertCommand);
+        }
+
+        public void CustomSql(string sql, params object[] objects)
+        {
+            Action<IDatabaseSession> insertCommand = (session) => session.ExecuteSql(sql, objects);
             _unitOfWork.AddCommand(insertCommand);
         }
 

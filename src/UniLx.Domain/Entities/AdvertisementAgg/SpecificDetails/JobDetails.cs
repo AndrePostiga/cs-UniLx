@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class JobDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.JobOpportunities;
+        protected override AdvertisementType Type => AdvertisementType.JobOpportunities;
         public string Position { get; private set; }
         public string Company { get; private set; }
         public double Salary { get; private set; }

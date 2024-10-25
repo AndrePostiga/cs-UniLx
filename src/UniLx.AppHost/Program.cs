@@ -4,6 +4,7 @@ var cache = builder.AddRedis("cache");
 
 var postgres = builder    
     .AddPostgres("postgresdb")
+    .WithDataVolume()
     .WithHealthCheck();
 
 var pgAdmin = postgres.WithPgAdmin().WaitFor(postgres);

@@ -1,7 +1,6 @@
 ﻿using Marten;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
-using UniLx.Shared.Abstractions;
 
 namespace UniLx.Infra.Data.Database
 {
@@ -32,6 +31,11 @@ namespace UniLx.Infra.Data.Database
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await _documentSession.SaveChangesAsync(cancellationToken);
+        }
+
+        public void ExecuteSql(string sql, params object[] objects)
+        {
+            _documentSession.QueueSqlCommand(sql, objects);
         }
     }
 }

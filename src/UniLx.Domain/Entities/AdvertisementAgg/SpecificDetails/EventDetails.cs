@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class EventDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.Events;
+        protected override AdvertisementType Type => AdvertisementType.Events;
         public string EventType { get; private set; }
         public DateTime EventDate { get; private set; }
         public string Location { get; private set; }

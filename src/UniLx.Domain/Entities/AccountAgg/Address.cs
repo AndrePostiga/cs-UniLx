@@ -1,10 +1,13 @@
 ﻿using Dawn;
+using UniLx.Domain.Exceptions;
 using UniLx.Shared;
 
 namespace UniLx.Domain.Entities.AccountAgg
 {
     public class Address
     {
+        public double? Latitude { get; private set; }
+        public double? Longitude { get; private set; }
         public string Country { get; private set; }
         public string State { get; private set; }
         public string City { get; private set; }
@@ -13,6 +16,21 @@ namespace UniLx.Domain.Entities.AccountAgg
         public string? Street { get; private set; }
         public string? Number { get; private set; }
         public string? Complement { get; private set; }
+
+        private Address() { }
+
+        public Address(double? latitude, double? longitude)
+        {
+            if (latitude.HasValue || longitude.HasValue)
+            {
+                DomainException.ThrowIf(!latitude.HasValue || !longitude.HasValue, "Both latitude and longitude must be provided together.");
+                DomainException.ThrowIf(latitude < -90 || latitude > 90, "Latitude must be between -90 and 90.");
+                DomainException.ThrowIf(longitude < -180 || longitude > 180, "Longitude must be between -180 and 180.");
+            }
+
+            Latitude = latitude;
+            Longitude = longitude;
+        }
 
         public Address(string country,
                        string state,

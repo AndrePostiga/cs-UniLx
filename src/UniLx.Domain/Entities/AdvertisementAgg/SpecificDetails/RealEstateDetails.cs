@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class RealEstateDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.RealEstate;
+        protected override AdvertisementType Type => AdvertisementType.RealEstate;
         public string Address { get; private set; }
         public double SquareFootage { get; private set; }
         public int Bedrooms { get; private set; }

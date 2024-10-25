@@ -1,5 +1,6 @@
 ﻿using Ardalis.SmartEnum.JsonNet;
 using Marten;
+using Marten.Schema;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,11 +25,11 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(DatabaseOptions.Section));
 
 
-            builder.AddNpgsqlDataSource("postgresdb");
-            //    , ops =>
-            //{
-            //    ops.ConnectionString = databaseOptions!.ConnectionString;
-            //});
+            builder.AddNpgsqlDataSource("asdsd"
+                , ops =>
+            {
+                ops.ConnectionString = databaseOptions!.ConnectionString;
+            });
 
             builder.Services.AddMarten(opts =>
             {
@@ -46,7 +47,6 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 //    x.Metadata.CorrelationId.Enabled = true;
                 //    x.Metadata.Headers.Enabled = true;
                 //});
-
                 opts.UseNewtonsoftForSerialization(
                     casing: Casing.SnakeCase,
                     enumStorage: EnumStorage.AsString,
@@ -55,9 +55,10 @@ namespace UniLx.Infra.Data.ServiceExtensions
                     {
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<StorageType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementType, int>());
-                    }); 
-
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementStatus, int>());                        
+                    });       
             })
+            .InitializeWith(new SeedData())
             .ApplyAllDatabaseChangesOnStartup()
             .UseLightweightSessions()
             .UseNpgsqlDataSource();
@@ -68,7 +69,28 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddScoped<Domain.Data.ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<Domain.Data.IAdvertisementRepository, AdvertisementRepository>();
 
+
             return builder;
+        }
+    }
+
+    public class SeedData : IInitialData
+    {
+        private readonly object[] _initialData;
+
+        public SeedData()
+        {
+            var category = Category.CreateNewCategory("Beauty", "MakeUp", "Maquiagem", "Acessórios para rosto");
+
+            _initialData = new object[] { category };
+        }
+
+        public async Task Populate(IDocumentStore store, CancellationToken cancellation)
+        {
+            await using var session = store.LightweightSession();
+            session.Store(_initialData);
+            session.QueueSqlCommand(CustomQueries.AlterAdvertisementTableAddGeoPoint);
+            await session.SaveChangesAsync();
         }
     }
 
@@ -116,8 +138,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
         {
             For<Advertisement>()
                 .Index(x => x.Id)
-                .ForeignKey<Category>(x => x.SubCategory.Id)
-                .ForeignKey<Account>(x => x.Owner.Id);
+                .ForeignKey<Category>(x => x.CategoryId)
+                .ForeignKey<Account>(x => x.OwnerId);
         }
     }
 }

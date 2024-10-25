@@ -2,7 +2,9 @@
 using UniLx.Application.Usecases.Accounts;
 using UniLx.Application.Usecases.Categories;
 using UniLx.Domain.Data;
+using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
+using UniLx.Infra.Data.Database;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Advertisement.Commands.CreateAdvertisement
@@ -12,14 +14,18 @@ namespace UniLx.Application.Usecases.Advertisement.Commands.CreateAdvertisement
         private readonly IAccountRepository _accountRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IAdvertisementRepository _advertisementRepository;
+        private readonly IMartenContext _martenContext;
 
-        public CreateAdvertisementCommandHandler(IAccountRepository accountRepository, 
+        public CreateAdvertisementCommandHandler(
+            IMartenContext martenContext,
+            IAccountRepository accountRepository, 
             ICategoryRepository categoryRepository, 
             IAdvertisementRepository advertisementRepository)
         {
             _accountRepository = accountRepository;
             _categoryRepository = categoryRepository;
             _advertisementRepository = advertisementRepository;
+            _martenContext = martenContext;
         }
 
         public async Task<IResult> Handle(CreateAdvertisementCommand request, CancellationToken cancellationToken)
@@ -43,17 +49,23 @@ namespace UniLx.Application.Usecases.Advertisement.Commands.CreateAdvertisement
                 request.BeautyDetails.Ingredients,
                 request.BeautyDetails.IsOrganic);
 
+
+            var address = new Address(request.Latitude, request.Longitude);
             var advertisement = new Domain.Entities.AdvertisementAgg.Advertisement(
                 request.Type,
                 category,
                 details,
-                null,
-                null,
-                account,
-                request.Latitude,
-                request.Longitude);
+                DateTime.UtcNow.AddDays(20),
+                address,
+                account);
 
             _advertisementRepository.InsertOne(advertisement);
+            _advertisementRepository.CustomSql(
+                CustomQueries.InsertGeopointOnAdvertisementTable,
+                address.Longitude,
+                address.Latitude,
+                advertisement.Id
+            );
             await _advertisementRepository.UnitOfWork.Commit();
             return Results.Ok(advertisement);
         }

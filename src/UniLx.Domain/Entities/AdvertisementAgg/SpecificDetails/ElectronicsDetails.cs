@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class ElectronicsDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.Electronics;
+        protected override AdvertisementType Type => AdvertisementType.Electronics;
         public string ProductType { get; private set; }
         public string Brand { get; private set; }
         public bool IsNew { get; private set; }

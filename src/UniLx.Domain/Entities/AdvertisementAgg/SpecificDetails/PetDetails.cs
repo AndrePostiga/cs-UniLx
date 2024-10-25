@@ -6,7 +6,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 {
     public class PetDetails : Details
     {
-        public override AdvertisementType Type => AdvertisementType.Pets;
+        protected override AdvertisementType Type => AdvertisementType.Pets;
         public string AnimalType { get; private set; }
         public int Age { get; private set; }
         public string Breed { get; private set; }
