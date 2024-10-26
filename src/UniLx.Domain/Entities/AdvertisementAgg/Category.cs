@@ -1,7 +1,5 @@
 ﻿using System.Net;
-using System.Xml.Linq;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
-using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg
@@ -47,7 +45,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             var hasType = AdvertisementType.TryFromName(name, true, out _);
             DomainException.ThrowIf(hasType, $"Invalid name. A category name cannot be the same as an advertisement type");
 
-            Name = name;
+            Name = name.ToLower();
         }
 
         private void SetNameInPtBr(string nameInPtBr)

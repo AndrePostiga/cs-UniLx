@@ -1,18 +1,24 @@
-﻿using Ardalis.SmartEnum.JsonNet;
+﻿using Ardalis.SmartEnum;
+using Ardalis.SmartEnum.JsonNet;
 using Marten;
+using Marten.Linq.Members;
+using Marten.Linq.Parsing;
 using Marten.Schema;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq.Expressions;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
+using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Infra.Data.Database;
 using UniLx.Infra.Data.Database.Options;
 using UniLx.Infra.Data.Database.Repository;
 using Weasel.Core;
+using Weasel.Postgresql.SqlGeneration;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
@@ -35,6 +41,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             {
                 opts.Schema.Include<AccountRegistry>();
                 opts.DatabaseSchemaName = "UniLxDb";
+                opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
                 opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
@@ -56,6 +63,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<StorageType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementStatus, int>());                        
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AddressType, int>());                        
                     });       
             })
             .InitializeWith(new SeedData())
@@ -94,6 +102,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    #region MartenRegistry
     public class AccountRegistry : MartenRegistry
     {
         public AccountRegistry()
@@ -140,6 +149,34 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 .Index(x => x.Id)
                 .ForeignKey<Category>(x => x.CategoryId)
                 .ForeignKey<Account>(x => x.OwnerId);
+        }
+    }
+    #endregion
+
+    public class HasSmartEnumValueParser<TEnum> : IMethodCallParser where TEnum : SmartEnum<TEnum, int>
+    {
+        public bool Matches(MethodCallExpression expression)
+        {
+            // Match any method call to `HasSmartEnumValue`
+            return expression.Method.Name == nameof(UniLx.Shared.LibExtensions.SmartEnumExtensions.HasSmartEnumValue);
+        }
+
+        public ISqlFragment Parse(IQueryableMemberCollection memberCollection, IReadOnlyStoreOptions options, MethodCallExpression expression)
+        {
+            // Use NullTestLocator if available to ensure proper `->>` access for JSON text retrieval
+            var locator = memberCollection.MemberFor(expression.Arguments[0]).NullTestLocator;
+
+            // If NullTestLocator is null or not properly set, fallback to JSONBLocator
+            if (string.IsNullOrEmpty(locator))
+            {
+                locator = memberCollection.MemberFor(expression.Arguments[0]).JSONBLocator;
+            }
+
+            // Extract the target SmartEnum value from the second argument
+            var targetEnumValue = (TEnum)Expression.Lambda(expression.Arguments[1]).Compile().DynamicInvoke();
+
+            // Generate the SQL fragment using the adjusted locator and target SmartEnum name
+            return new WhereFragment($"{locator} = '{targetEnumValue.Name}'");
         }
     }
 }

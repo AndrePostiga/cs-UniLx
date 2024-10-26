@@ -1,5 +1,4 @@
 ﻿using UniLx.Domain.Data;
-using UniLx.Domain.Entities;
 using UniLx.Domain.Entities.AdvertisementAgg;
 
 namespace UniLx.Infra.Data.Database.Repository
@@ -10,17 +9,15 @@ namespace UniLx.Infra.Data.Database.Repository
         {                    
         }
 
-        public async Task InsertOneWithLocation(Advertisement advertisement)
+        public override void InsertOne(Advertisement advertisement)
         {
-            //var session = _martenContext.OpenSession();
+            base.InsertOne(advertisement);
 
-            //session.QueryAsync()
-
-            //InsertOne(advertisement);
-            //Action<IDatabaseSession> insertLocationCommand = (session) =>
-            //{
-            //    session.
-            //};
+            if (advertisement.Address is not null && advertisement.Address.HasCordinates)
+                base.CustomSql(CustomQueries.InsertGeopointOnAdvertisementTable, 
+                    advertisement.Address.Latitude!, 
+                    advertisement.Address.Longitude!,
+                    advertisement.Id);
         }
     }
 }

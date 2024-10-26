@@ -1,5 +1,6 @@
 ﻿using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
+using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg

@@ -9,7 +9,7 @@ namespace UniLx.Infra.Data.Storage
     public interface IStorageRepository<TSettings>
     {
         Task<UploadSignedUrl> GeneratePreSignedUrlAsync(string fileName, int expiresInSeconds);
-        Task<string> GetImageUrl(StorageImage storageImage, DateTime? expiresAt = null);
+        Task<string> GetImageUrl(StorageImage? storageImage, DateTime? expiresAt = null);
     }
 
     public class StorageRepository<TSettings> : IStorageRepository<TSettings>
@@ -36,8 +36,11 @@ namespace UniLx.Infra.Data.Storage
             return signedUrl;
         }
 
-        public async Task<string> GetImageUrl(StorageImage storageImage, DateTime? expiresAt = null)
+        public async Task<string> GetImageUrl(StorageImage? storageImage, DateTime? expiresAt = null)
         {
+            if (storageImage is null)
+                return string.Empty;
+
             var imageFullPath = $"{_settings.Folder}/{storageImage.FullPath}";
             var expirationInSeconds = CalculateExpirationInSeconds(expiresAt);
 

@@ -13,7 +13,7 @@ namespace UniLx.Infra.Data.Database.Repository
         protected readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         public IUnitOfWork UnitOfWork => _unitOfWork;        
 
-        public async Task<Tuple<IEnumerable<T>?, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<Entity, bool>> expression, CancellationToken ct)
+        public async Task<Tuple<IEnumerable<T>?, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<T, bool>> expression, CancellationToken ct)
         {
             using var session = _martenContext.QuerySession();
             var query = session.Query<T>().Where(expression);
@@ -34,7 +34,7 @@ namespace UniLx.Infra.Data.Database.Repository
                     .FirstOrDefaultAsync(token: ct);
         }
 
-        public void InsertOne(T entity)
+        public virtual void InsertOne(T entity)
         {
             Action<IDatabaseSession> insertCommand = (session) => session.Insert(entity);
             _unitOfWork.AddCommand(insertCommand);

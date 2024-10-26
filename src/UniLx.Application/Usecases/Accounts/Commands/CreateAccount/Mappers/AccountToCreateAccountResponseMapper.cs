@@ -14,6 +14,6 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
                 ProfilePictureUrl: profilePictureUrl,
                 Rating: source.Rating.Value,
                 Advertisements: [.. source.AdvertisementIds],
-                CreatedAt: source.CreatedAt!.Value);
+                CreatedAt: source.CreatedAt!);
     }
 }

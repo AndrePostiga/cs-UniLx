@@ -15,7 +15,7 @@ namespace UniLx.Application.Usecases.Categories.CreateCategory
         public CreateCategoryCommand(string root, string name, string nameInPtBr, string? description)
         {
             Root = root;
-            Name = name;
+            Name = name.ToLower();
             NameInPtBr = nameInPtBr;
             Description = description;
         }

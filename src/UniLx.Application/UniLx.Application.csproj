@@ -19,8 +19,4 @@
     <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Usecases\Advertisement\Queries\" />
-  </ItemGroup>
-
 </Project>

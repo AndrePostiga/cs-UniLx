@@ -12,4 +12,9 @@
 		<PackageReference Include="Supabase" Version="1.1.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\UniLx.Application\UniLx.Application.csproj" />
+	  <ProjectReference Include="..\UniLx.Domain\UniLx.Domain.csproj" />
+	</ItemGroup>
+
 </Project>
