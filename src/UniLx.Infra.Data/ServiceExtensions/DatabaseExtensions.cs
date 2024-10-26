@@ -31,8 +31,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(DatabaseOptions.Section));
 
 
-            builder.AddNpgsqlDataSource("asdsd"
-                , ops =>
+            builder.AddNpgsqlDataSource("postgresdb", ops =>
             {
                 ops.ConnectionString = databaseOptions!.ConnectionString;
             });
