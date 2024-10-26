@@ -11,7 +11,6 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
         public string? Type { get; set; }
         public string? CategoryName { get; set; }
 
-        // Geolocation parameters
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public double? RadiusInKm { get; set; }
@@ -21,12 +20,12 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
         public int PageSize { get; set; } = 10;
 
         public Geometry? Geopoint => HasGeolocation
-                    ? new Point(Longitude!.Value, Latitude!.Value) { SRID = 4326 }
-                    : null;
+            ? new Point(Longitude!.Value, Latitude!.Value) { SRID = 4326 }
+            : null;
 
         public bool HasGeolocation => Latitude.HasValue && Longitude.HasValue;
 
-        public GetAdvertisementsQuery(string? type, string? categoryName, 
+        public GetAdvertisementsQuery(string? type, string? categoryName,
             double? latitude, double? longitude, double? radiusInKm, int page, int pageSize)
         {
             Type = type;
@@ -54,31 +53,38 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
                 .MaximumLength(50).WithMessage("Type must not exceed 50 characters.")
                 .When(query => query.Type != null)
                 .Must(type => AdvertisementType.TryFromName(type, true, out _))
-                .WithMessage($"Invalid advertisement type. Supported types are: {string.Join(", ", AdvertisementType.List)}");
+                .WithMessage($"Invalid advertisement type. Supported types are: {string.Join(", ", AdvertisementType.List)}")
+                .When(query => query.Type != null);
 
             RuleFor(query => query.CategoryName)
                 .MaximumLength(50).WithMessage("CategoryName must not exceed 50 characters.")
                 .When(query => query.CategoryName != null);
 
+            RuleFor(query => query)
+                .Must(query => !(query.CategoryName != null && query.Type != null))
+                .WithMessage("Only one of CategoryName or Type can be provided, not both.")
+                .WithName("CategoryName and Type");
+
             RuleFor(query => query.Latitude)
-                .InclusiveBetween(-90, 90).WithMessage("Latitude must be between -90 and 90.")
+                .InclusiveBetween(-90, 90).WithMessage("Latitude must be a valid number between -90 and 90.")
                 .When(query => query.Latitude.HasValue);
 
             RuleFor(query => query.Longitude)
-                .InclusiveBetween(-180, 180).WithMessage("Longitude must be between -180 and 180.")
+                .InclusiveBetween(-180, 180).WithMessage("Longitude must be a valid number between -180 and 180.")
                 .When(query => query.Longitude.HasValue);
 
             RuleFor(query => query.RadiusInKm)
-                .GreaterThan(0).WithMessage("RadiusInKm must be greater than 0.")
+                .GreaterThan(0).WithMessage("RadiusInKm must be a valid positive number.")
                 .When(query => query.RadiusInKm.HasValue);
 
-            RuleFor(query => query)
-                .Must(query => !(query.Latitude.HasValue ^ query.Longitude.HasValue))
-                .WithMessage("Both latitude and longitude must be provided together if one is specified.");
+            RuleFor(x => x)
+               .Must(x => !(x.Latitude.HasValue ^ x.Longitude.HasValue))
+               .WithMessage("Both latitude and longitude must be provided together if one is specified.");
 
             RuleFor(query => query)
-                .Must(query => !(query.RadiusInKm.HasValue && (!query.Latitude.HasValue || !query.Longitude.HasValue)))
+                .Must(query => !query.RadiusInKm.HasValue || (query.Latitude.HasValue && query.Longitude.HasValue))
                 .WithMessage("Latitude and Longitude must be provided if RadiusInKm is specified.");
         }
     }
+
 }

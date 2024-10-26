@@ -42,7 +42,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 opts.Schema.Include<AccountRegistry>();
                 opts.DatabaseSchemaName = "UniLxDb";
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
-                opts.AutoCreateSchemaObjects = AutoCreate.All;
+                opts.AutoCreateSchemaObjects = AutoCreate.All;                
 
                 opts.Schema.Include<AccountRegistry>();
                 opts.Schema.Include<CategoryRegistry>();

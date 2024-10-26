@@ -5,7 +5,7 @@ using UniLx.Shared.Abstractions;
 namespace UniLx.Application.Behaviors;
 
 public sealed class CommandValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommand<IResult>
+    where TRequest : IRequest<IResult>
     where TResponse : IResult  
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;

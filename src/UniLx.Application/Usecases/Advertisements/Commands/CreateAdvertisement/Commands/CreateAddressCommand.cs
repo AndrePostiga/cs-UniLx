@@ -36,68 +36,68 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         {
             public CreateAddressCommandValidator()
             {
-                // Regra para garantir que sejam fornecidos coordenadas, endereço completo ou ambos
+                // Rule to ensure coordinates, full address, or both are provided
                 RuleFor(x => x)
                     .Must(x =>
-                        (x.Latitude.HasValue && x.Longitude.HasValue) || // Ou ambos Latitude e Longitude são fornecidos
-                        (!string.IsNullOrEmpty(x.Country) && !string.IsNullOrEmpty(x.State) && // Ou todos os campos de endereço completo são fornecidos
+                        (x.Latitude.HasValue && x.Longitude.HasValue) || // Either both Latitude and Longitude are provided
+                        (!string.IsNullOrEmpty(x.Country) && !string.IsNullOrEmpty(x.State) && // Or all full address fields are provided
                          !string.IsNullOrEmpty(x.City) && !string.IsNullOrEmpty(x.ZipCode))
                     )
-                    .WithMessage("É necessário fornecer ambos latitude e longitude, um endereço completo ou ambos.");
+                    .WithMessage("You must provide both latitude and longitude, a complete address, or both.");
 
-                // Validação para coordenadas: se um é fornecido, ambos devem ser fornecidos
+                // Validation for coordinates: if one is provided, both must be provided
                 RuleFor(x => x.Latitude)
-                    .InclusiveBetween(-90, 90).WithMessage("A latitude deve estar entre -90 e 90.")
+                    .InclusiveBetween(-90, 90).WithMessage("Latitude must be between -90 and 90.")
                     .When(x => x.Latitude.HasValue);
 
                 RuleFor(x => x.Longitude)
-                    .InclusiveBetween(-180, 180).WithMessage("A longitude deve estar entre -180 e 180.")
+                    .InclusiveBetween(-180, 180).WithMessage("Longitude must be between -180 and 180.")
                     .When(x => x.Longitude.HasValue);
 
                 RuleFor(x => x)
                     .Must(x => !(x.Latitude.HasValue ^ x.Longitude.HasValue))
-                    .WithMessage("Ambos latitude e longitude devem ser fornecidos juntos se um deles for especificado.");
+                    .WithMessage("Both latitude and longitude must be provided together if one of them is specified.");
 
-                // Validação para campos de endereço completo
+                // Validation for full address fields
                 RuleFor(x => x.Country)
-                    .NotEmpty().WithMessage("O país é obrigatório ao fornecer um endereço completo.")
-                    .Length(2).WithMessage("O código do país deve ter exatamente 2 caracteres.")
-                    .Matches("^[A-Za-z]+$").WithMessage("O código do país deve conter apenas letras.")
+                    .NotEmpty().WithMessage("Country is required when providing a full address.")
+                    .Length(2).WithMessage("Country code must be exactly 2 characters.")
+                    .Matches("^[A-Za-z]+$").WithMessage("Country code must contain only letters.")
                     .When(x => !string.IsNullOrEmpty(x.Country) || !string.IsNullOrEmpty(x.State) ||
                                !string.IsNullOrEmpty(x.City) || !string.IsNullOrEmpty(x.ZipCode));
 
                 RuleFor(x => x.State)
-                    .NotEmpty().WithMessage("O estado é obrigatório ao fornecer um endereço completo.")
-                    .Length(2).WithMessage("O código do estado deve ter exatamente 2 caracteres.")
-                    .Matches("^[A-Za-z]+$").WithMessage("O código do estado deve conter apenas letras.")
+                    .NotEmpty().WithMessage("State is required when providing a full address.")
+                    .Length(2).WithMessage("State code must be exactly 2 characters.")
+                    .Matches("^[A-Za-z]+$").WithMessage("State code must contain only letters.")
                     .When(x => !string.IsNullOrEmpty(x.Country) || !string.IsNullOrEmpty(x.State) ||
                                !string.IsNullOrEmpty(x.City) || !string.IsNullOrEmpty(x.ZipCode));
 
                 RuleFor(x => x.City)
-                    .NotEmpty().WithMessage("A cidade é obrigatória ao fornecer um endereço completo.")
+                    .NotEmpty().WithMessage("City is required when providing a full address.")
                     .When(x => !string.IsNullOrEmpty(x.Country) || !string.IsNullOrEmpty(x.State) ||
                                !string.IsNullOrEmpty(x.City) || !string.IsNullOrEmpty(x.ZipCode));
 
                 RuleFor(x => x.ZipCode)
-                    .NotEmpty().WithMessage("O CEP é obrigatório ao fornecer um endereço completo.")
+                    .NotEmpty().WithMessage("Zip code is required when providing a full address.")
                     .When(x => !string.IsNullOrEmpty(x.Country) || !string.IsNullOrEmpty(x.State) ||
                                !string.IsNullOrEmpty(x.City) || !string.IsNullOrEmpty(x.ZipCode));
 
-                // Validação para campos opcionais com limite de tamanho máximo
+                // Validation for optional fields with maximum length
                 RuleFor(x => x.Neighborhood)
-                    .MaximumLength(100).WithMessage("O bairro não deve exceder 100 caracteres.")
+                    .MaximumLength(100).WithMessage("Neighborhood must not exceed 100 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Neighborhood));
 
                 RuleFor(x => x.Street)
-                    .MaximumLength(100).WithMessage("A rua não deve exceder 100 caracteres.")
+                    .MaximumLength(100).WithMessage("Street must not exceed 100 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Street));
 
                 RuleFor(x => x.Number)
-                    .MaximumLength(50).WithMessage("O número não deve exceder 50 caracteres.")
+                    .MaximumLength(50).WithMessage("Number must not exceed 50 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Number));
 
                 RuleFor(x => x.Complement)
-                    .MaximumLength(64).WithMessage("O complemento não deve exceder 64 caracteres.")
+                    .MaximumLength(64).WithMessage("Complement must not exceed 64 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Complement));
             }
         }
