@@ -51,6 +51,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             var imageUrl = await _storageRepository.GetImageUrl(account.ProfilePicture, DateTime.UtcNow.AddMinutes(30));
 
             _advertisementRepository.InsertOne(advertisement);
+            _accountRepository.UpdateOne(account);
             await _advertisementRepository.UnitOfWork.Commit(cancellationToken);
             var result = advertisement.ToResponse(account, imageUrl);
             return Results.Ok(result);

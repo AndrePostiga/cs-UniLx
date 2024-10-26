@@ -39,6 +39,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         private void SetOwner(Account account)
         {
             DomainException.ThrowIf(account is null, "Cannot create advertisement without account.");
+            account!.AddAdvertisement(this);
             OwnerId = account!.Id;
         }
 
