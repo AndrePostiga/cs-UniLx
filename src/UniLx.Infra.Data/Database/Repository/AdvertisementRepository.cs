@@ -13,17 +13,6 @@ namespace UniLx.Infra.Data.Database.Repository
         {                    
         }
 
-        public override void InsertOne(Advertisement advertisement)
-        {
-            base.InsertOne(advertisement);
-
-            if (advertisement.Address is not null && advertisement.Address.HasCordinates)
-                base.CustomSql(CustomQueries.InsertGeopointOnAdvertisementTable, 
-                    advertisement.Address.Longitude!,
-                    advertisement.Address.Latitude!, 
-                    advertisement.Id);
-        }
-
         public async Task<Tuple<IEnumerable<Advertisement>?, int>> FindNearestLocation(int skip, int limit, bool sortAsc, 
             Expression<Func<Advertisement, bool>> expression,
             Geometry geopoint,
@@ -44,8 +33,10 @@ namespace UniLx.Infra.Data.Database.Repository
 
             // Apply sorting
             query = sortAsc ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
-            
-            var result = await query.Skip(skip - 1).Take(limit).ToListAsync(ct);
+
+            int calculatedSkip = (skip - 1) * limit;
+
+            var result = await query.Skip(calculatedSkip).Take(limit).ToListAsync(ct);
             var total = await query.CountAsync(ct);
             return Tuple.Create((IEnumerable<Advertisement>?)result, total);
         }

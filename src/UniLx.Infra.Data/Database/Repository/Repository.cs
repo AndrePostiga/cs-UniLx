@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
+using UniLx.Domain.Entities.AccountAgg;
 using IUnitOfWork = UniLx.Domain.Data.IUnitOfWork;
 
 namespace UniLx.Infra.Data.Database.Repository
@@ -20,7 +21,8 @@ namespace UniLx.Infra.Data.Database.Repository
             
             query = sortAsc ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
 
-            var result = await query.Skip(skip).Take(limit).ToListAsync(ct);
+            int calculatedSkip = (skip - 1) * limit;
+            var result = await query.Skip(calculatedSkip).Take(limit).ToListAsync(ct);
             var total = await query.CountAsync(ct);
             return Tuple.Create((IEnumerable<T>?)result, total);
         }
@@ -34,7 +36,7 @@ namespace UniLx.Infra.Data.Database.Repository
                     .FirstOrDefaultAsync(token: ct);
         }
 
-        public virtual void InsertOne(T entity)
+        public void InsertOne(T entity)
         {
             Action<IDatabaseSession> insertCommand = (session) => session.Insert(entity);
             _unitOfWork.AddCommand(insertCommand);
@@ -42,7 +44,7 @@ namespace UniLx.Infra.Data.Database.Repository
 
         public void CustomSql(string sql, params object[] objects)
         {
-            Action<IDatabaseSession> insertCommand = (session) => session.ExecuteSql(sql, objects);
+            Action<IDatabaseSession> insertCommand = (session) => session.ExecuteSql(sql, objects);            
             _unitOfWork.AddCommand(insertCommand);
         }
 

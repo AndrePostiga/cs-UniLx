@@ -33,7 +33,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById
             if (account == null)
                 return AdvertisementErrors.AccountNotFound.ToBadRequest();
 
-            var imageUrl = account.ProfilePicture is null ? string.Empty : await _accountStorage.GetImageUrl(account.ProfilePicture);
+            var imageUrl = await _accountStorage.GetImageUrl(account.ProfilePicture);
             return Results.Ok(advertisement.ToResponse(account, imageUrl));
         }
     }

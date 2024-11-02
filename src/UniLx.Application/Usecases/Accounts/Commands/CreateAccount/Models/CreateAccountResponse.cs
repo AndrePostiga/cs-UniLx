@@ -8,6 +8,6 @@
         string Email, 
         string? ProfilePictureUrl, 
         float Rating, 
-        List<string> Advertisements, 
+        List<string>? Advertisements, 
         DateTime CreatedAt);
 }

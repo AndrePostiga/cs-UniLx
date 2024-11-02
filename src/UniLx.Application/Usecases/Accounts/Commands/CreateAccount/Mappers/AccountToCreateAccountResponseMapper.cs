@@ -13,7 +13,7 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
                 Email: source.Email.Value,
                 ProfilePictureUrl: profilePictureUrl,
                 Rating: source.Rating.Value,
-                Advertisements: [.. source.AdvertisementIds],
+                Advertisements: [..(source.AdvertisementIds ?? [])],
                 CreatedAt: source.CreatedAt!);
     }
 }

@@ -19,9 +19,8 @@ namespace UniLx.Domain.Entities.AccountAgg
         public StorageImage? ProfilePicture { get;  private set; }
 
         public Rating Rating { get; private set; }
-
-        public IReadOnlyList<string>? AdvertisementIds => _advertisementIds!.AsReadOnly();
-        private List<string>? _advertisementIds = [];
+        
+        public List<string>? AdvertisementIds { get; private set; } = [];
 
         private Account()
         {}
@@ -44,7 +43,7 @@ namespace UniLx.Domain.Entities.AccountAgg
         public void AddAdvertisement(Advertisement advertisement)
         {
             DomainException.ThrowIf(advertisement is null, "Advertisement cannot be null.");
-            _advertisementIds!.Add(advertisement!.Id);
+            AdvertisementIds!.Add(advertisement!.Id);
         }
 
         private void SetCpf(string cpf)

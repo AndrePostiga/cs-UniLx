@@ -34,7 +34,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         {
             var account = await _accountRepository.FindOne(x => x.Id == request.AccountId, cancellationToken);
             if (account == null)
-                return AccountErrors.NotFound.ToBadRequest();
+                return AdvertisementErrors.AccountNotFound.ToBadRequest();
 
             var category = await _categoryRepository.FindOne(x => x.Name == request.SubCategory, cancellationToken);
             if (category == null)
