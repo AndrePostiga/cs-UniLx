@@ -10,7 +10,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Map
                 latitude: source.Latitude,
                 longitude: source.Longitude,
                 radiusInKm: source.RadiusInKm,
-                page: source.Page,
-                pageSize: source.PageSize);
+                page: source.Page ?? 1,
+                pageSize: source.PageSize ?? 10);
     }
 }

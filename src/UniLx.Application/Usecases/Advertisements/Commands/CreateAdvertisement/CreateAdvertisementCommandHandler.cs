@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using UniLx.Application.Usecases.Accounts;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Factories;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers;
 using UniLx.Application.Usecases.Categories;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities.AdvertisementAgg;
-using UniLx.Infra.Data.Storage.Buckets;
 using UniLx.Infra.Data.Storage;
+using UniLx.Infra.Data.Storage.Buckets;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
