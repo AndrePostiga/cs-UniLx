@@ -2,6 +2,7 @@
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest;
+using UniLx.Application.Usecases.Advertisements.SharedModels.Requests;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers
 {
@@ -14,7 +15,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 subCategory: source.SubCategory,
                 expiresAt: source.ExpiresAt,
                 address: source.Address?.ToCommand(),
-                beautyDetails: source.BeautyDetails?.ToCommand());
+                beautyDetails: source.BeautyDetails?.ToCommand(),
+                eventDetails: source.EventsDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -32,15 +34,36 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
 
         public static CreateBeautyDetailsCommand ToCommand(this BeautyDetailsRequest source)
             => new (
-                source.Title!,
+                source.Title,
                 source.Description,
                 source.Price,
-                source.ProductType!,
-                source.Brand!,
-                source.SkinType!,
+                source.ProductType,
+                source.Brand,
+                source.SkinType,
                 source.ExpirationDate,
                 source.Ingredients,
                 source.IsOrganic ?? false
             );
+
+        public static CreateEventDetailsCommand ToCommand(this EventDetailsRequest source)
+            => new(
+                source.Title,
+                source.Description,
+                source.Price,
+                source.EventType,
+                source.EventDate,
+                source.Organizer,
+                source.AgeRestriction,
+                source.DressCode,
+                source.Highlights,
+                source.IsOnline ?? false,
+                source.ContactInformation?.ToCommand()
+            );
+
+        public static CreateContactInformationCommand ToCommand(this ContactInformationRequest source)
+            => new(source.Phone?.ToCommand(), source.Email, source.Website);
+
+        public static CreatePhoneCommand ToCommand(this PhoneRequest source)
+            => new(source.CountryCode, source.AreaCode, source.Number);
     }
 }

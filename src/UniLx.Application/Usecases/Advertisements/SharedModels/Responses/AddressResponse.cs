@@ -1,6 +1,6 @@
 ﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Responses
 {
-    internal class AddressResponse
+    public class AddressResponse
     {
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }

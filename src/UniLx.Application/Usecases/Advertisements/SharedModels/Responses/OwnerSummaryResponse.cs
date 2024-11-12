@@ -1,6 +1,6 @@
 ﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Responses
 {
-    internal class OwnerSummaryResponse
+    public class OwnerSummaryResponse
     {
         public string Id { get; set; }
         public string Name { get; set; }

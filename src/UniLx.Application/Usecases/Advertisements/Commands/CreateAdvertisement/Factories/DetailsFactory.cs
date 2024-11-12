@@ -2,6 +2,7 @@
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Factories
@@ -12,14 +13,27 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         {
             var type = AdvertisementType.FromName(command.Type, true);
 
-            switch (type)
+            return (int)type switch
             {
-                case var e when e.Equals(AdvertisementType.Beauty):
-                    return CreateBeautyDetails(command.BeautyDetails!);
+                var e when e.Equals(AdvertisementType.Beauty) => CreateBeautyDetails(command.BeautyDetails!),
+                var e when e.Equals(AdvertisementType.Events) => CreateEventDetails(command.EventsDetails!),
+                _ => throw new DomainException($"Cannot create details from {command.Type}."),
+            };
+        }
 
-                default:
-                    throw new DomainException($"Cannot create details from {command.Type}.");
-            }
+        private static EventsDetails CreateEventDetails(CreateEventDetailsCommand command)
+        {
+            return new EventsDetails(command.Title!,
+                command.Description,
+                command.Price,
+                command.EventType!,
+                command.EventDate.GetValueOrDefault(),
+                command.Organizer,
+                command.AgeRestriction,
+                command.DressCode,
+                command.Highlights,
+                command.IsOnline.GetValueOrDefault(),
+                command.ContactInformation?.ToContactInformation());
         }
 
         private static BeautyDetails CreateBeautyDetails(CreateBeautyDetailsCommand command)
