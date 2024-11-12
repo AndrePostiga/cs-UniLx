@@ -1,3 +1,5 @@
+using TraceLens.Aspire;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
@@ -24,5 +26,7 @@ builder.AddProject<Projects.UniLx_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WithReference(apiService);
+
+builder.AddTraceLens();
 
 builder.Build().Run();

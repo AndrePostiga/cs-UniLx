@@ -20,6 +20,7 @@
     <PackageReference Include="Aspire.Hosting.Redis" Version="8.1.0" />
     <PackageReference Include="Nall.Aspire.Hosting.DependsOn" Version="1.0.1" />
     <PackageReference Include="Nall.Aspire.Hosting.DependsOn.PostgreSQL" Version="1.0.1" />
+    <PackageReference Include="TraceLens.Aspire" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
