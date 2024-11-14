@@ -1,4 +1,4 @@
-﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Requests;
+﻿using UniLx.Application.Usecases.SharedModels.Requests;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request
 {

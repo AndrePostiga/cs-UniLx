@@ -1,7 +1,7 @@
-﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Responses.DetailsResponse;
+﻿using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
 
-namespace UniLx.Application.Usecases.Advertisements.SharedModels.Mappers
+namespace UniLx.Application.Usecases.SharedModels.Mappers
 {
     public static class DetailsToSpecificDetailsResponseMapper
     {

@@ -1,4 +1,4 @@
-﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Requests
+﻿namespace UniLx.Application.Usecases.SharedModels.Requests
 {
     public class PhoneRequest
     {

@@ -1,7 +1,7 @@
-﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Responses;
+﻿using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 
-namespace UniLx.Application.Usecases.Advertisements.SharedModels.Mappers
+namespace UniLx.Application.Usecases.SharedModels.Mappers
 {
     public static class ContactInformationToContactInformationResponseMapper
     {

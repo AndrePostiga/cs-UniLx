@@ -37,7 +37,7 @@ namespace UniLx.ApiService.Controllers.Advertisements
         /// <returns>A result indicating success or failure.</returns>
         internal static async Task<IResult> CreateAdvertisement(HttpContext context, 
                 [FromBody] CreateAdvertisementRequest request,
-                [FromHeader(Name = "X-Impersonate")] string impersonatedUser,
+                [FromHeader(Name = Constants.AccountImpersonateKey)] string impersonatedUser,
                 [FromServices] IMediator mediator,
                 CancellationToken ct)
         {

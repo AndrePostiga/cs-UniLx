@@ -1,20 +1,18 @@
-﻿using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Models;
+﻿using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models;
 using UniLx.Application.Usecases.SharedModels.Mappers;
-using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
 
-namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mappers
+namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Mappers
 {
-    internal static class AdvertisementToGetAdvertisementsResponseMapper
+    internal static class AdvertisementToGetAccountAdvertisementsResponseMapper
     {
-        public static GetAdvertisementsResponse ToResponse(this Advertisement source)
+        public static GetAccountAdvertisementsResponse ToResponse(this Advertisement source)
             => new()
             {
                 Id = source.Id,
-                Owner = new OwnerSummaryResponse { Id = source.OwnerId },
                 Status = source.Status.Name,
                 Type = source.Type.Name,
                 Category = source.CategoryName,

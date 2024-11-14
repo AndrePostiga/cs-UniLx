@@ -1,4 +1,6 @@
-﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Responses.DetailsResponse
+﻿using UniLx.Application.Usecases.SharedModels.Responses;
+
+namespace UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse
 {
     public class BeautyDetailsResponse : BaseDetailsResponse
     {
