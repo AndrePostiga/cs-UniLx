@@ -39,8 +39,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddMarten(opts =>
             {
                 opts.Schema.Include<AccountRegistry>();
-                opts.DatabaseSchemaName = "UniLxDb";
-                opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
+                opts.DatabaseSchemaName = "UniLxDb";                
                 opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
@@ -53,6 +52,9 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 //    x.Metadata.CorrelationId.Enabled = true;
                 //    x.Metadata.Headers.Enabled = true;
                 //});
+                opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
+                opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementType>());
+
                 opts.UseNewtonsoftForSerialization(
                     casing: Casing.SnakeCase,
                     enumStorage: EnumStorage.AsString,
@@ -183,26 +185,59 @@ namespace UniLx.Infra.Data.ServiceExtensions
     {
         public bool Matches(MethodCallExpression expression)
         {
-            // Match any method call to `HasSmartEnumValue`
-            return expression.Method.Name == nameof(UniLx.Shared.LibExtensions.SmartEnumExtensions.HasSmartEnumValue);
+            // Ensure the method name matches
+            if (expression.Method.Name != nameof(UniLx.Shared.LibExtensions.SmartEnumExtensions.HasSmartEnumValue))
+            {
+                return false;
+            }
+
+            // Ensure the argument matches the expected type
+            var objectType = expression.Arguments[0].Type;
+            return typeof(TEnum).IsAssignableFrom(objectType);
         }
 
         public ISqlFragment Parse(IQueryableMemberCollection memberCollection, IReadOnlyStoreOptions options, MethodCallExpression expression)
         {
-            // Use NullTestLocator if available to ensure proper `->>` access for JSON text retrieval
-            var locator = memberCollection.MemberFor(expression.Arguments[0]).NullTestLocator;
-
-            // If NullTestLocator is null or not properly set, fallback to JSONBLocator
-            if (string.IsNullOrEmpty(locator))
+            try
             {
-                locator = memberCollection.MemberFor(expression.Arguments[0]).JSONBLocator;
+                // Log the method for debugging
+                Console.WriteLine($"Parsing expression: {expression}");
+
+                // Get the locator for the member (Status or Type)
+                var member = memberCollection.MemberFor(expression.Arguments[0]);
+                var locator = member.NullTestLocator ?? member.JSONBLocator;
+
+                if (string.IsNullOrEmpty(locator))
+                {
+                    throw new InvalidOperationException("Unable to resolve a valid locator for the member.");
+                }
+
+                // Resolve the generic argument dynamically
+                var genericTypeArgument = expression.Method.GetGenericArguments()[0];
+
+                // Extract the SmartEnum value dynamically
+                var targetEnumValue = Expression.Lambda(expression.Arguments[1]).Compile().DynamicInvoke();
+
+                if (targetEnumValue == null)
+                {
+                    throw new ArgumentException("Invalid SmartEnum value passed to HasSmartEnumValue.");
+                }
+
+                // Ensure the targetEnumValue is of the expected type
+                if (!genericTypeArgument.IsInstanceOfType(targetEnumValue))
+                {
+                    throw new InvalidCastException($"Invalid SmartEnum value type. Expected: {genericTypeArgument}, Actual: {targetEnumValue.GetType()}");
+                }
+
+                // Generate the SQL fragment with parameterized input
+                return new WhereFragment($"{locator} = ?", targetEnumValue.ToString());
             }
-
-            // Extract the target SmartEnum value from the second argument
-            var targetEnumValue = (TEnum)Expression.Lambda(expression.Arguments[1]).Compile().DynamicInvoke();
-
-            // Generate the SQL fragment using the adjusted locator and target SmartEnum name
-            return new WhereFragment($"{locator} = '{targetEnumValue.Name}'");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in HasSmartEnumValueParser.Parse: {ex.Message}");
+                Console.WriteLine($"Expression: {expression}");
+                throw;
+            }
         }
     }
 }

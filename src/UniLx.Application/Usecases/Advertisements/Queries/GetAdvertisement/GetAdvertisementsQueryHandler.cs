@@ -21,28 +21,14 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
 
         public async Task<IResult> Handle(GetAdvertisementsQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<Advertisement>? advertisements = null;
-            int count = 0;
-
-            if (!request.HasGeolocation)
-                (advertisements, count) = await HandleAdvertisementsSearch(request, cancellationToken);
-            else
-                (advertisements, count) = await HandleLocationAdvertisementsSearch(request, cancellationToken);
-
+            var (advertisements, count) = await HandleLocationAdvertisementsSearch(request, cancellationToken);
             var response = advertisements!.Select(ad => ad.ToResponse());
-
-            return Results.Ok(PaginatedQueryResponse<GetAdvertisementsResponse>.WithContent(response, request.Page, request.PageSize, count));
+            var result = PaginatedQueryResponse<GetAdvertisementsResponse>.WithContent(response, request.Page, request.PageSize, count);
+            return Results.Ok(result);
         }
 
-        private async Task<Tuple<IEnumerable<Advertisement>?, int>> HandleAdvertisementsSearch(GetAdvertisementsQuery request, CancellationToken ct) 
-            => await _advertisementRepository.FindAll(skip: request.Page,
-                    limit: request.PageSize,
-                    sortAsc: true,
-                    request.ToSpec(),
-                    ct);
-
         private async Task<Tuple<IEnumerable<Advertisement>?, int>> HandleLocationAdvertisementsSearch(GetAdvertisementsQuery request, CancellationToken ct)
-            => await _advertisementRepository.FindNearestLocation(skip: request.Page,
+            => await _advertisementRepository.FindAdvertisements(skip: request.Page,
                     limit: request.PageSize,
                     sortAsc: true,
                     request.ToSpec(),
