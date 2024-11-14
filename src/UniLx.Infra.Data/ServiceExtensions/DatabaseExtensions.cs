@@ -39,7 +39,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddMarten(opts =>
             {
                 opts.Schema.Include<AccountRegistry>();
-                opts.DatabaseSchemaName = "UniLxDb";                
+                opts.DatabaseSchemaName = "UniLxDb";
                 opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
@@ -66,6 +66,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementStatus, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AddressType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AgeRestriction, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<ProductCondition, int>());
                     });
             })
             .InitializeWith(new SeedData())
@@ -90,35 +91,49 @@ namespace UniLx.Infra.Data.ServiceExtensions
 
         public SeedData()
         {
-            var beautyCategory1 = Category.CreateNewCategory("beauty", "makeup", "Maquiagem", "Acessórios para rosto");
-            var beautyCategory2 = Category.CreateNewCategory("beauty", "skincare", "Cuidados com a Pele", "Produtos de cuidado facial e corporal");
-
-            var eventsCategory1 = Category.CreateNewCategory("events", "concerts", "Shows e Concertos", "Eventos musicais ao vivo e festivais");
-            var eventsCategory2 = Category.CreateNewCategory("events", "workshops", "Workshops e Cursos", "Cursos e oficinas de aprendizado");
-            var eventsCategory3 = Category.CreateNewCategory("events", "sports_outdoors", "Esportes e Atividades ao Ar Livre", "Atividades esportivas e ao ar livre");
-            var eventsCategory4 = Category.CreateNewCategory("events", "exhibitions_fairs", "Exposições e Feiras", "Exposições de arte e feiras de diversos setores");
-            var eventsCategory5 = Category.CreateNewCategory("events", "conferences", "Conferências e Palestras", "Seminários, conferências e eventos de networking");
-            var eventsCategory6 = Category.CreateNewCategory("events", "parties_nightlife", "Festas e Entretenimento Noturno", "Baladas, festas e eventos noturnos");
-            var eventsCategory7 = Category.CreateNewCategory("events", "religious_spiritual", "Eventos Religiosos e Espirituais", "Retiros e celebrações religiosas");
-            var eventsCategory8 = Category.CreateNewCategory("events", "cinema_theater", "Cinema e Teatro", "Apresentações de filmes, peças e comédia");
-            var eventsCategory9 = Category.CreateNewCategory("events", "community_meetups", "Encontros e Comunidades", "Reuniões de clubes e encontros de grupos");
-            var eventsCategory10 = Category.CreateNewCategory("events", "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais");
-
-            _initialData = new object[]
+            var beautyCategories = new[]
             {
-                beautyCategory1,
-                beautyCategory2,
-                eventsCategory1,
-                eventsCategory2,
-                eventsCategory3,
-                eventsCategory4,
-                eventsCategory5,
-                eventsCategory6,
-                eventsCategory7,
-                eventsCategory8,
-                eventsCategory9,
-                eventsCategory10
+                Category.CreateNewCategory("beauty", "makeup", "Maquiagem", "Acessórios para rosto"),
+                Category.CreateNewCategory("beauty", "skincare", "Cuidados com a Pele", "Produtos de cuidado facial e corporal"),
+                Category.CreateNewCategory("beauty", "haircare", "Cuidados com o Cabelo", "Shampoos, condicionadores e produtos para cabelo"),
+                Category.CreateNewCategory("beauty", "fragrances", "Perfumes e Fragrâncias", "Perfumes e sprays corporais"),
+                Category.CreateNewCategory("beauty", "nailcare", "Cuidados com Unhas", "Esmaltes, removedores e acessórios"),
+                Category.CreateNewCategory("beauty", "tools", "Ferramentas e Acessórios", "Pincéis, aplicadores e ferramentas de beleza"),
+                Category.CreateNewCategory("beauty", "bath_body", "Banho e Corpo", "Sabonetes, loções e produtos para banho"),
+                Category.CreateNewCategory("beauty", "men_grooming", "Cuidados Masculinos", "Produtos de barbear e cuidados masculinos")
             };
+
+            var electronicsCategories = new[]
+            {
+                Category.CreateNewCategory("electronics", "smartphones", "Smartphones", "Celulares e acessórios de última geração"),
+                Category.CreateNewCategory("electronics", "laptops", "Notebooks", "Laptops para trabalho, estudo e jogos"),
+                Category.CreateNewCategory("electronics", "pcs", "Computadores", "Desktops e acessórios para escritório"),
+                Category.CreateNewCategory("electronics", "videogames", "Videogames e Consoles", "Consoles e jogos para diversão"),
+                Category.CreateNewCategory("electronics", "audio_devices", "Dispositivos de Áudio", "Fones de ouvido, caixas de som e mais"),
+                Category.CreateNewCategory("electronics", "wearables", "Tecnologia Vestível", "Smartwatches, rastreadores de fitness e mais"),
+                Category.CreateNewCategory("electronics", "cameras", "Câmeras e Fotografia", "Câmeras digitais, DSLRs e acessórios"),
+                Category.CreateNewCategory("electronics", "drones", "Drones", "Drones para fotografia e recreação")
+            };
+
+            var eventsCategories = new[]
+            {
+                Category.CreateNewCategory("events", "concerts", "Shows e Concertos", "Eventos musicais ao vivo e festivais"),
+                Category.CreateNewCategory("events", "workshops", "Workshops e Cursos", "Cursos e oficinas de aprendizado"),
+                Category.CreateNewCategory("events", "sports_outdoors", "Esportes e Atividades ao Ar Livre", "Atividades esportivas e ao ar livre"),
+                Category.CreateNewCategory("events", "exhibitions_fairs", "Exposições e Feiras", "Exposições de arte e feiras de diversos setores"),
+                Category.CreateNewCategory("events", "conferences", "Conferências e Palestras", "Seminários, conferências e eventos de networking"),
+                Category.CreateNewCategory("events", "parties_nightlife", "Festas e Entretenimento Noturno", "Baladas, festas e eventos noturnos"),
+                Category.CreateNewCategory("events", "religious_spiritual", "Eventos Religiosos e Espirituais", "Retiros e celebrações religiosas"),
+                Category.CreateNewCategory("events", "cinema_theater", "Cinema e Teatro", "Apresentações de filmes, peças e comédia"),
+                Category.CreateNewCategory("events", "community_meetups", "Encontros e Comunidades", "Reuniões de clubes e encontros de grupos"),
+                Category.CreateNewCategory("events", "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais")
+            };
+
+            _initialData = [
+                .. beautyCategories, 
+                .. electronicsCategories, 
+                .. eventsCategories
+            ];
         }
 
         public async Task Populate(IDocumentStore store, CancellationToken cancellation)

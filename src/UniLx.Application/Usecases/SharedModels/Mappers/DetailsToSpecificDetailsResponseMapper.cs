@@ -37,5 +37,28 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 AgeRestriction = source.AgeRestriction.Name,
 
             };
+
+        public static ElectronicsDetailsResponse ToResponse(this ElectronicsDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                ProductType = source.ProductType,
+                Brand = source.Brand,
+                Model = source.Model,
+                StorageCapacity = source.StorageCapacity,
+                Memory = source.Memory,
+                Processor = source.Processor,
+                GraphicsCard = source.GraphicsCard,
+                BatteryLife = source.BatteryLife,
+                HasWarranty = source.HasWarranty,
+                WarrantyUntil = source.WarrantyUntil,
+                Features = source.Features,
+                Condition = source.Condition.Name,
+                IncludesOriginalBox = source.IncludesOriginalBox,
+                Accessories = source.Accessories,
+            };
     }
 }

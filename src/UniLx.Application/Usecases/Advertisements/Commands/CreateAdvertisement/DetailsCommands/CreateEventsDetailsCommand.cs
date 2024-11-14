@@ -2,9 +2,9 @@
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 
-namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand
+namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands
 {
-    public class CreateEventDetailsCommand
+    public class CreateEventsDetailsCommand
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
@@ -18,7 +18,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public bool? IsOnline { get; set; }
         public CreateContactInformationCommand? ContactInformation { get; set; }
 
-        public CreateEventDetailsCommand(
+        public CreateEventsDetailsCommand(
             string? title, string? description, int? price, string? eventType,
             DateTime? eventDate, string? organizer, string? ageRestriction,
             string? dressCode, List<string>? highlights, bool? isOnline,
@@ -38,9 +38,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         }
     }
 
-    public class CreateEventDetailsCommandValidator : AbstractValidator<CreateEventDetailsCommand>
+    public class CreateEventsDetailsCommandValidator : AbstractValidator<CreateEventsDetailsCommand>
     {
-        public CreateEventDetailsCommandValidator()
+        public CreateEventsDetailsCommandValidator()
         {
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")
