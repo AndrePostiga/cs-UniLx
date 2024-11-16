@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>3a121758-e3d6-4ecc-883b-710964d32f8a</UserSecretsId>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>

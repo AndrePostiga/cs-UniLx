@@ -36,16 +36,10 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         {
             public CreateAddressCommandValidator()
             {
-                // Rule to ensure coordinates, full address, or both are provided
                 RuleFor(x => x)
-                    .Must(x =>
-                        (x.Latitude.HasValue && x.Longitude.HasValue) || // Either both Latitude and Longitude are provided
-                        (!string.IsNullOrEmpty(x.Country) && !string.IsNullOrEmpty(x.State) && // Or all full address fields are provided
-                         !string.IsNullOrEmpty(x.City) && !string.IsNullOrEmpty(x.ZipCode))
-                    )
+                    .Must(x => RequestHasLatLong(x) || RequestHasFullAddress(x))
                     .WithMessage("You must provide both latitude and longitude, a complete address, or both.");
 
-                // Validation for coordinates: if one is provided, both must be provided
                 RuleFor(x => x.Latitude)
                     .InclusiveBetween(-90, 90).WithMessage("Latitude must be between -90 and 90.")
                     .When(x => x.Latitude.HasValue);
@@ -58,7 +52,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                     .Must(x => !(x.Latitude.HasValue ^ x.Longitude.HasValue))
                     .WithMessage("Both latitude and longitude must be provided together if one of them is specified.");
 
-                // Validation for full address fields
+
                 RuleFor(x => x.Country)
                     .NotEmpty().WithMessage("Country is required when providing a full address.")
                     .Length(2).WithMessage("Country code must be exactly 2 characters.")
@@ -83,7 +77,6 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                     .When(x => !string.IsNullOrEmpty(x.Country) || !string.IsNullOrEmpty(x.State) ||
                                !string.IsNullOrEmpty(x.City) || !string.IsNullOrEmpty(x.ZipCode));
 
-                // Validation for optional fields with maximum length
                 RuleFor(x => x.Neighborhood)
                     .MaximumLength(100).WithMessage("Neighborhood must not exceed 100 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Neighborhood));
@@ -93,12 +86,25 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                     .When(x => !string.IsNullOrEmpty(x.Street));
 
                 RuleFor(x => x.Number)
-                    .MaximumLength(50).WithMessage("Number must not exceed 50 characters.")
+                    .MaximumLength(10).WithMessage("Number must not exceed 50 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Number));
 
                 RuleFor(x => x.Complement)
                     .MaximumLength(64).WithMessage("Complement must not exceed 64 characters.")
                     .When(x => !string.IsNullOrEmpty(x.Complement));
+            }
+
+            private static bool RequestHasFullAddress(CreateAddressCommand addressCommand)
+            {
+                return !string.IsNullOrEmpty(addressCommand.Country) && 
+                    !string.IsNullOrEmpty(addressCommand.State) && 
+                    !string.IsNullOrEmpty(addressCommand.City) && 
+                    !string.IsNullOrEmpty(addressCommand.ZipCode);
+            }
+
+            private static bool RequestHasLatLong(CreateAddressCommand addressCommand)
+            {
+                return addressCommand.Latitude.HasValue && addressCommand.Longitude.HasValue;
             }
         }
     }

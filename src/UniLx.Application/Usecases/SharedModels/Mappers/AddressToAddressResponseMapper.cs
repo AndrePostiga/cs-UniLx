@@ -9,14 +9,11 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
             => new()
             {
                 City = source.City,
-                Complement = source.Complement,
                 Country = source.Country,
                 Latitude = source.Latitude,
                 Longitude = source.Longitude,
                 Neighborhood = source.Neighborhood,
-                Number = source.Number,
                 State = source.State,
-                Street = source.Street,
                 ZipCode = source.ZipCode
             };
     }
