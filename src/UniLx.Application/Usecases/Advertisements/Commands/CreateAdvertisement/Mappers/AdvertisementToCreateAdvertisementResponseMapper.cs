@@ -1,8 +1,8 @@
 ﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Response;
 using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mappers;
-using UniLx.Application.Usecases.Advertisements.SharedModels.Mappers;
-using UniLx.Application.Usecases.Advertisements.SharedModels.Responses;
-using UniLx.Application.Usecases.Advertisements.SharedModels.Responses.DetailsResponse;
+using UniLx.Application.Usecases.SharedModels.Mappers;
+using UniLx.Application.Usecases.SharedModels.Responses;
+using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;

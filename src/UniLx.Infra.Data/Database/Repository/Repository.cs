@@ -23,7 +23,7 @@ namespace UniLx.Infra.Data.Database.Repository
                 .Query<T>()
                 .Where(expression);
             
-            query = sortAsc ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
+            query = sortAsc ? query.OrderBy(e => e.CreatedAt) : query.OrderByDescending(e => e.CreatedAt);
 
             int calculatedSkip = (skip - 1) * limit;
             var result = await query.Skip(calculatedSkip).Take(limit).ToListAsync(ct);

@@ -1,5 +1,5 @@
-﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Responses;
-using UniLx.Application.Usecases.Advertisements.SharedModels.Responses.DetailsResponse;
+﻿using UniLx.Application.Usecases.SharedModels.Responses;
+using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Response
 {

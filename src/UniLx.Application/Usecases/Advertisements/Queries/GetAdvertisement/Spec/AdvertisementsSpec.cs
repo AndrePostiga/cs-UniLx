@@ -36,21 +36,6 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Spe
             return expression;
         }
 
-        private static Expression<Func<T, bool>> CombineExpressions<T>(
-            Expression<Func<T, bool>> first,
-            Expression<Func<T, bool>> second)
-        {
-            var parameter = Expression.Parameter(typeof(T));
-
-            // Replace parameters in the second expression with the parameter of the first expression
-            var body = Expression.AndAlso(
-                Expression.Invoke(first, parameter),
-                Expression.Invoke(second, parameter)
-            );
-
-            return Expression.Lambda<Func<T, bool>>(body, parameter);
-        }
-
         private static double ConvertRadiusFromKmToMeters(double? radiusInKm)
             => radiusInKm is null ? 10 * 1000 : radiusInKm.Value * 1000;
     }

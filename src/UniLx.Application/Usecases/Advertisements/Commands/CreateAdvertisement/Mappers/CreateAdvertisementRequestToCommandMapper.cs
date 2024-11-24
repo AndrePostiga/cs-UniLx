@@ -2,7 +2,7 @@
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest;
-using UniLx.Application.Usecases.Advertisements.SharedModels.Requests;
+using UniLx.Application.Usecases.SharedModels.Requests;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers
 {

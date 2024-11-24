@@ -8,6 +8,8 @@ using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating.Models;
+using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Mappers;
+using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountById;
 using UniLx.Application.Usecases.Shared.CreatePresignedImage;
 
@@ -35,6 +37,9 @@ namespace UniLx.ApiService.Controllers.Accounts
 
             adminGroup.MapPatch("/{id}/profile-picture", AdminControllerHandlers.UpdateProfilePicture)
                   .WithName(nameof(AdminControllerHandlers.UpdateProfilePicture));
+
+            adminGroup.MapGet("/{id}/advertisements", AdminControllerHandlers.GetAccountAdvertisements)
+                  .WithName(nameof(AdminControllerHandlers.GetAccountAdvertisements));
         }
     }
 
@@ -117,6 +122,28 @@ namespace UniLx.ApiService.Controllers.Accounts
                 CancellationToken ct)
         {
             var command = new UpdateRatingCommand(request.Rating, id);
+            var response = await mediator.Send(command, ct);
+            return response!;
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of advertisements for a specific account.
+        /// </summary>
+        /// <param name="id">The unique identifier of the account for which advertisements are retrieved.</param>
+        /// <param name="request">The query parameters for filtering, sorting, and paginating the advertisements.</param>
+        /// <param name="mediator">The mediator service used to handle the query.</param>
+        /// <param name="ct">The cancellation token to observe for task cancellation.</param>
+        /// <returns>
+        /// A paginated list of advertisements that match the query parameters.
+        /// Returns a <see cref="IResult"/> containing the advertisements or an error response if the query fails.
+        /// </returns>
+        internal static async Task<IResult> GetAccountAdvertisements(
+                string id,
+                [AsParameters] GetAccountAdvertisementsRequest request,
+                [FromServices] IMediator mediator,
+                CancellationToken ct)
+        {
+            var command = request.ToQuery(id);
             var response = await mediator.Send(command, ct);
             return response!;
         }

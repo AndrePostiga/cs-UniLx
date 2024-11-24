@@ -1,4 +1,4 @@
-﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Responses
+﻿namespace UniLx.Application.Usecases.SharedModels.Responses
 {
     public class AddressResponse
     {
