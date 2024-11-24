@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands;
-using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand;
+using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Shared.Abstractions;
+using UniLx.Shared.LibExtensions;
 using static UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands.CreateAddressCommand;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
@@ -17,7 +18,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public CreateAddressCommand? Address { get; set; }
 
         public CreateBeautyDetailsCommand? BeautyDetails { get; set; }
-        public CreateEventDetailsCommand? EventsDetails { get; set; }
+        public CreateEventsDetailsCommand? EventsDetails { get; set; }
+        public CreateElectronicsDetailsCommand? ElectronicsDetails { get; set; }
 
         public CreateAdvertisementCommand(
             string accountId,
@@ -26,7 +28,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             DateTime? expiresAt,
             CreateAddressCommand? address,
             CreateBeautyDetailsCommand? beautyDetails,
-            CreateEventDetailsCommand? eventDetails)
+            CreateEventsDetailsCommand? eventDetails,
+            CreateElectronicsDetailsCommand? electronicsDetails)
         {
             AccountId = accountId;
             Type = type;
@@ -35,6 +38,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             Address = address;
             BeautyDetails = beautyDetails;
             EventsDetails = eventDetails;
+            ElectronicsDetails = electronicsDetails;
         }
     }
 
@@ -60,35 +64,32 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 .WithMessage("Address must be provided.")
                 .SetValidator(new CreateAddressCommandValidator()!);
 
-            AddBeautyRules();
-            AddEventsRules();
-
+            AddDetailsRules<CreateBeautyDetailsCommand, CreateBeautyDetailsCommandValidator>(AdvertisementType.Beauty, nameof(CreateAdvertisementCommand.BeautyDetails));
+            AddDetailsRules<CreateEventsDetailsCommand, CreateEventsDetailsCommandValidator>(AdvertisementType.Events, nameof(CreateAdvertisementCommand.EventsDetails));
+            AddDetailsRules<CreateElectronicsDetailsCommand, CreateElectronicsDetailsCommandValidator>(AdvertisementType.Electronics, nameof(CreateAdvertisementCommand.ElectronicsDetails));
         }
 
-        private void AddEventsRules()
+        private void AddDetailsRules<TDetails, TValidator>(AdvertisementType expectedType, string detailsPropertyName)
+            where TDetails : class
+            where TValidator : AbstractValidator<TDetails>, new()
         {
-            RuleFor(x => x.EventsDetails)
-                .NotNull().WithMessage($"events_details should be provided if the advertisement type is '{AdvertisementType.Events.Name}'.")
-                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Events)
-                .SetValidator(new CreateEventDetailsCommandValidator()!)
-                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Events);
+            RuleFor(x => GetDetailsProperty<TDetails>(x, detailsPropertyName))                
+                .NotNull().WithMessage($"{detailsPropertyName.ToSnakeCase()} should be provided if the advertisement type is '{expectedType.Name}'.")
+                .WithName("Invalid Contract")
+                .When(x => AdvertisementType.TryFromName(x.Type, true, out var type) && type == expectedType)
+            .SetValidator(new TValidator()!)            
+                .When(x => AdvertisementType.TryFromName(x.Type, true, out var type) && type == expectedType);
 
-            RuleFor(x => x.EventsDetails)
-                .Null().WithMessage($"events_details should only be provided if the advertisement type is '{AdvertisementType.Events.Name}'.")
-                .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type != AdvertisementType.Events);
+            RuleFor(x => GetDetailsProperty<TDetails>(x, detailsPropertyName))
+                .Null().WithMessage($"{detailsPropertyName.ToSnakeCase()} should only be provided if the advertisement type is '{expectedType.Name}'.")
+                .WithName("Invalid Contract")
+                .When(x => AdvertisementType.TryFromName(x.Type, true, out var type) && type != expectedType);
         }
 
-        private void AddBeautyRules()
+        private static TDetails? GetDetailsProperty<TDetails>(object instance, string propertyName) where TDetails : class
         {
-            RuleFor(x => x.BeautyDetails)
-                .NotNull().WithMessage($"beauty_details should be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.")
-                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty)
-                .SetValidator(new CreateBeautyDetailsCommandValidator()!)
-                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty);
-
-            RuleFor(x => x.BeautyDetails)
-                .Null().WithMessage($"beauty_details should only be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.")
-                .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type != AdvertisementType.Beauty);
+            var property = instance.GetType().GetProperty(propertyName);
+            return property?.GetValue(instance) as TDetails;
         }
     }
 }

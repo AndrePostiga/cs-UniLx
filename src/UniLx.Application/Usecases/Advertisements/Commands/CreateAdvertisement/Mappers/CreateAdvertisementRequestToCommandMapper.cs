@@ -1,5 +1,5 @@
 ﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands;
-using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand;
+using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest;
 using UniLx.Application.Usecases.SharedModels.Requests;
@@ -16,7 +16,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 expiresAt: source.ExpiresAt,
                 address: source.Address?.ToCommand(),
                 beautyDetails: source.BeautyDetails?.ToCommand(),
-                eventDetails: source.EventsDetails?.ToCommand());
+                eventDetails: source.EventsDetails?.ToCommand(),
+                electronicsDetails: source.ElectronicsDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -45,7 +46,27 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 source.IsOrganic ?? false
             );
 
-        public static CreateEventDetailsCommand ToCommand(this EventDetailsRequest source)
+        public static CreateElectronicsDetailsCommand ToCommand(this ElectronicsDetailsRequest source)
+            => new(
+                source.Title,
+                source.Description,
+                source.Price ?? 0,
+                source.ProductType,
+                source.Brand,
+                source.Model,
+                source.StorageCapacity,
+                source.Memory,
+                source.Processor,
+                source.GraphicsCard,
+                source.BatteryLife,
+                source.WarrantyUntil,
+                source.Features,
+                source.Condition,
+                source.IncludesOriginalBox ?? false,
+                source.Accessories
+            );
+
+        public static CreateEventsDetailsCommand ToCommand(this EventDetailsRequest source)
             => new(
                 source.Title,
                 source.Description,

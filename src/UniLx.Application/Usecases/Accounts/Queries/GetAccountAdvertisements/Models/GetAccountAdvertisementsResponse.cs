@@ -16,5 +16,6 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.M
 
         public BeautyDetailsResponse? BeautyDetails { get; set; }
         public EventsDetailsResponse? EventsDetails { get; set; }
+        public ElectronicsDetailsResponse? ElectronicsDetails { get; set; }
     }
 }

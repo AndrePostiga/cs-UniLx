@@ -1,8 +1,7 @@
-﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand;
+﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
-using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Factories
@@ -15,13 +14,14 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
 
             return (int)type switch
             {
-                var e when e.Equals(AdvertisementType.Beauty) => CreateBeautyDetails(command.BeautyDetails!),
-                var e when e.Equals(AdvertisementType.Events) => CreateEventDetails(command.EventsDetails!),
+                var e when e.Equals(AdvertisementType.Beauty) => CreateSpecificDetails(command.BeautyDetails!),
+                var e when e.Equals(AdvertisementType.Events) => CreateSpecificDetails(command.EventsDetails!),
+                var e when e.Equals(AdvertisementType.Electronics) => CreateSpecificDetails(command.ElectronicsDetails!),
                 _ => throw new DomainException($"Cannot create details from {command.Type}."),
             };
         }
 
-        private static EventsDetails CreateEventDetails(CreateEventDetailsCommand command)
+        private static EventsDetails CreateSpecificDetails(CreateEventsDetailsCommand command)
         {
             return new EventsDetails(command.Title!,
                 command.Description,
@@ -36,7 +36,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 command.ContactInformation?.ToContactInformation());
         }
 
-        private static BeautyDetails CreateBeautyDetails(CreateBeautyDetailsCommand command)
+        private static BeautyDetails CreateSpecificDetails(CreateBeautyDetailsCommand command)
         {
             return new BeautyDetails(command.Title,
                 command.Description,
@@ -49,5 +49,25 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 command.IsOrganic);
         }
 
+        private static ElectronicsDetails CreateSpecificDetails(CreateElectronicsDetailsCommand command)
+        {
+            return new ElectronicsDetails(
+                command.Title!,
+                command.Description,
+                command.Price,
+                command.ProductType!,
+                command.Brand!,
+                command.Model,
+                command.StorageCapacity,
+                command.Memory,
+                command.Processor,
+                command.GraphicsCard,
+                command.BatteryLife,
+                command.WarrantyUntil,
+                command.Features,
+                command.Condition!,
+                command.IncludesOriginalBox,
+                command.Accessories);
+        }
     }
 }

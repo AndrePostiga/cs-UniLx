@@ -8,9 +8,9 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
     public abstract class Details
     {
         protected abstract AdvertisementType Type { get; }
-        public string Title { get; private set; }
-        public string? Description { get; private set; }
-        public int? Price { get; private set; }
+        public string Title { get; protected set; }
+        public string? Description { get; protected set; }
+        public int? Price { get; protected set; }
         //public IReadOnlyList<Image>? Images => _images?.AsReadOnly();
         //private List<Image>? _images;
 
