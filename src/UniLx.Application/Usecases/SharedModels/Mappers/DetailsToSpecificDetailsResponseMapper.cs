@@ -37,7 +37,7 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 AgeRestriction = source.AgeRestriction.Name,
 
             };
-
+      
         public static ElectronicsDetailsResponse ToResponse(this ElectronicsDetails source)
             => new()
             {
