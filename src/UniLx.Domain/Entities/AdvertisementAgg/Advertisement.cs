@@ -33,6 +33,8 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         private void SetAddress(Address address)
         {
             DomainException.ThrowIf(address is null, "Cannot create advertisement without address.");
+            DomainException.ThrowIf(address!.Country != "BR", "This service is only avaiable for Brazil.");
+            DomainException.ThrowIf(address!.State != "RJ", "This service is only avaiable for state of Rio de Janeiro.");
             Address = address!;
         }
 

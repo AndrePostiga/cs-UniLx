@@ -12,7 +12,7 @@ namespace UniLx.Shared.Abstractions
         public IResult ToBadRequest()
         {
             return Results.BadRequest(new ValidationProblemDetails(this));
-        }
+        }        
     }
 
 }
