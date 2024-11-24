@@ -8,8 +8,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.ServiceDefaults", "Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.ApiService", "UniLx.ApiService\UniLx.ApiService.csproj", "{DEF05009-9E3A-4F13-A67D-F21259B840F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Web", "UniLx.Web\UniLx.Web.csproj", "{DD5BBD11-0FDC-4C6E-A27D-BE02B1EE0CCF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Tests", "UniLx.Tests\UniLx.Tests.csproj", "{A750F309-04C9-410A-9B04-1606B82968F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Domain", "UniLx.Domain\UniLx.Domain.csproj", "{3AB1952D-B147-4B0A-8251-8C039239286E}"
@@ -25,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Application", "UniLx.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Infra.Data", "UniLx.Infra.Data\UniLx.Infra.Data.csproj", "{D32A91E7-96AB-41BD-860A-1AAFB8A179A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniLx.Infra.Services", "UniLx.Infra.Services\UniLx.Infra.Services.csproj", "{B3FB4DDB-E371-492F-A47F-E7DE15188726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniLx.Infra.Services", "UniLx.Infra.Services\UniLx.Infra.Services.csproj", "{B3FB4DDB-E371-492F-A47F-E7DE15188726}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +43,6 @@ Global
 		{DEF05009-9E3A-4F13-A67D-F21259B840F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF05009-9E3A-4F13-A67D-F21259B840F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEF05009-9E3A-4F13-A67D-F21259B840F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD5BBD11-0FDC-4C6E-A27D-BE02B1EE0CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD5BBD11-0FDC-4C6E-A27D-BE02B1EE0CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD5BBD11-0FDC-4C6E-A27D-BE02B1EE0CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD5BBD11-0FDC-4C6E-A27D-BE02B1EE0CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A750F309-04C9-410A-9B04-1606B82968F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A750F309-04C9-410A-9B04-1606B82968F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A750F309-04C9-410A-9B04-1606B82968F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
