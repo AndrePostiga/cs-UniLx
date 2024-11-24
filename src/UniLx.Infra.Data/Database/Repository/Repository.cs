@@ -1,8 +1,10 @@
 ﻿using Marten;
+using NetTopologySuite.Geometries;
 using System.Linq.Expressions;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
 using UniLx.Domain.Entities.AccountAgg;
+using UniLx.Domain.Entities.AdvertisementAgg;
 using IUnitOfWork = UniLx.Domain.Data.IUnitOfWork;
 
 namespace UniLx.Infra.Data.Database.Repository
@@ -17,7 +19,9 @@ namespace UniLx.Infra.Data.Database.Repository
         public async Task<Tuple<IEnumerable<T>?, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<T, bool>> expression, CancellationToken ct)
         {
             using var session = _martenContext.QuerySession();
-            var query = session.Query<T>().Where(expression);
+            var query = session
+                .Query<T>()
+                .Where(expression);
             
             query = sortAsc ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
 
