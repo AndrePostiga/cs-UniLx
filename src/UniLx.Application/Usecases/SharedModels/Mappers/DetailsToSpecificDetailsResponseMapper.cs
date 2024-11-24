@@ -60,5 +60,25 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 IncludesOriginalBox = source.IncludesOriginalBox,
                 Accessories = source.Accessories,
             };
+
+        public static FashionDetailsResponse ToResponse(this FashionDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                ClothingType = source.ClothingType,
+                Brand = source.Brand,
+                Sizes = source.Sizes.Select(s => s.Name).ToList(),
+                Gender = source.Gender.Name,
+                Colors = source.Colors,
+                Materials = source.Materials,
+                Features = source.Features,
+                Designer = source.Designer,
+                IsHandmade = source.IsHandmade,
+                ReleaseDate = source.ReleaseDate,
+                IsSustainable = source.IsSustainable,
+            };
     }
 }

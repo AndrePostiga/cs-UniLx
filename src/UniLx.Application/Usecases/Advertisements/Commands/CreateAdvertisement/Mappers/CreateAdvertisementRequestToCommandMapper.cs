@@ -17,7 +17,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 address: source.Address?.ToCommand(),
                 beautyDetails: source.BeautyDetails?.ToCommand(),
                 eventDetails: source.EventsDetails?.ToCommand(),
-                electronicsDetails: source.ElectronicsDetails?.ToCommand());
+                electronicsDetails: source.ElectronicsDetails?.ToCommand(),
+                fashionDetails: source.FashionDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -37,7 +38,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             => new (
                 source.Title,
                 source.Description,
-                source.Price,
+                source.Price ?? 0,
                 source.ProductType,
                 source.Brand,
                 source.SkinType,
@@ -70,7 +71,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             => new(
                 source.Title,
                 source.Description,
-                source.Price,
+                source.Price ?? 0,
                 source.EventType,
                 source.EventDate,
                 source.Organizer,
@@ -79,6 +80,24 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 source.Highlights,
                 source.IsOnline ?? false,
                 source.ContactInformation?.ToCommand()
+            );
+
+        public static CreateFashionDetailsCommand ToCommand(this FashionDetailsRequest source)
+            => new(
+                source.Title,
+                source.Description,
+                source.Price ?? 0,
+                source.ClothingType,
+                source.Brand,
+                source.Sizes,
+                source.Gender,
+                source.Colors,
+                source.Materials,
+                source.Features,
+                source.Designer,
+                source.IsHandmade,
+                source.ReleaseDate,
+                source.IsSustainable
             );
 
         public static CreateContactInformationCommand ToCommand(this ContactInformationRequest source)

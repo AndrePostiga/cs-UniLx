@@ -20,6 +20,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public CreateBeautyDetailsCommand? BeautyDetails { get; set; }
         public CreateEventsDetailsCommand? EventsDetails { get; set; }
         public CreateElectronicsDetailsCommand? ElectronicsDetails { get; set; }
+        public CreateFashionDetailsCommand? FashionDetails { get; set; }
 
         public CreateAdvertisementCommand(
             string accountId,
@@ -29,7 +30,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             CreateAddressCommand? address,
             CreateBeautyDetailsCommand? beautyDetails,
             CreateEventsDetailsCommand? eventDetails,
-            CreateElectronicsDetailsCommand? electronicsDetails)
+            CreateElectronicsDetailsCommand? electronicsDetails,
+            CreateFashionDetailsCommand? fashionDetails)
         {
             AccountId = accountId;
             Type = type;
@@ -39,6 +41,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             BeautyDetails = beautyDetails;
             EventsDetails = eventDetails;
             ElectronicsDetails = electronicsDetails;
+            FashionDetails = fashionDetails;
         }
     }
 
@@ -67,6 +70,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             AddDetailsRules<CreateBeautyDetailsCommand, CreateBeautyDetailsCommandValidator>(AdvertisementType.Beauty, nameof(CreateAdvertisementCommand.BeautyDetails));
             AddDetailsRules<CreateEventsDetailsCommand, CreateEventsDetailsCommandValidator>(AdvertisementType.Events, nameof(CreateAdvertisementCommand.EventsDetails));
             AddDetailsRules<CreateElectronicsDetailsCommand, CreateElectronicsDetailsCommandValidator>(AdvertisementType.Electronics, nameof(CreateAdvertisementCommand.ElectronicsDetails));
+            AddDetailsRules<CreateFashionDetailsCommand, CreateFashionDetailsCommandValidator>(AdvertisementType.Fashion, nameof(CreateAdvertisementCommand.FashionDetails));
         }
 
         private void AddDetailsRules<TDetails, TValidator>(AdvertisementType expectedType, string detailsPropertyName)

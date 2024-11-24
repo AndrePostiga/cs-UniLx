@@ -18,5 +18,6 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public BeautyDetailsResponse? BeautyDetails { get; set; }
         public EventsDetailsResponse? EventsDetails { get; set; }
         public ElectronicsDetailsResponse? ElectronicsDetails { get; set; }
+        public FashionDetailsResponse? FashionDetails { get; set; }
     }
 }

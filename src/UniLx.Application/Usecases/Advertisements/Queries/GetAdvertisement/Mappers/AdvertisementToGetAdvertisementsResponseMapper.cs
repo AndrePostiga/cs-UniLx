@@ -25,6 +25,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Map
                 BeautyDetails = source.Type == AdvertisementType.Beauty ? (BeautyDetailsResponse?)(source.Details as BeautyDetails)!.ToResponse() : null,
                 EventsDetails = source.Type == AdvertisementType.Events ? (EventsDetailsResponse?)(source.Details as EventsDetails)!.ToResponse() : null,
                 ElectronicsDetails = source.Type == AdvertisementType.Electronics ? (ElectronicsDetailsResponse?)(source.Details as ElectronicsDetails)!.ToResponse() : null,
+                FashionDetails = source.Type == AdvertisementType.Fashion ? (FashionDetailsResponse?)(source.Details as FashionDetails)!.ToResponse() : null,
             };
     }
 }

@@ -67,6 +67,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AddressType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AgeRestriction, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<ProductCondition, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<FashionGender, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<FashionSize, int>());
                     });
             })
             .InitializeWith(new SeedData())
@@ -129,10 +131,24 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 Category.CreateNewCategory("events", "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais")
             };
 
+            var fashionCategories = new[]
+            {
+                Category.CreateNewCategory("fashion", "mens_clothing", "Roupas Masculinas", "Camisas, calças, jaquetas e mais"),
+                Category.CreateNewCategory("fashion", "womens_clothing", "Roupas Femininas", "Vestidos, saias, blusas e mais"),
+                Category.CreateNewCategory("fashion", "unisex", "Roupas Unissex", "Estilos que servem para todos os gêneros"),
+                Category.CreateNewCategory("fashion", "accessories", "Acessórios", "Relógios, chapéus, bolsas e mais"),
+                Category.CreateNewCategory("fashion", "footwear", "Calçados", "Sapatos, tênis, botas e mais"),
+                Category.CreateNewCategory("fashion", "sportswear", "Roupas Esportivas", "Roupas para atividades físicas e esportes"),
+                Category.CreateNewCategory("fashion", "kids_clothing", "Roupas Infantis", "Roupas para crianças de todas as idades"),
+                Category.CreateNewCategory("fashion", "luxury", "Moda de Luxo", "Estilos de alta costura e marcas premium"),
+                Category.CreateNewCategory("fashion", "traditional", "Roupas Tradicionais", "Trajes típicos e roupas culturais")
+            };
+
             _initialData = [
                 .. beautyCategories, 
                 .. electronicsCategories, 
-                .. eventsCategories
+                .. eventsCategories,
+                .. fashionCategories
             ];
         }
 

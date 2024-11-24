@@ -29,24 +29,24 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             IsOrganic = isOrganic;
         }
 
-        private void SetProductType(string productType)
+        private void SetProductType(string? productType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(productType), "ProductType cannot be null or empty.");
-            DomainException.ThrowIf(productType.Length > 100, "ProductType must be 100 characters or less.");
+            DomainException.ThrowIf(productType!.Length > 100, "ProductType must be 100 characters or less.");
             ProductType = productType;
         }
 
-        private void SetBrand(string brand)
+        private void SetBrand(string? brand)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(brand), "Brand cannot be null or empty.");
-            DomainException.ThrowIf(brand.Length > 100, "Brand must be 100 characters or less.");
+            DomainException.ThrowIf(brand!.Length > 100, "Brand must be 100 characters or less.");
             Brand = brand;
         }
 
-        private void SetSkinType(string skinType)
+        private void SetSkinType(string? skinType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(skinType), "SkinType cannot be null or empty.");
-            DomainException.ThrowIf(skinType.Length > 50, "SkinType must be 50 characters or less.");
+            DomainException.ThrowIf(skinType!.Length > 50, "SkinType must be 50 characters or less.");
             SkinType = skinType;
         }
 
