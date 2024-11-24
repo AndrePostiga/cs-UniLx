@@ -17,6 +17,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 var e when e.Equals(AdvertisementType.Beauty) => CreateSpecificDetails(command.BeautyDetails!),
                 var e when e.Equals(AdvertisementType.Events) => CreateSpecificDetails(command.EventsDetails!),
                 var e when e.Equals(AdvertisementType.Electronics) => CreateSpecificDetails(command.ElectronicsDetails!),
+                var e when e.Equals(AdvertisementType.Fashion) => CreateSpecificDetails(command.FashionDetails!),
+                var e when e.Equals(AdvertisementType.JobOpportunities) => CreateSpecificDetails(command.JobOpportunitiesDetails!),
+                var e when e.Equals(AdvertisementType.Pets) => CreateSpecificDetails(command.PetDetails!),
                 _ => throw new DomainException($"Cannot create details from {command.Type}."),
             };
         }
@@ -68,6 +71,64 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 command.Condition!,
                 command.IncludesOriginalBox,
                 command.Accessories);
+        }
+
+        private static FashionDetails CreateSpecificDetails(CreateFashionDetailsCommand command)
+        {
+            return new FashionDetails(
+                command.Title!,
+                command.Description,
+                command.Price,
+                command.ClothingType!,
+                command.Brand!,
+                command.Sizes ?? [],
+                command.Gender!,
+                command.Colors,
+                command.Materials,
+                command.Features,
+                command.Designer,
+                command.IsHandmade.GetValueOrDefault(),
+                command.ReleaseDate,
+                command.IsSustainable.GetValueOrDefault());
+        }
+
+        private static JobOpportunitiesDetails CreateSpecificDetails(CreateJobOpportunitiesDetailsCommand command)
+        {
+            return new JobOpportunitiesDetails(
+                command.Title!,
+                command.Description!,
+                command.Position!,
+                command.Company!,
+                command.Salary,
+                command.IsSalaryDisclosed,
+                command.WorkLocation!,
+                command.EmploymentType!,
+                command.ExperienceLevel,
+                command.Skills,
+                command.Benefits,
+                command.RelocationHelp,
+                command.ApplicationDeadline,
+                command.ContactInformation?.ToContactInformation());
+        }
+
+        private static PetDetails CreateSpecificDetails(CreatePetDetailsCommand command)
+        {
+            return new PetDetails(
+                command.Title!,
+                command.Description,
+                command.Price,
+                command.PetType!,
+                command.AnimalType!,
+                command.Age,
+                command.Breed,
+                command.IsVaccinated,
+                command.Gender,
+                command.IsExotic,
+                command.AccessoryType,
+                command.Materials,
+                command.AdoptionRequirements,
+                command.HealthStatus,
+                command.IsSterilized);
         }
     }
 }

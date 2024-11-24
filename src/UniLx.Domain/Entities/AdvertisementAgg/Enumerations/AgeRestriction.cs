@@ -1,4 +1,5 @@
 ﻿using Ardalis.SmartEnum;
+using UniLx.Shared.LibExtensions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 {

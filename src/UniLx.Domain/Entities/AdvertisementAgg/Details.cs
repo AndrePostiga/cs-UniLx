@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
-using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg
@@ -16,7 +15,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 
         protected Details() { }
 
-        protected Details(string title, string? description, int? price)
+        protected Details(string? title, string? description, int? price)
         {
             SetTittle(title);
             SetDescription(description);
@@ -43,12 +42,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
                 Description = WebUtility.HtmlEncode(description);
         }
 
-        private void SetTittle(string title)
+        private void SetTittle(string? title)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(title), $"{nameof(Title)} cannot be null.");
-            DomainException.ThrowIf(title.Length > 256, "nameof(Title)} field must have 256 characters or less");
+            DomainException.ThrowIf(title!.Length > 256, "nameof(Title)} field must have 256 characters or less");
             Title = title;
         }
-
     }
 }

@@ -1,11 +1,7 @@
-﻿namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest
+﻿namespace UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse
 {
-    public class PetDetailsRequest
+    public class PetDetailsResponse : BaseDetailsResponse
     {
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public int? Price { get; set; }
-
         public string? PetType { get; set; }
         public string? AnimalType { get; set; }
         public int? Age { get; set; }
