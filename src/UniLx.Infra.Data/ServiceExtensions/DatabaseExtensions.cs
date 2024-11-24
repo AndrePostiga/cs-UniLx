@@ -69,6 +69,12 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<ProductCondition, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<FashionGender, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<FashionSize, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<WorkLocationType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<EmploymentType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PetGender, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PetType, int>());
+
+                        serializerOptions.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     });
             })
             .InitializeWith(new SeedData())
@@ -144,11 +150,36 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 Category.CreateNewCategory("fashion", "traditional", "Roupas Tradicionais", "Trajes típicos e roupas culturais")
             };
 
+            var jobOpportunitiesCategories = new[]
+            {
+                Category.CreateNewCategory("job_opportunities", "it_software", "TI e Software", "Vagas para desenvolvedores, engenheiros de software e profissionais de tecnologia"),
+                Category.CreateNewCategory("job_opportunities", "healthcare", "Saúde e Medicina", "Oportunidades para médicos, enfermeiros e profissionais de saúde"),
+                Category.CreateNewCategory("job_opportunities", "education", "Educação", "Vagas para professores, tutores e profissionais da educação"),
+                Category.CreateNewCategory("job_opportunities", "finance", "Finanças e Contabilidade", "Posições para contadores, analistas financeiros e similares"),
+                Category.CreateNewCategory("job_opportunities", "marketing", "Marketing e Publicidade", "Trabalhos relacionados a marketing, branding e publicidade"),
+                Category.CreateNewCategory("job_opportunities", "construction", "Construção Civil", "Oportunidades em construção, engenharia civil e arquitetura"),
+                Category.CreateNewCategory("job_opportunities", "hospitality", "Hotelaria e Turismo", "Vagas em hotéis, turismo e serviços relacionados"),
+                Category.CreateNewCategory("job_opportunities", "retail", "Varejo e Atendimento ao Cliente", "Posições em lojas, vendas e suporte ao cliente"),
+                Category.CreateNewCategory("job_opportunities", "transportation", "Transporte e Logística", "Trabalhos em logística, transporte e cadeia de suprimentos"),
+                Category.CreateNewCategory("job_opportunities", "freelance", "Freelance", "Oportunidades independentes e temporárias"),
+                Category.CreateNewCategory("job_opportunities", "government", "Setor Público", "Vagas em serviços públicos e governo"),
+                Category.CreateNewCategory("job_opportunities", "remote", "Trabalho Remoto", "Oportunidades para trabalhar remotamente de qualquer lugar")
+            };
+
+            var petsCategories = new[]
+            {
+                Category.CreateNewCategory("pets", "accessories", "Acessórios para Animais", "Coleiras, camas, brinquedos, gaiolas e mais"),
+                Category.CreateNewCategory("pets", "adoption", "Adoção", "Animais disponíveis para adoção"),
+                Category.CreateNewCategory("pets", "selling", "Venda", "Animais disponíveis para venda"),
+            };
+
             _initialData = [
                 .. beautyCategories, 
                 .. electronicsCategories, 
                 .. eventsCategories,
-                .. fashionCategories
+                .. fashionCategories,
+                .. jobOpportunitiesCategories,
+                .. petsCategories
             ];
         }
 

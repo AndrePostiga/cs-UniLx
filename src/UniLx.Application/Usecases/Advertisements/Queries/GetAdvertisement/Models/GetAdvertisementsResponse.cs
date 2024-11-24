@@ -19,5 +19,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mod
         public EventsDetailsResponse? EventsDetails { get; set; }
         public ElectronicsDetailsResponse? ElectronicsDetails { get; set; }
         public FashionDetailsResponse? FashionDetails { get; set; }
+        public JobOpportunitiesDetailsResponse? JobOpportunitiesDetails { get; set; }
+        public PetDetailsResponse? PetDetails { get; set; }
     }
 }

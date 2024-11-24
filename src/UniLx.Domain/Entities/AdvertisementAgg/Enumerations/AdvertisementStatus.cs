@@ -1,4 +1,5 @@
 ﻿using Ardalis.SmartEnum;
+using UniLx.Shared.LibExtensions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 {
@@ -16,7 +17,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class CreatedStatus : AdvertisementStatus
         {
-            public CreatedStatus() : base(nameof(Created).ToLower(), 1) { }
+            public CreatedStatus() : base(nameof(Created).ToSnakeCase().ToLower(), 1) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => next == PendingAnalysis || next == Active;
@@ -24,7 +25,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class PendingAnalysisStatus : AdvertisementStatus
         {
-            public PendingAnalysisStatus() : base(nameof(PendingAnalysis).ToLower(), 2) { }
+            public PendingAnalysisStatus() : base(nameof(PendingAnalysis).ToSnakeCase().ToLower(), 2) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => next == Active || next == Declined || next == Reported;
@@ -32,7 +33,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class ActiveStatus : AdvertisementStatus
         {
-            public ActiveStatus() : base(nameof(Active).ToLower(), 3) { }
+            public ActiveStatus() : base(nameof(Active).ToSnakeCase().ToLower(), 3) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => next == Expired || next == Finished || next == Reported;
@@ -40,7 +41,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class ExpiredStatus : AdvertisementStatus
         {
-            public ExpiredStatus() : base(nameof(Expired).ToLower(), 4) { }
+            public ExpiredStatus() : base(nameof(Expired).ToSnakeCase().ToLower(), 4) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => false;
@@ -48,7 +49,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class FinishedStatus : AdvertisementStatus
         {
-            public FinishedStatus() : base(nameof(Finished).ToLower(), 5) { }
+            public FinishedStatus() : base(nameof(Finished).ToSnakeCase().ToLower(), 5) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => false;
@@ -56,7 +57,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class DeclinedStatus : AdvertisementStatus
         {
-            public DeclinedStatus() : base(nameof(Declined).ToLower(), 6) { }
+            public DeclinedStatus() : base(nameof(Declined).ToSnakeCase().ToLower(), 6) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => false;
@@ -64,7 +65,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
 
         public sealed class ReportedStatus : AdvertisementStatus
         {
-            public ReportedStatus() : base(nameof(Reported).ToLower(), 7) { }
+            public ReportedStatus() : base(nameof(Reported).ToSnakeCase().ToLower(), 7) { }
 
             public override bool CanChangeTo(AdvertisementStatus next)
                 => false;

@@ -80,5 +80,48 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 ReleaseDate = source.ReleaseDate,
                 IsSustainable = source.IsSustainable,
             };
+
+        public static JobOpportunitiesDetailsResponse ToResponse(this JobOpportunitiesDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Description = source.Description,
+
+                Position = source.Position,
+                Company = source.Company,
+                Salary = source.Salary,
+                IsSalaryDisclosed = source.IsSalaryDisclosed,
+                WorkLocation = source.WorkLocation.Name,
+                EmploymentType = source.EmploymentType.Name,
+                ExperienceLevel = source.ExperienceLevel,
+                Skills = source.Skills,
+                Benefits = source.Benefits,
+                RelocationHelp = source.RelocationHelp,
+                ApplicationDeadline = source.ApplicationDeadline,
+                ContactInfo = source.ContactInfo.ToResponse(),
+            };
+
+        public static PetDetailsResponse ToResponse(this PetDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                PetType = source.PetType.Name,
+                AnimalType = source.AnimalType,
+                Age = source.Age,
+                Breed = source.Breed,
+                IsVaccinated = source.IsVaccinated,
+                Gender = source.Gender?.Name,
+                IsExotic = source.IsExotic,
+
+                AccessoryType = source.AccessoryType,
+                Materials = source.Materials,
+
+                AdoptionRequirements = source.AdoptionRequirements,
+                HealthStatus = source.HealthStatus,
+                IsSterilized = source.IsSterilized,
+            };
     }
 }

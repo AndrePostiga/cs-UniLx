@@ -21,6 +21,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public CreateEventsDetailsCommand? EventsDetails { get; set; }
         public CreateElectronicsDetailsCommand? ElectronicsDetails { get; set; }
         public CreateFashionDetailsCommand? FashionDetails { get; set; }
+        public CreateJobOpportunitiesDetailsCommand? JobOpportunitiesDetails { get; set; }
+        public CreatePetDetailsCommand? PetDetails { get; set; }
 
         public CreateAdvertisementCommand(
             string accountId,
@@ -31,7 +33,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             CreateBeautyDetailsCommand? beautyDetails,
             CreateEventsDetailsCommand? eventDetails,
             CreateElectronicsDetailsCommand? electronicsDetails,
-            CreateFashionDetailsCommand? fashionDetails)
+            CreateFashionDetailsCommand? fashionDetails,
+            CreateJobOpportunitiesDetailsCommand? jobOpportunitiesDetails,
+            CreatePetDetailsCommand? petDetails)
         {
             AccountId = accountId;
             Type = type;
@@ -42,6 +46,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             EventsDetails = eventDetails;
             ElectronicsDetails = electronicsDetails;
             FashionDetails = fashionDetails;
+            JobOpportunitiesDetails = jobOpportunitiesDetails;
+            PetDetails = petDetails;
         }
     }
 
@@ -71,6 +77,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             AddDetailsRules<CreateEventsDetailsCommand, CreateEventsDetailsCommandValidator>(AdvertisementType.Events, nameof(CreateAdvertisementCommand.EventsDetails));
             AddDetailsRules<CreateElectronicsDetailsCommand, CreateElectronicsDetailsCommandValidator>(AdvertisementType.Electronics, nameof(CreateAdvertisementCommand.ElectronicsDetails));
             AddDetailsRules<CreateFashionDetailsCommand, CreateFashionDetailsCommandValidator>(AdvertisementType.Fashion, nameof(CreateAdvertisementCommand.FashionDetails));
+            AddDetailsRules<CreateJobOpportunitiesDetailsCommand, CreateJobOpportunitiesDetailsCommandValidator>(AdvertisementType.JobOpportunities, nameof(CreateAdvertisementCommand.JobOpportunitiesDetails));
+            AddDetailsRules<CreatePetDetailsCommand, CreatePetDetailsCommandValidator>(AdvertisementType.Pets, nameof(CreateAdvertisementCommand.PetDetails));
         }
 
         private void AddDetailsRules<TDetails, TValidator>(AdvertisementType expectedType, string detailsPropertyName)
