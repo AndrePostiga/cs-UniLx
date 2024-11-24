@@ -41,7 +41,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 opts.Schema.Include<AccountRegistry>();
                 opts.DatabaseSchemaName = "UniLxDb";
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
-                opts.AutoCreateSchemaObjects = AutoCreate.All;                
+                opts.AutoCreateSchemaObjects = AutoCreate.All;
 
                 opts.Schema.Include<AccountRegistry>();
                 opts.Schema.Include<CategoryRegistry>();
@@ -61,9 +61,10 @@ namespace UniLx.Infra.Data.ServiceExtensions
                     {
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<StorageType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementType, int>());
-                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementStatus, int>());                        
-                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AddressType, int>());                        
-                    });       
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AdvertisementStatus, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AddressType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<AgeRestriction, int>());
+                    });
             })
             .InitializeWith(new SeedData())
             .ApplyAllDatabaseChangesOnStartup()
@@ -87,9 +88,35 @@ namespace UniLx.Infra.Data.ServiceExtensions
 
         public SeedData()
         {
-            var category = Category.CreateNewCategory("Beauty", "MakeUp", "Maquiagem", "Acessórios para rosto");
+            var beautyCategory1 = Category.CreateNewCategory("beauty", "makeup", "Maquiagem", "Acessórios para rosto");
+            var beautyCategory2 = Category.CreateNewCategory("beauty", "skincare", "Cuidados com a Pele", "Produtos de cuidado facial e corporal");
 
-            _initialData = new object[] { category };
+            var eventsCategory1 = Category.CreateNewCategory("events", "concerts", "Shows e Concertos", "Eventos musicais ao vivo e festivais");
+            var eventsCategory2 = Category.CreateNewCategory("events", "workshops", "Workshops e Cursos", "Cursos e oficinas de aprendizado");
+            var eventsCategory3 = Category.CreateNewCategory("events", "sports_outdoors", "Esportes e Atividades ao Ar Livre", "Atividades esportivas e ao ar livre");
+            var eventsCategory4 = Category.CreateNewCategory("events", "exhibitions_fairs", "Exposições e Feiras", "Exposições de arte e feiras de diversos setores");
+            var eventsCategory5 = Category.CreateNewCategory("events", "conferences", "Conferências e Palestras", "Seminários, conferências e eventos de networking");
+            var eventsCategory6 = Category.CreateNewCategory("events", "parties_nightlife", "Festas e Entretenimento Noturno", "Baladas, festas e eventos noturnos");
+            var eventsCategory7 = Category.CreateNewCategory("events", "religious_spiritual", "Eventos Religiosos e Espirituais", "Retiros e celebrações religiosas");
+            var eventsCategory8 = Category.CreateNewCategory("events", "cinema_theater", "Cinema e Teatro", "Apresentações de filmes, peças e comédia");
+            var eventsCategory9 = Category.CreateNewCategory("events", "community_meetups", "Encontros e Comunidades", "Reuniões de clubes e encontros de grupos");
+            var eventsCategory10 = Category.CreateNewCategory("events", "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais");
+
+            _initialData = new object[]
+            {
+                beautyCategory1,
+                beautyCategory2,
+                eventsCategory1,
+                eventsCategory2,
+                eventsCategory3,
+                eventsCategory4,
+                eventsCategory5,
+                eventsCategory6,
+                eventsCategory7,
+                eventsCategory8,
+                eventsCategory9,
+                eventsCategory10
+            };
         }
 
         public async Task Populate(IDocumentStore store, CancellationToken cancellation)
@@ -111,17 +138,17 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
                 .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
 
-        //configure: idx =>
-        //{
-        //    idx.Name = "idx_email";
-        //    idx.IsUnique = true;
-        //}
-        //configure: idx =>
-        //{
-        //    idx.Name = "idx_cpf";
-        //    idx.Method = IndexMethod.hash;
-        //    idx.IsUnique = true;
-        //})
+            //configure: idx =>
+            //{
+            //    idx.Name = "idx_email";
+            //    idx.IsUnique = true;
+            //}
+            //configure: idx =>
+            //{
+            //    idx.Name = "idx_cpf";
+            //    idx.Method = IndexMethod.hash;
+            //    idx.IsUnique = true;
+            //})
         }
     }
 
@@ -130,7 +157,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         public CategoryRegistry()
         {
             For<Category>()
-                .Index(x => new {x.Root, x.Id}, options =>
+                .Index(x => new { x.Root, x.Id }, options =>
                 {
                     options.IsUnique = true;
                     options.Name = "idx_root_name_category";

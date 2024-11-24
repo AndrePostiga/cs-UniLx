@@ -16,5 +16,6 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public DateTime? UpdatedAt { get; set; }
 
         public BeautyDetailsResponse? BeautyDetails { get; set; }
+        public EventsDetailsResponse? EventsDetails { get; set; }
     }
 }

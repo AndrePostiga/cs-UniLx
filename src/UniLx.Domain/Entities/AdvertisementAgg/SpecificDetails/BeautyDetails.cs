@@ -14,8 +14,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         public List<string>? Ingredients { get; set; }  // List of ingredients in the product
         public bool? IsOrganic { get; set; }       // Whether the product is organic
 
-        public BeautyDetails(string? title, string? description, int? price, string? productType, 
-            string? brand, string? skinType, DateTime? expirationDate, List<string>? ingredients, 
+        private BeautyDetails() : base()
+        { }
+
+        public BeautyDetails(string? title, string? description, int? price, string? productType,
+            string? brand, string? skinType, DateTime? expirationDate, List<string>? ingredients,
             bool? isOrganic) : base(title, description, price)
         {
             SetProductType(productType);

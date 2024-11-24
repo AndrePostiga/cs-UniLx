@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommand
 {

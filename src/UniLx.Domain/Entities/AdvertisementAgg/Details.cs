@@ -14,7 +14,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         //public IReadOnlyList<Image>? Images => _images?.AsReadOnly();
         //private List<Image>? _images;
 
-        private Details() { }
+        protected Details() { }
 
         protected Details(string title, string? description, int? price)
         {

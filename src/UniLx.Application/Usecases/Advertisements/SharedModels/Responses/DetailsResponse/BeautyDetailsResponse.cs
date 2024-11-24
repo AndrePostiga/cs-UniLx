@@ -1,6 +1,6 @@
 ﻿namespace UniLx.Application.Usecases.Advertisements.SharedModels.Responses.DetailsResponse
 {
-    internal class BeautyDetailsResponse : BaseDetailsResponse
+    public class BeautyDetailsResponse : BaseDetailsResponse
     {
         public string? Brand { get; set; }
         public string? SkinType { get; set; }

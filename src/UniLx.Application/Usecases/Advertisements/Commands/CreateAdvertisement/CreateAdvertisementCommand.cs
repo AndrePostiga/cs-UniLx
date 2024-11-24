@@ -17,6 +17,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public CreateAddressCommand? Address { get; set; }
 
         public CreateBeautyDetailsCommand? BeautyDetails { get; set; }
+        public CreateEventDetailsCommand? EventsDetails { get; set; }
 
         public CreateAdvertisementCommand(
             string accountId,
@@ -24,7 +25,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             string? subCategory,
             DateTime? expiresAt,
             CreateAddressCommand? address,
-            CreateBeautyDetailsCommand? beautyDetails)
+            CreateBeautyDetailsCommand? beautyDetails,
+            CreateEventDetailsCommand? eventDetails)
         {
             AccountId = accountId;
             Type = type;
@@ -32,6 +34,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             ExpiresAt = expiresAt;
             Address = address;
             BeautyDetails = beautyDetails;
+            EventsDetails = eventDetails;
         }
     }
 
@@ -39,7 +42,6 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
     {
         public CreateAdvertisementCommandValidator()
         {
-            // Type validation
             RuleFor(x => x.Type)
                 .NotEmpty().WithMessage("Advertisement type is required.")
                 .Must(type => AdvertisementType.TryFromName(type, true, out _))
@@ -58,15 +60,35 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 .WithMessage("Address must be provided.")
                 .SetValidator(new CreateAddressCommandValidator()!);
 
+            AddBeautyRules();
+            AddEventsRules();
+
+        }
+
+        private void AddEventsRules()
+        {
+            RuleFor(x => x.EventsDetails)
+                .NotNull().WithMessage($"events_details should be provided if the advertisement type is '{AdvertisementType.Events.Name}'.")
+                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Events)
+                .SetValidator(new CreateEventDetailsCommandValidator()!)
+                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Events);
+
+            RuleFor(x => x.EventsDetails)
+                .Null().WithMessage($"events_details should only be provided if the advertisement type is '{AdvertisementType.Events.Name}'.")
+                .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type != AdvertisementType.Events);
+        }
+
+        private void AddBeautyRules()
+        {
             RuleFor(x => x.BeautyDetails)
-            .NotNull()
-            .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty)
-            .WithMessage($"Beauty details should be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.")
-            .SetValidator(new CreateBeautyDetailsCommandValidator()!)
-            .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty)            
-            .Null()
-            .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type != AdvertisementType.Beauty)
-            .WithMessage($"Beauty details should only be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.");
+                .NotNull().WithMessage($"beauty_details should be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.")
+                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty)
+                .SetValidator(new CreateBeautyDetailsCommandValidator()!)
+                    .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type == AdvertisementType.Beauty);
+
+            RuleFor(x => x.BeautyDetails)
+                .Null().WithMessage($"beauty_details should only be provided if the advertisement type is '{AdvertisementType.Beauty.Name}'.")
+                .When(x => AdvertisementType.TryFromName(x.Type, true, out var @type) && @type != AdvertisementType.Beauty);
         }
     }
 }
