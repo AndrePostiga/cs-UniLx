@@ -1,4 +1,6 @@
-﻿namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest
+﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Requests;
+
+namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest
 {
     public class EventDetailsRequest
     {
