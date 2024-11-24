@@ -1,18 +1,17 @@
+using Aspire.Hosting;
 using TraceLens.Aspire;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var cache = builder.AddRedis("cache");
-
 var postgres = builder
-    .AddPostgres("postgresdb")
+    .AddPostgres("postgresdb")    
+    .WithLifetime(ContainerLifetime.Persistent)
     .WithImage("postgis/postgis")
     .WithEndpoint(port: 5432, targetPort: 5432, name: "postgres-endpoint", isExternal: true)
-    .WithDataVolume()
+    .WithDataVolume()    
     .WithBindMount(
         "./postgis/add-postgis-user.sql",
         "/docker-entrypoint-initdb.d/02-init-user.sql")
-    .WithHealthCheck()
     .WithArgs(
         "-c", "logging_collector=off",
         "-c", "log_statement=all",
@@ -25,16 +24,11 @@ var postgres = builder
 
 var pgAdmin = postgres
     .WithPgAdmin()
-    .WaitFor(postgres);
+    .WithLifetime(ContainerLifetime.Persistent);
 
 var apiService = builder.AddProject<Projects.UniLx_ApiService>("apiservice")    
     .WithReference(postgres)
     .WaitFor(postgres);
-
-builder.AddProject<Projects.UniLx_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithReference(cache)
-    .WithReference(apiService);
 
 builder.AddTraceLens();
 
