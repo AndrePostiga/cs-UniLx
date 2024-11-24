@@ -9,10 +9,11 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Ardalis.SmartEnum.JsonNet" Version="8.1.0" />
-	<PackageReference Include="Aspire.Npgsql" Version="8.2.1" />
-    <PackageReference Include="Marten" Version="7.30.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+	<PackageReference Include="Aspire.Npgsql" Version="9.0.0" />
+    <PackageReference Include="Marten" Version="7.33.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
     <PackageReference Include="Supabase" Version="1.1.1" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

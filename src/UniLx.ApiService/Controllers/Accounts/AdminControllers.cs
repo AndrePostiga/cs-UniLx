@@ -52,6 +52,8 @@ namespace UniLx.ApiService.Controllers.Accounts
         /// Use this endpoint to create a new account with all required fields.
         /// </remarks>
         /// <param name="request">The account creation request.</param>
+        /// <param name="mediator"></param>
+        /// <param name="ct"></param>
         /// <returns>A result indicating success or failure.</returns>
         internal static async Task<IResult> CreateAccount(
                 [FromBody] CreateAccountRequest request,
@@ -82,6 +84,8 @@ namespace UniLx.ApiService.Controllers.Accounts
         /// Gets account details by account ID.
         /// </summary>
         /// <param name="id">The account ID.</param>
+        /// <param name="mediator"></param>
+        /// <param name="ct"></param>
         /// <returns>The account details for the specified ID.</returns>
         internal static async Task<IResult> GetAccountById(
                 string id,
@@ -96,8 +100,11 @@ namespace UniLx.ApiService.Controllers.Accounts
         /// <summary>
         /// Updates the rating for a specified account.
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="id">The account ID.</param>
         /// <param name="request">The rating update request.</param>
+        /// <param name="mediator"></param>
+        /// <param name="ct"></param>
         /// <returns>A result indicating success or failure.</returns>
         internal static async Task<IResult> UpdateProfilePicture(HttpContext context,
                 string id,
@@ -115,6 +122,8 @@ namespace UniLx.ApiService.Controllers.Accounts
         /// </summary>
         /// <param name="id">The account ID.</param>
         /// <param name="request">The profile picture update request.</param>
+        /// <param name="mediator"></param>
+        /// <param name="ct"></param>
         /// <returns>A result indicating success or failure.</returns>
         internal static async Task<IResult> UpdateRating(string id,
                 [FromBody] UpdateRatingRequest request,
