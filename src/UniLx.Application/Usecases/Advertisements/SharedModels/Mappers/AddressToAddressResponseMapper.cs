@@ -1,4 +1,4 @@
-﻿using UniLx.Application.Usecases.Advertisements.SharedModels.Responses;
+﻿using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Domain.Entities.Seedwork;
 
 namespace UniLx.Application.Usecases.Advertisements.SharedModels.Mappers
