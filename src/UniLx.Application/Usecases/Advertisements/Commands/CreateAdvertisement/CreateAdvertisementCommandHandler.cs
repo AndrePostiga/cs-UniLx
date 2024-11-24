@@ -8,6 +8,7 @@ using UniLx.Domain.Services;
 using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;
 using UniLx.Shared.Abstractions;
+using UniLx.Shared.LibExtensions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
 {
@@ -36,7 +37,13 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             if (account == null)
                 return AdvertisementErrors.AccountNotFound.ToBadRequest();
 
-            var category = await _categoryRepository.FindOne(x => x.Name == request.SubCategory, cancellationToken);
+            var advertisementType = AdvertisementType.FromName(request.Type);
+
+            var category = await _categoryRepository.FindOne(x => x.Name == request.SubCategory &&
+                x.Root.HasSmartEnumValue(advertisementType) &&
+                x.IsDeleted == false &&
+                x.IsActive == true, cancellationToken);
+
             if (category == null)
                 return CategoryErrors.NotFound.ToBadRequest();
 

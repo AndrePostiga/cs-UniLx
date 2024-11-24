@@ -71,6 +71,10 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<FashionSize, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<WorkLocationType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<EmploymentType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PetGender, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PetType, int>());
+
+                        serializerOptions.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     });
             })
             .InitializeWith(new SeedData())
@@ -162,13 +166,20 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 Category.CreateNewCategory("job_opportunities", "remote", "Trabalho Remoto", "Oportunidades para trabalhar remotamente de qualquer lugar")
             };
 
+            var petsCategories = new[]
+            {
+                Category.CreateNewCategory("pets", "accessories", "Acessórios para Animais", "Coleiras, camas, brinquedos, gaiolas e mais"),
+                Category.CreateNewCategory("pets", "adoption", "Adoção", "Animais disponíveis para adoção"),
+                Category.CreateNewCategory("pets", "selling", "Venda", "Animais disponíveis para venda"),
+            };
 
             _initialData = [
                 .. beautyCategories, 
                 .. electronicsCategories, 
                 .. eventsCategories,
                 .. fashionCategories,
-                .. jobOpportunitiesCategories
+                .. jobOpportunitiesCategories,
+                .. petsCategories
             ];
         }
 
