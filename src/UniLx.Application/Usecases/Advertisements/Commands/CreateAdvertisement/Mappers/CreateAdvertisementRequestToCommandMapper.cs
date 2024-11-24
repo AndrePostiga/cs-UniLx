@@ -18,7 +18,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 beautyDetails: source.BeautyDetails?.ToCommand(),
                 eventDetails: source.EventsDetails?.ToCommand(),
                 electronicsDetails: source.ElectronicsDetails?.ToCommand(),
-                fashionDetails: source.FashionDetails?.ToCommand());
+                fashionDetails: source.FashionDetails?.ToCommand(), 
+                jobOpportunitiesDetails: source.JobOpportunitiesDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -99,6 +100,23 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 source.ReleaseDate,
                 source.IsSustainable
             );
+
+        public static CreateJobOpportunitiesDetailsCommand ToCommand(this JobOpportunitiesDetailsRequest source)
+            => new(
+                source.Title,
+                source.Description,
+                source.Position!,
+                source.Company!,
+                source.Salary,
+                source.IsSalaryDisclosed ?? false,
+                source.WorkLocation!,
+                source.EmploymentType!,
+                source.ExperienceLevel,
+                source.Skills,
+                source.Benefits,
+                source.RelocationHelp ?? false,
+                source.ApplicationDeadline,
+                source.ContactInformation?.ToCommand());
 
         public static CreateContactInformationCommand ToCommand(this ContactInformationRequest source)
             => new(source.Phone?.ToCommand(), source.Email, source.Website);
