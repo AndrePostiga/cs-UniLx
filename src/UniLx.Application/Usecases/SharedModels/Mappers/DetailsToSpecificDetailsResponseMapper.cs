@@ -100,5 +100,28 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 ApplicationDeadline = source.ApplicationDeadline,
                 ContactInfo = source.ContactInfo.ToResponse(),
             };
+
+        public static PetDetailsResponse ToResponse(this PetDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                PetType = source.PetType.Name,
+                AnimalType = source.AnimalType,
+                Age = source.Age,
+                Breed = source.Breed,
+                IsVaccinated = source.IsVaccinated,
+                Gender = source.Gender?.Name,
+                IsExotic = source.IsExotic,
+
+                AccessoryType = source.AccessoryType,
+                Materials = source.Materials,
+
+                AdoptionRequirements = source.AdoptionRequirements,
+                HealthStatus = source.HealthStatus,
+                IsSterilized = source.IsSterilized,
+            };
     }
 }

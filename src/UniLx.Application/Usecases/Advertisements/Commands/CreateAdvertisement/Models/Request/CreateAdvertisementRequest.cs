@@ -16,7 +16,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public EventDetailsRequest? EventsDetails { get; set; }
         public FashionDetailsRequest? FashionDetails { get; set; }
         public JobOpportunitiesDetailsRequest? JobOpportunitiesDetails { get; set; }
-        public PetDetailsRequest? AnimalDetails { get; set; }
+        public PetDetailsRequest? PetDetails { get; set; }
         public RealEstateDetailsRequest? RealEstateDetails { get; set; }
         public ServiceDetailsRequest? ServicesDetails { get; set; }
         public ToyDetailsRequest? ToysDetails { get; set; }

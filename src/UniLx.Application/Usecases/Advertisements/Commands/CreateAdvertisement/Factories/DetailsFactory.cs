@@ -19,6 +19,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 var e when e.Equals(AdvertisementType.Electronics) => CreateSpecificDetails(command.ElectronicsDetails!),
                 var e when e.Equals(AdvertisementType.Fashion) => CreateSpecificDetails(command.FashionDetails!),
                 var e when e.Equals(AdvertisementType.JobOpportunities) => CreateSpecificDetails(command.JobOpportunitiesDetails!),
+                var e when e.Equals(AdvertisementType.Pets) => CreateSpecificDetails(command.PetDetails!),
                 _ => throw new DomainException($"Cannot create details from {command.Type}."),
             };
         }
@@ -107,8 +108,27 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 command.Benefits,
                 command.RelocationHelp,
                 command.ApplicationDeadline,
-                command.ContactInformation.ToContactInformation());
+                command.ContactInformation?.ToContactInformation());
         }
 
+        private static PetDetails CreateSpecificDetails(CreatePetDetailsCommand command)
+        {
+            return new PetDetails(
+                command.Title!,
+                command.Description,
+                command.Price,
+                command.PetType!,
+                command.AnimalType!,
+                command.Age,
+                command.Breed,
+                command.IsVaccinated,
+                command.Gender,
+                command.IsExotic,
+                command.AccessoryType,
+                command.Materials,
+                command.AdoptionRequirements,
+                command.HealthStatus,
+                command.IsSterilized);
+        }
     }
 }

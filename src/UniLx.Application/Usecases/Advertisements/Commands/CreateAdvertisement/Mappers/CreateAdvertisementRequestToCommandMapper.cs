@@ -19,7 +19,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 eventDetails: source.EventsDetails?.ToCommand(),
                 electronicsDetails: source.ElectronicsDetails?.ToCommand(),
                 fashionDetails: source.FashionDetails?.ToCommand(), 
-                jobOpportunitiesDetails: source.JobOpportunitiesDetails?.ToCommand());
+                jobOpportunitiesDetails: source.JobOpportunitiesDetails?.ToCommand(),
+                petDetails: source.PetDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -117,6 +118,25 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 source.RelocationHelp ?? false,
                 source.ApplicationDeadline,
                 source.ContactInformation?.ToCommand());
+
+        public static CreatePetDetailsCommand ToCommand(this PetDetailsRequest source)
+            => new(
+                source.Title,
+                source.Description,
+                source.Price,
+                source.PetType!,
+                source.AnimalType!,
+                source.Age,
+                source.Breed,
+                source.IsVaccinated,
+                source.Gender,
+                source.IsExotic,
+                source.AccessoryType,
+                source.Materials,
+                source.AdoptionRequirements,
+                source.HealthStatus,
+                source.IsSterilized
+            );
 
         public static CreateContactInformationCommand ToCommand(this ContactInformationRequest source)
             => new(source.Phone?.ToCommand(), source.Email, source.Website);
