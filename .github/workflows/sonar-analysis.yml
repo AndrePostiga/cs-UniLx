@@ -28,7 +28,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.sonar_token }}
       run: |
         dotnet sonarscanner begin \
-          /k:"UniLx" \
+          /k:"AndrePostiga_cs-UniLx" \
           /o:"andrepostiga" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.login=${{ secrets.SONAR_TOKEN  }} \
