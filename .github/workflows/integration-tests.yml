@@ -14,12 +14,12 @@ jobs:
 
        - name: Setup Environment
          run: |
-            docker compose -f ./TesteSuite/docker-compose.yaml up -d --build
+            docker compose -f ./TestSuite/docker-compose.yaml up -d --build
             sleep 100
             
        - name: Run integration tests
          uses: matt-ball/newman-action@master
          with:
-            collection: ./TesteSuite/newman-collection.json
+            collection: ./TestSuite/newman-collection.json
             insecure: 'true'
 
