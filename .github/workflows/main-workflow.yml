@@ -28,3 +28,10 @@ jobs:
     uses: ./.github/workflows/unit-test.yml
     with:
       dotnet_version: '9.0.x'
+
+  integration-tests:
+    name: Integration Tests
+    needs: 
+      - build
+      - test
+    uses: ./.github/workflows/integration-tests.yml
