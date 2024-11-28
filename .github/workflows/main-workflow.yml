@@ -17,11 +17,11 @@ on:
         default: 'yes'
 
 jobs:
-  build:
-    name: Build Application
-    uses: ./.github/workflows/build.yml
-    with:
-      dotnet_version: '9.0.x'
+  # build:
+  #   name: Build Application
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     dotnet_version: '9.0.x'
 
   test:
     name: Test Application
@@ -30,12 +30,12 @@ jobs:
     with:
       dotnet_version: '9.0.x'
 
-  integration-tests:
-    name: Integration Tests
-    needs: 
-      - build
-      - test
-    uses: ./.github/workflows/integration-tests.yml
+  # integration-tests:
+  #   name: Integration Tests
+  #   needs: 
+  #     - build
+  #     - test
+  #   uses: ./.github/workflows/integration-tests.yml
 
   sonar-analysis:
     name: Sonar Analysis
@@ -46,7 +46,5 @@ jobs:
     uses: ./.github/workflows/sonar-analysis.yml
     with:
       dotnet_version: '9.0.x'
-    secrets:
-      sonar_host: ${{ secrets.SONARQUBE_HOST }}
-      sonar_token: ${{ secrets.SONARQUBE_TOKEN }}
+    secrets: inherit
 

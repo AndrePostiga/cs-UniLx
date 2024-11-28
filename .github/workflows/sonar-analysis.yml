@@ -8,14 +8,6 @@ on:
         required: true
         type: string
 
-    secrets:
-      sonar_host:
-        description: 'SonarQube Host URL'
-        required: true
-      sonar_token:
-        description: 'SonarQube Token'
-        required: true
-
 jobs:
   sonar:
     runs-on: ubuntu-latest
