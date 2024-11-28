@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "26521ea4-e78d-4ce1-92e8-4c648a6a30b4",
+		"name": "UniLx API CreateAccount Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14658494"
+	},
+	"item": [
+		{
+			"name": "Create Account - Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains account details\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData.id).to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function cpf() {\r",
+							"  const rnd = (n) => Math.round(Math.random() * n);\r",
+							"  const mod = (base, div) => Math.round(base - Math.floor(base / div) * div)\r",
+							"  const n = Array(9).fill('').map(() => rnd(9));\r",
+							"\r",
+							"  let d1 = n.reduce((total, number, index) => (total + (number * (10 - index))), 0)\r",
+							"  d1 = 11 - mod(d1, 11);\r",
+							"  if (d1 >= 10) d1 = 0;\r",
+							"  \r",
+							"  let d2 = (d1 * 2) + n.reduce((total, number, index) => (total + (number * (11 - index))), 0)\r",
+							"  d2 = 11 - mod(d2, 11);\r",
+							"  if (d2 >= 10) d2 = 0;\r",
+							"\r",
+							"  return `${n.join('')}${d1}${d2}`\r",
+							"}\r",
+							"\r",
+							"// opicional para postman\r",
+							"pm.collectionVariables.set('cpf', cpf());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Validation Error (Empty Name)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response contains Problem Details format\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('type');",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"    pm.expect(jsonData.errors).to.have.property('Name');",
+							"    pm.expect(jsonData.errors.Name[0]).to.equal(\"Name is required.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Validation Error (Invalid CPF)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response contains Problem Details format\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('type');",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"    pm.expect(jsonData.errors).to.have.property('Cpf');",
+							"    pm.expect(jsonData.errors.Cpf[0]).to.equal(\"Invalid CPF format.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"invalid_cpf\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Validation Error (Invalid Email)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response contains Problem Details format\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('type');",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"    pm.expect(jsonData.errors).to.have.property('Email');",
+							"    pm.expect(jsonData.errors.Email[0]).to.equal(\"Invalid email format.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"any\",\n  \"description\": \"A short bio or description of the account\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Conflict Error (Duplicate Account)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {",
+							"    pm.response.to.have.status(409);",
+							"});",
+							"",
+							"pm.test(\"Response contains Problem Details format\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('type');",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"    pm.expect(jsonData.errors).to.have.property('Accounts.Conflict');",
+							"    pm.expect(jsonData.errors['Accounts.Conflict'][0]).to.equal(\"The account already exists.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"duplicate@doe.com\",\n  \"description\": \"Duplicate account test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "accountId",
+			"value": "12345",
+			"type": "string"
+		},
+		{
+			"key": "cpf",
+			"value": "11617704458",
+			"type": "string"
+		}
+	]
+}
