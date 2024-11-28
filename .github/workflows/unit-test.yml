@@ -6,6 +6,7 @@ on:
       dotnet_version:
         description: '.NET version to use'
         required: true
+        type: string
         default: '9.0.x'
 
 jobs:
