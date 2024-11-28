@@ -37,8 +37,8 @@ jobs:
       run: |
         dotnet sonarscanner begin \
           /k:"UniLx" \
-          /d:sonar.host.url=${{ secrets.sonar_host }} \
+          /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.login=${{ secrets.sonar_token }} \
-          /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
+          /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
         dotnet sonarscanner end /d:sonar.login=${{ secrets.sonar_token }}

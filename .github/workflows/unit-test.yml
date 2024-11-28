@@ -28,11 +28,19 @@ jobs:
       run: dotnet build src/UniLx.Tests/UniLx.Tests.csproj --configuration Debug
 
     - name: Run Unit Tests
-      run: dotnet test src/UniLx.Tests/UniLx.Tests.csproj --collect:"XPlat Code Coverage" --verbosity normal
+      run: |
+        mkdir -p TestResults
+        dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
+          --no-build \
+          --verbosity normal \
+          --logger:"trx;LogFileName=test_results.trx" \
+          --results-directory TestResults/ \
+          --collect:"XPlat Code Coverage"
 
     - name: Upload Test Results
-      if: always()
       uses: actions/upload-artifact@v3
       with:
         name: test-results
         path: TestResults/
+        if-no-files-found: error 
+
