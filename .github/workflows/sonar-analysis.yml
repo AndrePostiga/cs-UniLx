@@ -2,45 +2,43 @@ name: SonarQube Cloud
 
 on:
   workflow_call:
+    inputs:
+      dotnet_version:
+        description: '.NET version to use'
+        required: true
+        type: string
+
+    secrets:
+      sonar_host:
+        description: 'SonarQube Host URL'
+        required: true
+      sonar_token:
+        description: 'SonarQube Token'
+        required: true
 
 jobs:
-  build:
-    name: Build and analyze
-    runs-on: windows-latest
+  sonar:
+    runs-on: ubuntu-latest
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Cache SonarQube Cloud packages
-        uses: actions/cache@v4
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarQube Cloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarQube Cloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
-        run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"AndrePostiga_cs-UniLx" /o:"andrepostiga" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+
+    - name: Install Sonar Scanner
+      run: dotnet tool install --global dotnet-sonarscanner
+
+    - name: Run SonarQube Analysis
+      env:
+        SONAR_TOKEN: ${{ secrets.sonar_token }}
+      run: |
+        dotnet sonarscanner begin \
+          /k:"UniLx" \
+          /d:sonar.host.url=${{ secrets.sonar_host }} \
+          /d:sonar.login=${{ secrets.sonar_token }} \
+          /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
+        dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
+        dotnet sonarscanner end /d:sonar.login=${{ secrets.sonar_token }}
