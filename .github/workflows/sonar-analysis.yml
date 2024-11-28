@@ -29,8 +29,9 @@ jobs:
       run: |
         dotnet sonarscanner begin \
           /k:"UniLx" \
+          /o:"andrepostiga-github" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.login=${{ secrets.sonar_token }} \
+          /d:sonar.login=${{ secrets.SONAR_TOKEN  }} \
           /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-        dotnet sonarscanner end /d:sonar.login=${{ secrets.sonar_token }}
+        dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
