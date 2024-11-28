@@ -11,7 +11,12 @@ namespace UniLx.Shared.Abstractions
 
         public IResult ToBadRequest()
         {
-            return Results.BadRequest(new ValidationProblemDetails(this));
+            var problem = new ValidationProblemDetails(this);
+            return Results.Json(
+                problem,
+                statusCode: problem.Status,
+                contentType: "application/problem+json"
+            );
         }        
     }
 
