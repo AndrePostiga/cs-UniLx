@@ -1,0 +1,27 @@
+name: Build Application
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        description: '.NET version to use'
+        required: true
+        default: '9.0.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+
+    - name: Restore Dependencies
+      run: dotnet restore src/UniLx.ApiService/UniLx.ApiService.csproj
+
+    - name: Build Application
+      run: dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj --configuration Release
