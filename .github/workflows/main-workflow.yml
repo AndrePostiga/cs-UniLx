@@ -5,6 +5,7 @@ on:
     types:
       - synchronize
       - opened
+      - reopened
   push:
     branches:
       - develop
@@ -35,3 +36,12 @@ jobs:
       - build
       - test
     uses: ./.github/workflows/integration-tests.yml
+
+  sonar-analysis:
+    name: Sonar Analysis
+    needs: 
+      - build
+      - test
+      - integration-tests
+    uses: ./.github/workflows/sonar-analysis.yml
+
