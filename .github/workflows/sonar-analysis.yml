@@ -29,7 +29,7 @@ jobs:
       run: |
         dotnet sonarscanner begin \
           /k:"UniLx" \
-          /o:"andrepostiga-github" \
+          /o:"andrepostiga" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.login=${{ secrets.SONAR_TOKEN  }} \
           /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
