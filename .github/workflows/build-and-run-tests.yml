@@ -55,7 +55,7 @@ jobs:
       run: dotnet restore src/UniLx.Tests/UniLx.Tests.csproj
 
     - name: Build the Application
-      run: dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj --configuration Debug
+      run: dotnet build src/UniLx.Tests/UniLx.Tests.csproj --configuration Debug
 
     - name: Run Unit Tests
       run: dotnet test src/UniLx.Tests/UniLx.Tests.csproj --no-build --verbosity detailed
