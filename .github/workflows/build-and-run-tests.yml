@@ -15,7 +15,7 @@ on:
         default: 'yes'
 
 env:
-  DOTNET_VERSION: '9.0.0' # Define .NET version as a workflow-level variabl
+  DOTNET_VERSION: '9.0.x' # Define .NET version as a workflow-level variabl
 
 jobs:
   build:
