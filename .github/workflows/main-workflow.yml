@@ -44,4 +44,9 @@ jobs:
       - test
       - integration-tests
     uses: ./.github/workflows/sonar-analysis.yml
+    with:
+      dotnet_version: '9.0.x'
+    secrets:
+      sonar_host: ${{ secrets.SONARQUBE_HOST }}
+      sonar_token: ${{ secrets.SONARQUBE_TOKEN }}
 
