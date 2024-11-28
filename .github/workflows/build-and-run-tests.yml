@@ -54,8 +54,11 @@ jobs:
     - name: Restore Dependencies
       run: dotnet restore src/UniLx.Tests/UniLx.Tests.csproj
 
+    - name: Build the Application
+      run: dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj --configuration Debug
+
     - name: Run Unit Tests
-      run: dotnet test src/UniLx.Tests/UniLx.Tests.csproj --no-build --verbosity normal
+      run: dotnet test src/UniLx.Tests/UniLx.Tests.csproj --no-build --verbosity detailed
 
     - name: Upload Test Results
       if: always()
