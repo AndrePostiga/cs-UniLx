@@ -11,6 +11,8 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
 
         private static readonly Regex CpfSymbolsRegex = new Regex("[^0-9]", RegexOptions.Compiled);
 
+        private CPF() { }
+
         public CPF(string value)
         {
             DomainException.ThrowIf(!IsValid(value), "Invalid CPF.");

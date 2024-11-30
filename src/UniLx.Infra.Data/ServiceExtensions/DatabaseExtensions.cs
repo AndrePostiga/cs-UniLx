@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
@@ -22,6 +23,7 @@ using Weasel.Postgresql.SqlGeneration;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
+    [ExcludeFromCodeCoverage]
     public static class DatabaseExtensions
     {
         public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder)
@@ -93,6 +95,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class SeedData : IInitialData
     {
         private readonly object[] _initialData;
@@ -193,6 +196,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
     }
 
     #region MartenRegistry
+    [ExcludeFromCodeCoverage]
     public class AccountRegistry : MartenRegistry
     {
         public AccountRegistry()
@@ -216,6 +220,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class CategoryRegistry : MartenRegistry
     {
         public CategoryRegistry()
@@ -231,6 +236,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class AdvertisementRegistry : MartenRegistry
     {
         public AdvertisementRegistry()
@@ -243,6 +249,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
     }
     #endregion
 
+    [ExcludeFromCodeCoverage]
     public class HasSmartEnumValueParser<TEnum> : IMethodCallParser where TEnum : SmartEnum<TEnum, int>
     {
         public bool Matches(MethodCallExpression expression)

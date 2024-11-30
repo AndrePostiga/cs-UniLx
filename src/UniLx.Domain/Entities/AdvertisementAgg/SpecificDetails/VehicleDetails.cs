@@ -10,6 +10,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         public string Model { get; private set; }
         public int Year { get; private set; }
 
+        private VehicleDetails() { }
         public VehicleDetails(
             string title, string description, int price, IEnumerable<Image> images,
             string brand, string model, int year) : base(title, description, price)

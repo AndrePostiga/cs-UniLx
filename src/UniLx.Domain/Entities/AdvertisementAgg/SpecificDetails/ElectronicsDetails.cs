@@ -140,10 +140,9 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetWarranty(DateTime? warrantyUntil)
         {
-            if (HasWarranty && warrantyUntil.HasValue)
-            {
+            if (warrantyUntil.HasValue)
                 DomainException.ThrowIf(warrantyUntil.Value <= DateTime.UtcNow, "WarrantyUntil must be in the future.");
-            }
+            
             WarrantyUntil = warrantyUntil;
         }
 

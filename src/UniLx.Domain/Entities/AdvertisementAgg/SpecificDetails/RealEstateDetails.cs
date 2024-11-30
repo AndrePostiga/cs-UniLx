@@ -10,6 +10,8 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         public double SquareFootage { get; private set; }
         public int Bedrooms { get; private set; }
 
+        private RealEstateDetails() { }
+
         public RealEstateDetails(
             string title, string description, int price, IEnumerable<Image> images,
             string address, double squareFootage, int bedrooms) : base(title, description, price)

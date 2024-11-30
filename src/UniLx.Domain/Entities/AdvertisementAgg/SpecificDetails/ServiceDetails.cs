@@ -9,6 +9,8 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         public string ServiceType { get; private set; }
         public double HourlyRate { get; private set; }
 
+        private ServiceDetails() { }
+
         public ServiceDetails(
             string title, string description, int price, IEnumerable<Image> images,
             string serviceType, double hourlyRate) : base(title, description, price)
