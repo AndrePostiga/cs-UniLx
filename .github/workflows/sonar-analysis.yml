@@ -20,31 +20,11 @@ jobs:
       with:
         dotnet-version: ${{ inputs.dotnet_version }}
 
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~\sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~\sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-
-    - name: Cache SonarCloud scanner
-      id: cache-sonar-scanner
-      uses: actions/cache@v1
-      with:
-        path: .\.sonar\scanner
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
-
     - name: Install SonarCloud scanner
-      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
       run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+    - name: Install Coverlet Console
+      run: dotnet tool install --global coverlet.console
 
     - name: Install project dependencies
       run: dotnet restore src/UniLx.sln
@@ -57,11 +37,20 @@ jobs:
         ./.sonar/scanner/dotnet-sonarscanner begin /k:"AndrePostiga_cs-UniLx" /o:"andrepostiga" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
         
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-        
-        dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
-          --verbosity normal \
-          --logger:"trx;LogFileName=test_results.trx" \
-          --results-directory TestResults/ \
-          --collect:"XPlat Code Coverage"
+        dotnet build src/UniLx.ApiService/UniLx.Tests.csproj
+
+        coverlet .\UniLx.Tests\bin\Debug\net9.0\UniLx.Tests.dll \
+            --target "dotnet" \
+            --targetargs "test --no-build" \
+            -f=opencover \
+            -o="coverage.xml" \        
 
         ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+
+        
+        # dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
+        #   --verbosity normal \
+        #   --logger:"trx;LogFileName=test_results.trx" \
+        #   --results-directory TestResults/ \
+        #   --collect:"XPlat Code Coverage"
