@@ -33,6 +33,7 @@ jobs:
         dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
           --no-build \
           --verbosity normal \
+          --logger:"trx;LogFileName=test_results.trx"
           --results-directory TestResults/ \
           --collect:"XPlat Code Coverage"
 
@@ -40,6 +41,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: TestResults/**/coverage.cobertura.xml
+        path: TestResults/*
         if-no-files-found: error 
 
