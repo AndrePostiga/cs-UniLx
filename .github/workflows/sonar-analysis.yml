@@ -40,17 +40,9 @@ jobs:
         dotnet build src/UniLx.Tests/UniLx.Tests.csproj
 
         coverlet src/UniLx.Tests/bin/Debug/net9.0/UniLx.Tests.dll \
-            --target "dotnet" \
-            --targetargs "test --no-build" \
-            -f=opencover \
-            -o="coverage.xml" \        
+          --target "dotnet" \
+          --targetargs "test src/UniLx.Tests/UniLx.Tests.csproj --no-build" \
+          --format opencover \
+          --output TestResults/coverage.opencover.xml  
 
         ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-
-        
-        # dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
-        #   --verbosity normal \
-        #   --logger:"trx;LogFileName=test_results.trx" \
-        #   --results-directory TestResults/ \
-        #   --collect:"XPlat Code Coverage"
