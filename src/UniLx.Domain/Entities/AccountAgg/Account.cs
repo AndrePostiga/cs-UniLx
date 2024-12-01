@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using UniLx.Domain.Entities.AccountAgg.ValueObj;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
@@ -20,7 +19,7 @@ namespace UniLx.Domain.Entities.AccountAgg
 
         public Rating Rating { get; private set; }
         
-        public List<string>? AdvertisementIds { get; private set; } = [];
+        public HashSet<string>? AdvertisementIds { get; private set; } = [];
 
         private Account()
         {}

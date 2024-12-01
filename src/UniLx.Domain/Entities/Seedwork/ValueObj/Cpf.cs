@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using UniLx.Domain.Exceptions;
 
-namespace UniLx.Domain.Entities.AccountAgg.ValueObj
+namespace UniLx.Domain.Entities.Seedwork.ValueObj
 {
     public class CPF
     {

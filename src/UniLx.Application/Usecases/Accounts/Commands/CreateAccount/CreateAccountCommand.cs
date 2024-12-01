@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using UniLx.Domain.Entities.AccountAgg.ValueObj;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
