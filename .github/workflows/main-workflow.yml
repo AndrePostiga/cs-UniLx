@@ -41,8 +41,6 @@ jobs:
     name: Sonar Analysis
     needs: 
        - build
-       - test
-       - integration-tests
     uses: ./.github/workflows/sonar-analysis.yml
     with:
       dotnet_version: '9.0.x'
