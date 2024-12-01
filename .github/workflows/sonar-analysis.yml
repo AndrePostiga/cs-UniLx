@@ -20,23 +20,38 @@ jobs:
       with:
         dotnet-version: ${{ inputs.dotnet_version }}
 
-    - name: Install Sonar Scanner
-      run: dotnet tool install --global dotnet-sonarscanner
+    # - name: Install Sonar Scanner
+    #   run: dotnet tool install --global dotnet-sonarscanner
     
-    - name: Download a single artifact
-      uses: actions/download-artifact@v4
-      with:
-       name: test-results
+    # - name: Download a single artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #    name: test-results
 
-    - name: Run SonarQube Analysis
-      env:
-        SONAR_TOKEN: ${{ secrets.sonar_token }}
-      run: |
-        dotnet sonarscanner begin \
-          /k:"AndrePostiga_cs-UniLx" \
-          /o:"andrepostiga" \
-          /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.token=${{ secrets.SONAR_TOKEN  }} \
-          /d:sonar.cs.opencover.reportsPaths=coverage.cobertura.xml
-        dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-        dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+    - name: SonarScanner 
+      uses: highbyte/sonarscan-dotnet@v2.4.1
+      with:
+        # The key of the SonarQube project
+        sonarProjectKey: AndrePostiga_cs-UniLx
+        # The name of the SonarQube project
+        sonarProjectName:  cs-UniLx
+        # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
+        sonarOrganization: andrepostiga
+        # Optional command arguments to dotnet test
+        dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        # Optional extra command arguments the the SonarScanner 'begin' command
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+        
+
+    # - name: Run SonarQube Analysis
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.sonar_token }}
+    #   run: |
+    #     dotnet sonarscanner begin \
+    #       /k:"AndrePostiga_cs-UniLx" \
+    #       /o:"andrepostiga" \
+    #       /d:sonar.host.url="https://sonarcloud.io" \
+    #       /d:sonar.token=${{ secrets.SONAR_TOKEN  }} \
+    #       /d:sonar.cs.opencover.reportsPaths=coverage.cobertura.xml
+    #     dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
+    #     dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
