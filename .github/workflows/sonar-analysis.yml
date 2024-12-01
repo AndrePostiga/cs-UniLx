@@ -8,6 +8,10 @@ on:
         required: true
         type: string
 
+env:
+    SONAR_TOKEN: ${{ secrets.sonar_token }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   sonar:
     runs-on: ubuntu-latest
