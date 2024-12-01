@@ -29,18 +29,15 @@ namespace UniLx.Domain.Services
     {
         private readonly IAdvertisementRepository _advertisementRepository;
         private readonly IAccountRepository _accountRepository;
-        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapsService _mapsService;
 
         public CreateAdvertisementDomainService(
             IAdvertisementRepository advertisementRepository,
             IAccountRepository accountRepository,
-            ICategoryRepository categoryRepository,
             IMapsService mapsService)
         {
             _advertisementRepository = advertisementRepository;
             _accountRepository = accountRepository;
-            _categoryRepository = categoryRepository;
             _mapsService = mapsService;
         }
 

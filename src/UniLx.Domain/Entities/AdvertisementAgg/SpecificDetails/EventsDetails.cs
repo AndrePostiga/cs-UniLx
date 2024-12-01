@@ -34,6 +34,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             DressCode = dressCode;
             SetHighlights(highlights);
             SetContactInformation(contactInformation);
+            IsOnline = isOnline;
         }
 
         private void SetContactInformation(ContactInformation? contactInformation)

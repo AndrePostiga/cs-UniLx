@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace UniLx.Shared.Abstractions
 {
-    public interface IQuery<TResponse> : IRequest<TResponse>
+    public interface IQuery<out TResponse> : IRequest<TResponse>
         where TResponse : IResult
     {
     }

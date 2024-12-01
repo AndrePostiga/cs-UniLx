@@ -68,7 +68,7 @@ namespace UniLx.Infra.Data.Storage
             }
         }
 
-        private int CalculateExpirationInSeconds(DateTime? expiresAt)
+        private static int CalculateExpirationInSeconds(DateTime? expiresAt)
         {
             if (!expiresAt.HasValue)
                 return (int)TimeSpan.FromMinutes(5).TotalSeconds;
