@@ -61,6 +61,7 @@ jobs:
         ./.sonar/scanner/dotnet-sonarscanner begin /k:"AndrePostiga_cs" /o:"andrepostiga" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
         
+        dotnet build src/UniLx.Tests/UniLx.Tests.csproj --configuration Debug
         dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
           --no-build \
           --verbosity normal \
