@@ -60,7 +60,10 @@ jobs:
       run: |
         ./.sonar/scanner/dotnet-sonarscanner begin /k:"AndrePostiga_cs" /o:"andrepostiga" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io"
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-        dotnet test src/UniLx.Tests/UniLx.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -l trx
+        dotnet test src/UniLx.Tests/UniLx.Tests.csproj --no-build --verbosity normal \
+          /p:CollectCoverage=true \
+          /p:CoverletOutput=TestResults/coverage.opencover.xml \
+          /p:CoverletOutputFormat=opencover -l trx
         ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
     - name: Build
