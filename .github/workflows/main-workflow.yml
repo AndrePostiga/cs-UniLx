@@ -17,12 +17,11 @@ on:
         default: 'yes'
 
 jobs:
-  build:
-    if: false
-    name: Build Application
-    uses: ./.github/workflows/build.yml
-    with:
-      dotnet_version: '9.0.x'
+  # build:
+  #   name: Build Application
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     dotnet_version: '9.0.x'
 
   test:
     name: Test Application
@@ -31,13 +30,12 @@ jobs:
     with:
       dotnet_version: '9.0.x'
 
-  integration-tests:
-    if: false
-    name: Integration Tests
-    needs: 
-      - build
-      - test
-    uses: ./.github/workflows/integration-tests.yml
+  # integration-tests:
+  #   name: Integration Tests
+  #   needs: 
+  #     - build
+  #     - test
+  #   uses: ./.github/workflows/integration-tests.yml
 
   sonar-analysis:
     name: Sonar Analysis
