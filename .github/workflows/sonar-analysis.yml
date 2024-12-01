@@ -8,10 +8,6 @@ on:
         required: true
         type: string
 
-env:
-    SONAR_TOKEN: ${{ secrets.sonar_token }}
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   sonar:
     runs-on: ubuntu-latest
@@ -59,42 +55,13 @@ jobs:
         SONAR_TOKEN: ${{ secrets.sonar_token }}
       run: |
         ./.sonar/scanner/dotnet-sonarscanner begin /k:"AndrePostiga_cs-UniLx" /o:"andrepostiga" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
+        
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
         
-        dotnet build src/UniLx.Tests/UniLx.Tests.csproj --configuration Debug
         dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
-          --no-build \
           --verbosity normal \
           --logger:"trx;LogFileName=test_results.trx" \
           --results-directory TestResults/ \
           --collect:"XPlat Code Coverage"
 
         ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-
-
-    # - name: Install Sonar Scanner
-    #   run: dotnet tool install --global dotnet-sonarscanner
-    
-    # - name: Install Coverlet Console
-    #   run: dotnet tool install --global dotnet-sonarscanner
-
-    # - name: Download a single artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #    name: test-results        
-
-    # - name: Run SonarQube Analysis
-    #   env:
-    #     SONAR_TOKEN: ${{ secrets.sonar_token }}
-    #   run: |
-    #     dotnet sonarscanner begin \
-    #       /k:"AndrePostiga_cs-UniLx" \
-    #       /o:"andrepostiga" \
-    #       /d:sonar.host.url="https://sonarcloud.io" \
-    #       /d:sonar.token=${{ secrets.SONAR_TOKEN  }} \
-    #       /d:sonar.cs.opencover.reportsPaths=coverage.cobertura.xml
-    #     dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-    #     dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
