@@ -40,6 +40,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: TestResults/
+        path: TestResults/**/coverage.cobertura.xml
         if-no-files-found: error 
 
