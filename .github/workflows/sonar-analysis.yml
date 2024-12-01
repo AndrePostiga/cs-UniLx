@@ -22,6 +22,11 @@ jobs:
 
     - name: Install Sonar Scanner
       run: dotnet tool install --global dotnet-sonarscanner
+    
+    - name: Download a single artifact
+      uses: actions/download-artifact@v4
+      with:
+       name: test-results
 
     - name: Run SonarQube Analysis
       env:
