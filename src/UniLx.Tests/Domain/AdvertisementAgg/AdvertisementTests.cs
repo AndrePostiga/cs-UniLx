@@ -54,7 +54,6 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             Assert.Equal(category.Name, advertisement.CategoryName);
             Assert.Equal(address, advertisement.Address);
             Assert.Equal(account.Id, advertisement.OwnerId);
-            Assert.NotNull(advertisement.ExpiresAt);
             Assert.NotNull(advertisement.Details);
             Assert.Equal(AdvertisementStatus.Created, advertisement.Status);
         }

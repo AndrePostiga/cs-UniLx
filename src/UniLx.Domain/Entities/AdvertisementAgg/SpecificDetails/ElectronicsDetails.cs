@@ -27,11 +27,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         private ElectronicsDetails() : base() { }
 
         public ElectronicsDetails(
-            string title,
+            string? title,
             string? description,
             int? price,
-            string productType,
-            string brand,
+            string? productType,
+            string? brand,
             string? model,
             string? storageCapacity,
             string? memory,
@@ -77,17 +77,17 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             Price = price;
         }
 
-        private void SetProductType(string productType)
+        private void SetProductType(string? productType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(productType), "ProductType cannot be null or empty.");
-            DomainException.ThrowIf(productType.Length > 100, "ProductType must be 100 characters or less.");
+            DomainException.ThrowIf(productType!.Length > 100, "ProductType must be 100 characters or less.");
             ProductType = productType;
         }
 
-        private void SetBrand(string brand)
+        private void SetBrand(string? brand)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(brand), "Brand cannot be null or empty.");
-            DomainException.ThrowIf(brand.Length > 100, "Brand must be 100 characters or less.");
+            DomainException.ThrowIf(brand!.Length > 100, "Brand must be 100 characters or less.");
             Brand = brand;
         }
 

@@ -21,7 +21,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         { }
 
         public EventsDetails(
-            string title, string? description, int? price, string eventType, 
+            string? title, string? description, int? price, string? eventType, 
             DateTime eventDate, string? organizer, string? ageRestriction, 
             string? dressCode, List<string>? highlights, bool isOnline, 
             ContactInformation? contactInformation)
@@ -50,10 +50,10 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             AgeRestriction = restrictionType;
         }
 
-        private void SetEventType(string eventType)
+        private void SetEventType(string? eventType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(eventType), "EventType cannot be null or empty.");
-            DomainException.ThrowIf(eventType.Length > 100, "EventType must be 100 characters or less.");
+            DomainException.ThrowIf(eventType!.Length > 100, "EventType must be 100 characters or less.");
             EventType = eventType;
         }
 

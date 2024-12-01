@@ -25,7 +25,7 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
         public string? FileName { get; private set; }
         public string? FullPath => Path != null && FileName != null ? $"{Path}/{FileName}" : null;
 
-        public static StorageImage CreatePublicImage(string accessUrl) => new StorageImage(StorageType.DirectUrl, false, accessUrl);
+        public static StorageImage CreatePublicImage(string? accessUrl) => new StorageImage(StorageType.DirectUrl, false, accessUrl);
         public static StorageImage CreatePrivateImage(string path, string fileName) => new StorageImage(StorageType.Private, true, path: path, fileName: fileName);
         public static StorageImage CreateImageWithPath(bool isPrivate, string path, string fileName) => new StorageImage(StorageType.Path, isPrivate, path: path, fileName: fileName);
 

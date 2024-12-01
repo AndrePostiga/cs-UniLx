@@ -24,7 +24,7 @@ namespace UniLx.Domain.Entities.AccountAgg
         private Account()
         {}
 
-        public Account(string name, string email, string Cpf, string? description) : base(ProduceExternalId("account_"))
+        public Account(string? name, string? email, string? Cpf, string? description) : base(ProduceExternalId("account_"))
         {
             SetName(name);
             SetDescription(description);
@@ -33,34 +33,34 @@ namespace UniLx.Domain.Entities.AccountAgg
             Rating = new Rating();
         }
 
-        public void UpdateProfilePicture(string profilePicture)
+        public void UpdateProfilePicture(string? profilePicture)
         {
             if (!string.IsNullOrWhiteSpace(profilePicture))
                 ProfilePicture = StorageImage.CreatePrivateImage(Id, profilePicture);
         }
 
-        public void AddAdvertisement(Advertisement advertisement)
+        public void AddAdvertisement(Advertisement? advertisement)
         {
             DomainException.ThrowIf(advertisement is null, "Advertisement cannot be null.");
             AdvertisementIds!.Add(advertisement!.Id);
         }
 
-        private void SetCpf(string cpf)
+        private void SetCpf(string? cpf)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(cpf), "CPF cannot be null.");
             Cpf = new CPF(cpf!);
         }
 
-        private void SetEmail(string email)
+        private void SetEmail(string? email)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(email), "Email cannot be null.");
             Email = new Email(email!);
         }
 
-        private void SetName(string name)
+        private void SetName(string? name)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(name), "Name cannot be null.");
-            DomainException.ThrowIf(name.Length > 100, "Name field must have 100 characters or less");
+            DomainException.ThrowIf(name!.Length > 100, "Name field must have 100 characters or less");
             Name = name;
         }
 

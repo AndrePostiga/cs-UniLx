@@ -128,7 +128,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
                 Type.EmptyTypes,
                 null);
 
-            var details = (JobOpportunitiesDetails)constructor.Invoke(null);
+            var details = (JobOpportunitiesDetails)constructor!.Invoke(null);
 
             // Assert
             Assert.NotNull(details);

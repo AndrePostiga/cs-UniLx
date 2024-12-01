@@ -18,8 +18,11 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
             Value = value;
         }
 
-        public static bool IsValid(string cpf)
+        public static bool IsValid(string? cpf)
         {
+            if (string.IsNullOrWhiteSpace(cpf))
+                return false;
+
             // Remove non-numeric characters
             cpf = CpfSymbolsRegex.Replace(cpf, string.Empty);
 

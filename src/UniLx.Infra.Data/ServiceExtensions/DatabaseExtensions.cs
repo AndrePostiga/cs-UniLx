@@ -281,7 +281,9 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 }
 
                 // Generate the SQL fragment with parameterized input
+#pragma warning disable CS8604 // Possível argumento de referência nula.
                 return new WhereFragment($"{locator} = ?", targetEnumValue.ToString());
+#pragma warning restore CS8604 // Possível argumento de referência nula.
             }
             catch (Exception ex)
             {

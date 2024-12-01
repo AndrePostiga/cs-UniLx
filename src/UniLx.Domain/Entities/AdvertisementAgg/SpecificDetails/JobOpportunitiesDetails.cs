@@ -25,14 +25,14 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         { }
 
         public JobOpportunitiesDetails(
-            string title,
+            string? title,
             string? description,
-            string position,
-            string company,
+            string? position,
+            string? company,
             int? salary,
             bool isSalaryDisclosed,
-            string workLocation,
-            string employmentType,
+            string? workLocation,
+            string? employmentType,
             string? experienceLevel,
             List<string>? skills,
             List<string>? benefits,
@@ -54,17 +54,17 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             SetContactInformation(contactInformation);
         }
 
-        private void SetPosition(string position)
+        private void SetPosition(string? position)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(position), "Position cannot be null or empty.");
-            DomainException.ThrowIf(position.Length > 100, "Position must be 100 characters or less.");
+            DomainException.ThrowIf(position!.Length > 100, "Position must be 100 characters or less.");
             Position = position;
         }
 
-        private void SetCompany(string company)
+        private void SetCompany(string? company)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(company), "Company cannot be null or empty.");
-            DomainException.ThrowIf(company.Length > 100, "Company must be 100 characters or less.");
+            DomainException.ThrowIf(company!.Length > 100, "Company must be 100 characters or less.");
             Company = company;
         }
 
@@ -79,14 +79,14 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             IsSalaryDisclosed = isSalaryDisclosed;
         }
 
-        private void SetWorkLocation(string workLocation)
+        private void SetWorkLocation(string? workLocation)
         {
             var isValid = WorkLocationType.TryFromName(workLocation, true, out var locationType);
             DomainException.ThrowIf(!isValid, $"Invalid work location. Possible values are: {string.Join(", ", WorkLocationType.List.Select(w => w.Name))}.");
             WorkLocation = locationType!;
         }
 
-        private void SetEmploymentType(string employmentType)
+        private void SetEmploymentType(string? employmentType)
         {
             var isValid = EmploymentType.TryFromName(employmentType, true, out var employmentTypeValue);
             DomainException.ThrowIf(!isValid, $"Invalid employment type. Possible values are: {string.Join(", ", EmploymentType.List.Select(e => e.Name))}.");

@@ -16,8 +16,8 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
         public double? RadiusInKm { get; set; }
 
         // Pagination
-        public int? Page { get; set; }
-        public int? PageSize { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
 
         public Geometry? Geopoint => HasGeolocation
             ? new Point(Longitude!.Value, Latitude!.Value) { SRID = 4326 }

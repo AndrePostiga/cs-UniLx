@@ -132,7 +132,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
                 Type.EmptyTypes,
                 null);
 
-            var details = (FashionDetails)constructor.Invoke(null);
+            var details = (FashionDetails)constructor!.Invoke(null);
 
             // Assert
             Assert.NotNull(details);

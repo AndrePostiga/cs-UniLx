@@ -172,7 +172,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
                 Type.EmptyTypes,
                 null);
 
-            var details = (ElectronicsDetails)constructor.Invoke(null);
+            var details = (ElectronicsDetails)constructor!.Invoke(null);
 
             // Assert
             Assert.NotNull(details);
