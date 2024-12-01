@@ -51,6 +51,6 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
                 .WithMessage("Description must be 256 characters or less.");
         }
 
-        private bool BeAValidCpf(string cpf) => CPF.IsValid(cpf);
+        private static bool BeAValidCpf(string cpf) => CPF.IsValid(cpf);
     }
 }

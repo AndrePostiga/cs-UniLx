@@ -16,12 +16,12 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements
         public DateTime? CreatedSince { get; private set; }
         public DateTime? CreatedUntil { get; private set; }
 
-        public int Page { get; private set; } = 1;
-        public int PageSize { get; private set; } = 30;
+        public int Page { get; private set; }
+        public int PageSize { get; private set; }
 
         public GetAccountAdvertisementsQuery(string accountId, string? type, string? categoryName, 
             bool? sortAsc, string? status, bool? includeExpired, DateTime? createdSince, 
-            DateTime? createdUntil, int page, int pageSize)
+            DateTime? createdUntil, int? page, int? pageSize)
         {
             AccountId = accountId;
             Type = type;
@@ -30,8 +30,8 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements
             IncludeExpired = includeExpired ?? false;
             CreatedSince = createdSince;
             CreatedUntil = createdUntil;
-            Page = page;
-            PageSize = pageSize;
+            Page = page ?? 1;
+            PageSize = pageSize ?? 30;
             SortAsc = sortAsc ?? false;
         }
     }

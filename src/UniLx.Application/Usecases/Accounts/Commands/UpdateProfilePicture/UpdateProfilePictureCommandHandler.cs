@@ -27,7 +27,7 @@ namespace UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture
             account.UpdateProfilePicture(request.ProfilePicture!);
 
             var expiresAt = DateTime.UtcNow.AddMinutes(5);
-            string imageUrl = string.Empty;
+            string? imageUrl = string.Empty;
             if (account.ProfilePicture is not null)
             {
                 imageUrl = await _storageRepository.GetImageUrl(account.ProfilePicture, expiresAt);

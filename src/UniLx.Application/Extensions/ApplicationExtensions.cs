@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using UniLx.Application.Behaviors;
-using UniLx.Application.Usecases.Accounts.Commands.CreateAccount;
 
 namespace UniLx.Application.Extensions
 {
@@ -16,8 +15,7 @@ namespace UniLx.Application.Extensions
                 cfg.AddOpenBehavior(typeof(CommandValidatorBehavior<,>));
             });
 
-            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);
-            //builder.Services.AddTransient<CreateAccountCommandValidator>();
+            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);          
 
             return builder;
         }

@@ -5,13 +5,13 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.M
 {
     internal class GetAccountAdvertisementsResponse
     {
-        public string Id { get; set; }
-        public string Status { get; set; }
-        public string Type { get; set; }
-        public string Category { get; set; }
-        public DateTime ExpiresAt { get; set; }
-        public AddressResponse Address { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string? Id { get; set; }
+        public string? Status { get; set; }
+        public string? Type { get; set; }
+        public string? Category { get; set; }
+        public DateTime? ExpiresAt { get; set; }
+        public AddressResponse? Address { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
         public BeautyDetailsResponse? BeautyDetails { get; set; }

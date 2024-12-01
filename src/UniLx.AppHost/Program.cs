@@ -1,4 +1,3 @@
-using Aspire.Hosting;
 using TraceLens.Aspire;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -22,14 +21,14 @@ var postgres = builder
         "-c", "log_error_verbosity=default"
     );
 
-var pgAdmin = postgres
+postgres
     .WithPgAdmin()
     .WithLifetime(ContainerLifetime.Persistent);
 
-var apiService = builder.AddProject<Projects.UniLx_ApiService>("apiservice")    
+builder.AddProject<Projects.UniLx_ApiService>("apiservice")    
     .WithReference(postgres)
     .WaitFor(postgres);
 
 builder.AddTraceLens();
 
-builder.Build().Run();
+await builder.Build().RunAsync();
