@@ -24,7 +24,7 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
         };
 
         // accept only "9XXXXXXXX" or "XXXXXXXX"
-        private static readonly Regex NumberRegex = new(@"^(9\d{8}|\d{8})$", RegexOptions.Compiled);
+        private static readonly Regex NumberRegex = new(@"^(9\d{8}|\d{8})$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
         private Phone() { }
 

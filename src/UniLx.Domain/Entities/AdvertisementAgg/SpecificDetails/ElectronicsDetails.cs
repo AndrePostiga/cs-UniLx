@@ -95,7 +95,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         {
             if (!string.IsNullOrWhiteSpace(storageCapacity))
             {
-                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase);
+                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
                 DomainException.ThrowIf(!regex.IsMatch(storageCapacity), "StorageCapacity must start with numbers and end with Kb, Mb, Gb, or Tb.");
             }
             StorageCapacity = storageCapacity;
@@ -105,7 +105,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         {
             if (!string.IsNullOrWhiteSpace(memory))
             {
-                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase);
+                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
                 DomainException.ThrowIf(!regex.IsMatch(memory), "Memory must start with numbers and end with Kb, Mb, Gb, or Tb.");
             }
             Memory = memory;

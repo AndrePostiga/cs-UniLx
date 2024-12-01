@@ -9,7 +9,7 @@ namespace UniLx.Domain.Entities.AccountAgg.ValueObj
         private const int CpfLength = 11;
         public string Value { get; private set; }
 
-        private static readonly Regex CpfSymbolsRegex = new Regex("[^0-9]", RegexOptions.Compiled);
+        private static readonly Regex CpfSymbolsRegex = new Regex("[^0-9]", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
         private CPF() { }
 
