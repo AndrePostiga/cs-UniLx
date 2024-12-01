@@ -25,7 +25,7 @@ jobs:
 
   test:
     name: Test Application
-    needs: build
+    # needs: build
     uses: ./.github/workflows/unit-test.yml
     with:
       dotnet_version: '9.0.x'
@@ -40,9 +40,9 @@ jobs:
   sonar-analysis:
     name: Sonar Analysis
     needs: 
-      - build
+      # - build
       - test
-      - integration-tests
+      # - integration-tests
     uses: ./.github/workflows/sonar-analysis.yml
     with:
       dotnet_version: '9.0.x'
