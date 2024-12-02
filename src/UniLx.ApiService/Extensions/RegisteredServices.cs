@@ -1,4 +1,5 @@
-﻿using UniLx.Application.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+using UniLx.Application.Extensions;
 using UniLx.Domain.Services;
 using UniLx.Infra.Data.ServiceExtensions;
 using UniLx.Infra.Services.ExternalServices.MapsService.Extensios;
@@ -6,6 +7,7 @@ using UniLx.Infra.Services.ExternalServices.Supabase;
 
 namespace UniLx.ApiService.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class RegisteredServices
     {
         public static WebApplicationBuilder AddRegisteredServices(this WebApplicationBuilder builder)

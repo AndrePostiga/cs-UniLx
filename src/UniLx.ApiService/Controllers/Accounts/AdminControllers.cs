@@ -2,6 +2,7 @@
 using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
@@ -15,6 +16,7 @@ using UniLx.Application.Usecases.Shared.CreatePresignedImage;
 
 namespace UniLx.ApiService.Controllers.Accounts
 {
+    [ExcludeFromCodeCoverage]
     public class AdminControllers : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -43,6 +45,7 @@ namespace UniLx.ApiService.Controllers.Accounts
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal static class AdminControllerHandlers
     {
         /// <summary>

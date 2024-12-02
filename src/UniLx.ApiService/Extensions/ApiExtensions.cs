@@ -6,6 +6,7 @@ using UniLx.Shared.Converters;
 
 namespace UniLx.ApiService.Extensions
 {
+    [ExcludeFromCodeCoverage]
     [SuppressMessage("Security", "S5122", Justification = "This API is public and does not expose sensitive data.")]
     public static class ApiExtensions
     {
