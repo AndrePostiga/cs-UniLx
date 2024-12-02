@@ -19,5 +19,4 @@ namespace UniLx.Shared.Abstractions
             );
         }        
     }
-
 }

@@ -1,19 +1,20 @@
 ﻿using Carter;
 using Microsoft.AspNetCore.Http.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using UniLx.Shared.Converters;
 
 namespace UniLx.ApiService.Extensions
 {
+    [SuppressMessage("Security", "S5122", Justification = "This API is public and does not expose sensitive data.")]
     public static class ApiExtensions
     {
         public static WebApplicationBuilder AddApiConfiguration(this WebApplicationBuilder builder)
         {
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllAllowed",
-                    services =>
-                        services
+                options.AddPolicy("AllAllowed", 
+                    services => services
                             .AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader()
