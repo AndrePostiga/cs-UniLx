@@ -37,7 +37,7 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 .WithMessage("At least one contact method (Phone or Email) must be provided.");
         }
 
-        private bool BeAValidUrl(string? url)
+        private static bool BeAValidUrl(string? url)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out _);
         }

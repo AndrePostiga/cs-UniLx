@@ -9,7 +9,7 @@ namespace UniLx.Shared.Abstractions
     }
 
     // Command with a return value of type TResponse
-    public interface ICommand<TResponse> : IRequest<TResponse>
+    public interface ICommand<out TResponse> : IRequest<TResponse>
         where TResponse : IResult
     {
     }

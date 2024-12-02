@@ -4,7 +4,7 @@ using Supabase.Storage.Exceptions;
 
 namespace UniLx.ApiService.ExceptionHandlers
 {
-    internal sealed class SupabaseExceptionHandler : IExceptionHandler
+    public sealed class SupabaseExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<SupabaseExceptionHandler> _logger;
 

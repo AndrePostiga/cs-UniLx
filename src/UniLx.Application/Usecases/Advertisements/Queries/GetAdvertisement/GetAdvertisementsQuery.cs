@@ -16,8 +16,8 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
         public double? RadiusInKm { get; set; }
 
         // Pagination
-        public int Page { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
+        public int Page { get; set; }
+        public int PageSize { get; set; }
 
         public Geometry? Geopoint => HasGeolocation
             ? new Point(Longitude!.Value, Latitude!.Value) { SRID = 4326 }
@@ -26,15 +26,15 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
         public bool HasGeolocation => Latitude.HasValue && Longitude.HasValue;
 
         public GetAdvertisementsQuery(string? type, string? categoryName,
-            double? latitude, double? longitude, double? radiusInKm, int page, int pageSize)
+            double? latitude, double? longitude, double? radiusInKm, int? page, int? pageSize)
         {
             Type = type;
             CategoryName = categoryName;
             Latitude = latitude;
             Longitude = longitude;
             RadiusInKm = radiusInKm;
-            Page = page;
-            PageSize = pageSize;
+            Page = page ?? 1;
+            PageSize = pageSize ?? 10;
         }
     }
 

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
+    [ExcludeFromCodeCoverage]
     public static class StorageExtensions
     {
 

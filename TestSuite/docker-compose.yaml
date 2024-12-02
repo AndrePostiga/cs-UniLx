@@ -1,0 +1,88 @@
+services:
+  postgis:
+    container_name: unilx-postgis
+    hostname: unilx-postgis
+    image: postgis/postgis:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - unilx_postgis_data:/var/lib/postgresql/data
+      - ./postgis/add-postgis-user.sql:/docker-entrypoint-initdb.d/02-init-user.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d postgres || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default_network
+
+  rabbitmq:
+    container_name: unilx-rabbitmq
+    hostname: unilx-rabbitmq
+    restart: unless-stopped
+    image: rabbitmq:3-management
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser_rabbitmq
+      - RABBITMQ_DEFAULT_PASS=mypassword123
+    volumes:
+      - unilx_rabbitmq_data:/var/lib/rabbitmq/mnesia
+    ports:
+      - "15672:15672" #management
+      - "5672:5672" #amqp
+    networks:
+      - default_network
+
+  mock-server:
+    container_name: mock_server
+    hostname: mock_server
+    image: mockoon/cli:9
+    command: ["--data", "data", "--port", "3000"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/healthcheck || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
+    volumes:
+      - ./mockoon/configuration.json:/data
+    ports:
+      - "3000:3000"
+    networks:
+      - default_network
+
+  api-service:
+    container_name: api_service
+    hostname: api_service
+    build:
+      context: ../
+      dockerfile: ./TestSuite/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8080:3000
+    depends_on:
+      - mock-server
+      - rabbitmq
+      - postgis
+    environment:
+      - UNILX_DATABASE__CONNECTIONSTRING=User Id=myuser;Password=mypassword;Server=postgis;Port=5432;Database=postgres;
+      - UNILX_SUPABASESETTINGS__URL=mock_server:3000
+      - UNILX_MAPSAPI__URL=mock_server:3000
+    networks:
+      - default_network
+
+networks:
+  default_network:
+
+volumes:
+  unilx_rabbitmq_data:
+  unilx_postgis_data:

@@ -27,11 +27,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         private ElectronicsDetails() : base() { }
 
         public ElectronicsDetails(
-            string title,
+            string? title,
             string? description,
             int? price,
-            string productType,
-            string brand,
+            string? productType,
+            string? brand,
             string? model,
             string? storageCapacity,
             string? memory,
@@ -77,17 +77,17 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             Price = price;
         }
 
-        private void SetProductType(string productType)
+        private void SetProductType(string? productType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(productType), "ProductType cannot be null or empty.");
-            DomainException.ThrowIf(productType.Length > 100, "ProductType must be 100 characters or less.");
+            DomainException.ThrowIf(productType!.Length > 100, "ProductType must be 100 characters or less.");
             ProductType = productType;
         }
 
-        private void SetBrand(string brand)
+        private void SetBrand(string? brand)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(brand), "Brand cannot be null or empty.");
-            DomainException.ThrowIf(brand.Length > 100, "Brand must be 100 characters or less.");
+            DomainException.ThrowIf(brand!.Length > 100, "Brand must be 100 characters or less.");
             Brand = brand;
         }
 
@@ -95,7 +95,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         {
             if (!string.IsNullOrWhiteSpace(storageCapacity))
             {
-                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase);
+                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
                 DomainException.ThrowIf(!regex.IsMatch(storageCapacity), "StorageCapacity must start with numbers and end with Kb, Mb, Gb, or Tb.");
             }
             StorageCapacity = storageCapacity;
@@ -105,7 +105,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
         {
             if (!string.IsNullOrWhiteSpace(memory))
             {
-                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase);
+                var regex = new Regex(@"^\d+(KB|MB|GB|TB)$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
                 DomainException.ThrowIf(!regex.IsMatch(memory), "Memory must start with numbers and end with Kb, Mb, Gb, or Tb.");
             }
             Memory = memory;
@@ -140,10 +140,9 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetWarranty(DateTime? warrantyUntil)
         {
-            if (HasWarranty && warrantyUntil.HasValue)
-            {
+            if (warrantyUntil.HasValue)
                 DomainException.ThrowIf(warrantyUntil.Value <= DateTime.UtcNow, "WarrantyUntil must be in the future.");
-            }
+            
             WarrantyUntil = warrantyUntil;
         }
 

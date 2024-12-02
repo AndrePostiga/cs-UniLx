@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace UniLx.Shared.LibExtensions
 {
@@ -41,7 +36,7 @@ namespace UniLx.Shared.LibExtensions
             return new ParameterReplacer(oldParameter, newParameter).Visit(expression);
         }
 
-        private class ParameterReplacer : ExpressionVisitor
+        private sealed class ParameterReplacer : ExpressionVisitor
         {
             private readonly ParameterExpression _oldParameter;
             private readonly ParameterExpression _newParameter;

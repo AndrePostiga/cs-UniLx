@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UniLx.ApiService.ExceptionHandlers
 {
-    internal sealed class GlobalExceptionHandler : IExceptionHandler
+    public sealed class GlobalExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<GlobalExceptionHandler> _logger;
 
@@ -20,7 +20,7 @@ namespace UniLx.ApiService.ExceptionHandlers
             _logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            httpContext.Response.ContentType = "application/problem+json";
+            
 
             var problemDetails = new ProblemDetails
             {
@@ -29,6 +29,8 @@ namespace UniLx.ApiService.ExceptionHandlers
             };
 
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+
+            httpContext.Response.ContentType = "application/problem+json";
             return true;
         }
     }

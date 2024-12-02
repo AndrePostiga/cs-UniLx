@@ -1,0 +1,36 @@
+name: Test Application
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        description: '.NET version to use'
+        required: true
+        type: string
+        default: '9.0.x'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+
+    - name: Restore Dependencies
+      run: dotnet restore src/UniLx.Tests/UniLx.Tests.csproj
+
+    - name: Build Test Project
+      run: dotnet build src/UniLx.Tests/UniLx.Tests.csproj --configuration Debug
+
+    - name: Run Unit Tests
+      run: |
+        mkdir -p TestResults
+        dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
+          --no-build \
+          --verbosity normal
+

@@ -4,6 +4,8 @@ using UniLx.ApiService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables("UniLx_");
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
 {
@@ -35,4 +37,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.Run();
+await app.RunAsync();

@@ -18,6 +18,10 @@ namespace UniLx.Shared.Abstractions
         {
             Status = ((int)error.StatusCode);
             Title = "One error occurred.";
+
+            if (error.Description is null)
+                return;
+
             Errors = new Dictionary<string, string[]>
             {
                 { error.Code, new string[]{ error.Description } }

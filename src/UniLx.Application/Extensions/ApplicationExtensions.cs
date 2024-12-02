@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Behaviors;
-using UniLx.Application.Usecases.Accounts.Commands.CreateAccount;
 
 namespace UniLx.Application.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class ApplicationExtensions
     {
         public static WebApplicationBuilder AddApplication(this WebApplicationBuilder builder)
@@ -16,8 +17,7 @@ namespace UniLx.Application.Extensions
                 cfg.AddOpenBehavior(typeof(CommandValidatorBehavior<,>));
             });
 
-            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);
-            //builder.Services.AddTransient<CreateAccountCommandValidator>();
+            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);          
 
             return builder;
         }

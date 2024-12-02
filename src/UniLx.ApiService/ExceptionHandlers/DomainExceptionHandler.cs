@@ -6,7 +6,7 @@ using UniLx.Domain.Exceptions;
 
 namespace UniLx.ApiService.ExceptionHandlers
 {
-    internal sealed class DomainExceptionHandler : IExceptionHandler
+    public sealed class DomainExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<DomainExceptionHandler> _logger;
 
