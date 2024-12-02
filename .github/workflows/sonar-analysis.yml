@@ -20,18 +20,29 @@ jobs:
       with:
         dotnet-version: ${{ inputs.dotnet_version }}
 
-    - name: Install Sonar Scanner
-      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Install SonarCloud scanner
+      run: dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
-    - name: Run SonarQube Analysis
+    - name: Install Coverlet Console
+      run: dotnet tool install --global coverlet.console
+
+    - name: Install project dependencies
+      run: dotnet restore src/UniLx.sln
+
+    - name: Test and analyze
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.sonar_token }}
       run: |
-        dotnet sonarscanner begin \
-          /k:"AndrePostiga_cs-UniLx" \
-          /o:"andrepostiga" \
-          /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.login=${{ secrets.SONAR_TOKEN  }} \
-          /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
+        ./.sonar/scanner/dotnet-sonarscanner begin /k:"AndrePostiga_cs-UniLx" /o:"andrepostiga" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=TestResults/coverage.opencover.xml
+        
         dotnet build src/UniLx.ApiService/UniLx.ApiService.csproj
-        dotnet sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+        dotnet build src/UniLx.Tests/UniLx.Tests.csproj
+
+        coverlet src/UniLx.Tests/bin/Debug/net9.0/UniLx.Tests.dll \
+          --target "dotnet" \
+          --targetargs "test src/UniLx.Tests/UniLx.Tests.csproj --no-build" \
+          --format opencover \
+          --output TestResults/coverage.opencover.xml  
+
+        ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

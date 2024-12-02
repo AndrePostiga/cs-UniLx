@@ -2,11 +2,13 @@
 using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 
 namespace UniLx.ApiService.Controllers.Advertisements
 {
+    [ExcludeFromCodeCoverage]
     public class AdminControllers : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
@@ -21,6 +23,7 @@ namespace UniLx.ApiService.Controllers.Advertisements
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal static class AdminControllerHandlers
     {
         /// <summary>

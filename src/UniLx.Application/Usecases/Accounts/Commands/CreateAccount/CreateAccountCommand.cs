@@ -1,21 +1,21 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using UniLx.Domain.Entities.AccountAgg.ValueObj;
+using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 {
     public class CreateAccountCommand : ICommand<IResult>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Cpf { get; set; }
+        public string? Cpf { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         public string? Description { get; set; }
 
-        public CreateAccountCommand(string name, string cpf, string email, string? description)
+        public CreateAccountCommand(string? name, string? cpf, string? email, string? description)
         {
             Name = name;
             Cpf = cpf;
@@ -51,6 +51,6 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
                 .WithMessage("Description must be 256 characters or less.");
         }
 
-        private bool BeAValidCpf(string cpf) => CPF.IsValid(cpf);
+        private static bool BeAValidCpf(string? cpf) => CPF.IsValid(cpf);
     }
 }

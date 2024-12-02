@@ -19,6 +19,8 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
         private static readonly int MaxAlt = 256;  // Maximum Alt Text
         private static readonly string[] ValidTargets = { "_self", "_blank", "_parent", "_top" };
 
+        private Image() { }
+
         public Image(Uri url, string format, long sizeInBytes, int width, int height, string? alt, string? target)
         {
             DomainException.ThrowIf(url == null || !url.IsAbsoluteUri, "Url must be a valid absolute URI.");

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
@@ -22,6 +23,7 @@ using Weasel.Postgresql.SqlGeneration;
 
 namespace UniLx.Infra.Data.ServiceExtensions
 {
+    [ExcludeFromCodeCoverage]
     public static class DatabaseExtensions
     {
         public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder)
@@ -46,12 +48,6 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 opts.Schema.Include<CategoryRegistry>();
                 opts.Schema.Include<AdvertisementRegistry>();
 
-                //opts.Policies.ForAllDocuments(x =>
-                //{
-                //    x.Metadata.CausationId.Enabled = true;
-                //    x.Metadata.CorrelationId.Enabled = true;
-                //    x.Metadata.Headers.Enabled = true;
-                //});
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementType>());
 
@@ -93,84 +89,85 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class SeedData : IInitialData
     {
-        private readonly object[] _initialData;
+        private readonly object[] _initialData;        
 
         public SeedData()
         {
             var beautyCategories = new[]
             {
-                Category.CreateNewCategory("beauty", "makeup", "Maquiagem", "Acessórios para rosto"),
-                Category.CreateNewCategory("beauty", "skincare", "Cuidados com a Pele", "Produtos de cuidado facial e corporal"),
-                Category.CreateNewCategory("beauty", "haircare", "Cuidados com o Cabelo", "Shampoos, condicionadores e produtos para cabelo"),
-                Category.CreateNewCategory("beauty", "fragrances", "Perfumes e Fragrâncias", "Perfumes e sprays corporais"),
-                Category.CreateNewCategory("beauty", "nailcare", "Cuidados com Unhas", "Esmaltes, removedores e acessórios"),
-                Category.CreateNewCategory("beauty", "tools", "Ferramentas e Acessórios", "Pincéis, aplicadores e ferramentas de beleza"),
-                Category.CreateNewCategory("beauty", "bath_body", "Banho e Corpo", "Sabonetes, loções e produtos para banho"),
-                Category.CreateNewCategory("beauty", "men_grooming", "Cuidados Masculinos", "Produtos de barbear e cuidados masculinos")
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "makeup", "Maquiagem", "Acessórios para rosto"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "skincare", "Cuidados com a Pele", "Produtos de cuidado facial e corporal"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "haircare", "Cuidados com o Cabelo", "Shampoos, condicionadores e produtos para cabelo"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "fragrances", "Perfumes e Fragrâncias", "Perfumes e sprays corporais"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "nailcare", "Cuidados com Unhas", "Esmaltes, removedores e acessórios"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "tools", "Ferramentas e Acessórios", "Pincéis, aplicadores e ferramentas de beleza"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "bath_body", "Banho e Corpo", "Sabonetes, loções e produtos para banho"),
+                Category.CreateNewCategory(AdvertisementType.Beauty.Name, "men_grooming", "Cuidados Masculinos", "Produtos de barbear e cuidados masculinos")
             };
 
             var electronicsCategories = new[]
             {
-                Category.CreateNewCategory("electronics", "smartphones", "Smartphones", "Celulares e acessórios de última geração"),
-                Category.CreateNewCategory("electronics", "laptops", "Notebooks", "Laptops para trabalho, estudo e jogos"),
-                Category.CreateNewCategory("electronics", "pcs", "Computadores", "Desktops e acessórios para escritório"),
-                Category.CreateNewCategory("electronics", "videogames", "Videogames e Consoles", "Consoles e jogos para diversão"),
-                Category.CreateNewCategory("electronics", "audio_devices", "Dispositivos de Áudio", "Fones de ouvido, caixas de som e mais"),
-                Category.CreateNewCategory("electronics", "wearables", "Tecnologia Vestível", "Smartwatches, rastreadores de fitness e mais"),
-                Category.CreateNewCategory("electronics", "cameras", "Câmeras e Fotografia", "Câmeras digitais, DSLRs e acessórios"),
-                Category.CreateNewCategory("electronics", "drones", "Drones", "Drones para fotografia e recreação")
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "smartphones", "Smartphones", "Celulares e acessórios de última geração"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "laptops", "Notebooks", "Laptops para trabalho, estudo e jogos"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "pcs", "Computadores", "Desktops e acessórios para escritório"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "videogames", "Videogames e Consoles", "Consoles e jogos para diversão"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "audio_devices", "Dispositivos de Áudio", "Fones de ouvido, caixas de som e mais"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "wearables", "Tecnologia Vestível", "Smartwatches, rastreadores de fitness e mais"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "cameras", "Câmeras e Fotografia", "Câmeras digitais, DSLRs e acessórios"),
+                Category.CreateNewCategory(AdvertisementType.Electronics.Name, "drones", "Drones", "Drones para fotografia e recreação")
             };
 
             var eventsCategories = new[]
             {
-                Category.CreateNewCategory("events", "concerts", "Shows e Concertos", "Eventos musicais ao vivo e festivais"),
-                Category.CreateNewCategory("events", "workshops", "Workshops e Cursos", "Cursos e oficinas de aprendizado"),
-                Category.CreateNewCategory("events", "sports_outdoors", "Esportes e Atividades ao Ar Livre", "Atividades esportivas e ao ar livre"),
-                Category.CreateNewCategory("events", "exhibitions_fairs", "Exposições e Feiras", "Exposições de arte e feiras de diversos setores"),
-                Category.CreateNewCategory("events", "conferences", "Conferências e Palestras", "Seminários, conferências e eventos de networking"),
-                Category.CreateNewCategory("events", "parties_nightlife", "Festas e Entretenimento Noturno", "Baladas, festas e eventos noturnos"),
-                Category.CreateNewCategory("events", "religious_spiritual", "Eventos Religiosos e Espirituais", "Retiros e celebrações religiosas"),
-                Category.CreateNewCategory("events", "cinema_theater", "Cinema e Teatro", "Apresentações de filmes, peças e comédia"),
-                Category.CreateNewCategory("events", "community_meetups", "Encontros e Comunidades", "Reuniões de clubes e encontros de grupos"),
-                Category.CreateNewCategory("events", "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais")
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "concerts", "Shows e Concertos", "Eventos musicais ao vivo e festivais"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "workshops", "Workshops e Cursos", "Cursos e oficinas de aprendizado"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "sports_outdoors", "Esportes e Atividades ao Ar Livre", "Atividades esportivas e ao ar livre"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "exhibitions_fairs", "Exposições e Feiras", "Exposições de arte e feiras de diversos setores"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "conferences", "Conferências e Palestras", "Seminários, conferências e eventos de networking"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "parties_nightlife", "Festas e Entretenimento Noturno", "Baladas, festas e eventos noturnos"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "religious_spiritual", "Eventos Religiosos e Espirituais", "Retiros e celebrações religiosas"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "cinema_theater", "Cinema e Teatro", "Apresentações de filmes, peças e comédia"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "community_meetups", "Encontros e Comunidades", "Reuniões de clubes e encontros de grupos"),
+                Category.CreateNewCategory(AdvertisementType.Events.Name, "festivals_fairs", "Festivais Culturais e Feiras de Rua", "Eventos culturais e feiras locais")
             };
 
             var fashionCategories = new[]
             {
-                Category.CreateNewCategory("fashion", "mens_clothing", "Roupas Masculinas", "Camisas, calças, jaquetas e mais"),
-                Category.CreateNewCategory("fashion", "womens_clothing", "Roupas Femininas", "Vestidos, saias, blusas e mais"),
-                Category.CreateNewCategory("fashion", "unisex", "Roupas Unissex", "Estilos que servem para todos os gêneros"),
-                Category.CreateNewCategory("fashion", "accessories", "Acessórios", "Relógios, chapéus, bolsas e mais"),
-                Category.CreateNewCategory("fashion", "footwear", "Calçados", "Sapatos, tênis, botas e mais"),
-                Category.CreateNewCategory("fashion", "sportswear", "Roupas Esportivas", "Roupas para atividades físicas e esportes"),
-                Category.CreateNewCategory("fashion", "kids_clothing", "Roupas Infantis", "Roupas para crianças de todas as idades"),
-                Category.CreateNewCategory("fashion", "luxury", "Moda de Luxo", "Estilos de alta costura e marcas premium"),
-                Category.CreateNewCategory("fashion", "traditional", "Roupas Tradicionais", "Trajes típicos e roupas culturais")
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "mens_clothing", "Roupas Masculinas", "Camisas, calças, jaquetas e mais"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "womens_clothing", "Roupas Femininas", "Vestidos, saias, blusas e mais"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "unisex", "Roupas Unissex", "Estilos que servem para todos os gêneros"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "accessories", "Acessórios", "Relógios, chapéus, bolsas e mais"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "footwear", "Calçados", "Sapatos, tênis, botas e mais"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "sportswear", "Roupas Esportivas", "Roupas para atividades físicas e esportes"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "kids_clothing", "Roupas Infantis", "Roupas para crianças de todas as idades"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "luxury", "Moda de Luxo", "Estilos de alta costura e marcas premium"),
+                Category.CreateNewCategory(AdvertisementType.Fashion.Name, "traditional", "Roupas Tradicionais", "Trajes típicos e roupas culturais")
             };
 
             var jobOpportunitiesCategories = new[]
             {
-                Category.CreateNewCategory("job_opportunities", "it_software", "TI e Software", "Vagas para desenvolvedores, engenheiros de software e profissionais de tecnologia"),
-                Category.CreateNewCategory("job_opportunities", "healthcare", "Saúde e Medicina", "Oportunidades para médicos, enfermeiros e profissionais de saúde"),
-                Category.CreateNewCategory("job_opportunities", "education", "Educação", "Vagas para professores, tutores e profissionais da educação"),
-                Category.CreateNewCategory("job_opportunities", "finance", "Finanças e Contabilidade", "Posições para contadores, analistas financeiros e similares"),
-                Category.CreateNewCategory("job_opportunities", "marketing", "Marketing e Publicidade", "Trabalhos relacionados a marketing, branding e publicidade"),
-                Category.CreateNewCategory("job_opportunities", "construction", "Construção Civil", "Oportunidades em construção, engenharia civil e arquitetura"),
-                Category.CreateNewCategory("job_opportunities", "hospitality", "Hotelaria e Turismo", "Vagas em hotéis, turismo e serviços relacionados"),
-                Category.CreateNewCategory("job_opportunities", "retail", "Varejo e Atendimento ao Cliente", "Posições em lojas, vendas e suporte ao cliente"),
-                Category.CreateNewCategory("job_opportunities", "transportation", "Transporte e Logística", "Trabalhos em logística, transporte e cadeia de suprimentos"),
-                Category.CreateNewCategory("job_opportunities", "freelance", "Freelance", "Oportunidades independentes e temporárias"),
-                Category.CreateNewCategory("job_opportunities", "government", "Setor Público", "Vagas em serviços públicos e governo"),
-                Category.CreateNewCategory("job_opportunities", "remote", "Trabalho Remoto", "Oportunidades para trabalhar remotamente de qualquer lugar")
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "it_software", "TI e Software", "Vagas para desenvolvedores, engenheiros de software e profissionais de tecnologia"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "healthcare", "Saúde e Medicina", "Oportunidades para médicos, enfermeiros e profissionais de saúde"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "education", "Educação", "Vagas para professores, tutores e profissionais da educação"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "finance", "Finanças e Contabilidade", "Posições para contadores, analistas financeiros e similares"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "marketing", "Marketing e Publicidade", "Trabalhos relacionados a marketing, branding e publicidade"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "construction", "Construção Civil", "Oportunidades em construção, engenharia civil e arquitetura"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "hospitality", "Hotelaria e Turismo", "Vagas em hotéis, turismo e serviços relacionados"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "retail", "Varejo e Atendimento ao Cliente", "Posições em lojas, vendas e suporte ao cliente"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "transportation", "Transporte e Logística", "Trabalhos em logística, transporte e cadeia de suprimentos"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "freelance", "Freelance", "Oportunidades independentes e temporárias"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "government", "Setor Público", "Vagas em serviços públicos e governo"),
+                Category.CreateNewCategory(AdvertisementType.JobOpportunities.Name, "remote", "Trabalho Remoto", "Oportunidades para trabalhar remotamente de qualquer lugar")
             };
 
             var petsCategories = new[]
             {
-                Category.CreateNewCategory("pets", "accessories", "Acessórios para Animais", "Coleiras, camas, brinquedos, gaiolas e mais"),
-                Category.CreateNewCategory("pets", "adoption", "Adoção", "Animais disponíveis para adoção"),
-                Category.CreateNewCategory("pets", "selling", "Venda", "Animais disponíveis para venda"),
+                Category.CreateNewCategory(AdvertisementType.Pets.Name, "accessories", "Acessórios para Animais", "Coleiras, camas, brinquedos, gaiolas e mais"),
+                Category.CreateNewCategory(AdvertisementType.Pets.Name, "adoption", "Adoção", "Animais disponíveis para adoção"),
+                Category.CreateNewCategory(AdvertisementType.Pets.Name, "selling", "Venda", "Animais disponíveis para venda"),
             };
 
             _initialData = [
@@ -193,6 +190,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
     }
 
     #region MartenRegistry
+    [ExcludeFromCodeCoverage]
     public class AccountRegistry : MartenRegistry
     {
         public AccountRegistry()
@@ -201,21 +199,10 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 .Identity(x => x.Id)
                 .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
                 .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
-
-            //configure: idx =>
-            //{
-            //    idx.Name = "idx_email";
-            //    idx.IsUnique = true;
-            //}
-            //configure: idx =>
-            //{
-            //    idx.Name = "idx_cpf";
-            //    idx.Method = IndexMethod.hash;
-            //    idx.IsUnique = true;
-            //})
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class CategoryRegistry : MartenRegistry
     {
         public CategoryRegistry()
@@ -231,6 +218,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class AdvertisementRegistry : MartenRegistry
     {
         public AdvertisementRegistry()
@@ -243,6 +231,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
     }
     #endregion
 
+    [ExcludeFromCodeCoverage]
     public class HasSmartEnumValueParser<TEnum> : IMethodCallParser where TEnum : SmartEnum<TEnum, int>
     {
         public bool Matches(MethodCallExpression expression)
@@ -292,7 +281,9 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 }
 
                 // Generate the SQL fragment with parameterized input
+#pragma warning disable CS8604 // Possível argumento de referência nula.
                 return new WhereFragment($"{locator} = ?", targetEnumValue.ToString());
+#pragma warning restore CS8604 // Possível argumento de referência nula.
             }
             catch (Exception ex)
             {

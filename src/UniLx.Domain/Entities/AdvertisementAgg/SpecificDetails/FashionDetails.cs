@@ -26,10 +26,10 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             string? title,
             string? description,
             int? price,
-            string clothingType,
-            string brand,
+            string? clothingType,
+            string? brand,
             List<string> sizes,
-            string gender,
+            string? gender,
             List<string>? colors = null,
             List<string>? materials = null,
             List<string>? features = null,
@@ -51,17 +51,17 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             IsSustainable = isSustainable;
         }
 
-        private void SetClothingType(string clothingType)
+        private void SetClothingType(string? clothingType)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(clothingType), "ClothingType cannot be null or empty.");
-            DomainException.ThrowIf(clothingType.Length > 100, "ClothingType must be 100 characters or less.");
+            DomainException.ThrowIf(clothingType!.Length > 100, "ClothingType must be 100 characters or less.");
             ClothingType = clothingType;
         }
 
-        private void SetBrand(string brand)
+        private void SetBrand(string? brand)
         {
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(brand), "Brand cannot be null or empty.");
-            DomainException.ThrowIf(brand.Length > 100, "Brand must be 100 characters or less.");
+            DomainException.ThrowIf(brand!.Length > 100, "Brand must be 100 characters or less.");
             Brand = brand;
         }
 
@@ -83,7 +83,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
             Sizes = validatedSizes;
         }
 
-        private void SetGender(string gender)
+        private void SetGender(string? gender)
         {
             var hasGenderType = FashionGender.TryFromName(gender, ignoreCase: true, out var genderType);
             DomainException.ThrowIf(hasGenderType == false, $"Invalid fashion gender type, possible values are {string.Join(",", FashionGender.List)}.");

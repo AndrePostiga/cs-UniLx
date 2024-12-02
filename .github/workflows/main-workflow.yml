@@ -30,21 +30,19 @@ jobs:
     with:
       dotnet_version: '9.0.x'
 
-  integration-tests:
-    name: Integration Tests
-    needs: 
-      - build
-      - test
-    uses: ./.github/workflows/integration-tests.yml
-
   sonar-analysis:
     name: Sonar Analysis
     needs: 
-      - build
-      - test
-      - integration-tests
+       - build
     uses: ./.github/workflows/sonar-analysis.yml
     with:
       dotnet_version: '9.0.x'
     secrets: inherit
 
+  integration-tests:
+    name: Integration Tests
+    needs: 
+      - build
+      - test
+      - sonar-analysis
+    uses: ./.github/workflows/integration-tests.yml

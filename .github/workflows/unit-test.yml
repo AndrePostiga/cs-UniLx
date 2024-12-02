@@ -32,15 +32,5 @@ jobs:
         mkdir -p TestResults
         dotnet test src/UniLx.Tests/UniLx.Tests.csproj \
           --no-build \
-          --verbosity normal \
-          --logger:"trx;LogFileName=test_results.trx" \
-          --results-directory TestResults/ \
-          --collect:"XPlat Code Coverage"
-
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: TestResults/
-        if-no-files-found: error 
+          --verbosity normal
 
