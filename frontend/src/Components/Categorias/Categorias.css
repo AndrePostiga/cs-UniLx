@@ -1,0 +1,31 @@
+.categorias-container .card {
+  border: 1px solid #ddd; 
+  border-radius: 0.5rem; 
+  transition: transform 0.2s; 
+  width: 10%;
+}
+
+.categorias-container .card:hover { 
+  transform: scale(1.05);
+}
+
+.categorias-container .card-img-top { 
+  max-height: 50px; 
+  width: auto; 
+  margin: 0 auto; 
+  margin-top: 15px;
+}
+
+.categorias-container .card-body { 
+  padding: 1rem;
+}
+
+.categorias-container .card-title { 
+  font-weight: bold; 
+  margin-bottom: 0; 
+  font-size: 14px;
+}
+
+.categorias-container { 
+  margin-top: 3.5rem; 
+}

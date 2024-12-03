@@ -1,0 +1,50 @@
+.container-busca-anuncios {
+  padding: 2rem;
+  .titulo-busca {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .form-busca {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .form-filtro {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .form-control {
+    max-width: 300px;
+  }
+  
+  .card-anuncio {
+    width: 18rem;
+    height: 25rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .card-anuncio img {
+    height: 10rem;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .btn-vermais {
+    margin-top: auto;
+  }
+}
