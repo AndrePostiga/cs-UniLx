@@ -27,11 +27,8 @@ function AdForm() {
 
   const [mapCenter, setMapCenter] = useState({ lat: -22.8808, lng: -43.1043 });
 
-
-
-
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyDsSwjiKYS4BxAASXnYwNfZkSjaK1Eug3c", // Substitua pela sua chave
+    googleMapsApiKey: "", // Substitua pela sua chave
   });
 
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -39,31 +36,25 @@ function AdForm() {
   const handleMapClick = useCallback((event) => {
     const latitude = event.latLng.lat();
     const longitude = event.latLng.lng();
-  
+
     setFormData((prev) => ({
       ...prev,
       latitude: latitude.toString(),
       longitude: longitude.toString(),
     }));
-  
+
     setSelectedLocation({ lat: latitude, lng: longitude });
     setMapCenter({ lat: latitude, lng: longitude }); // Atualiza o centro do mapa
   }, []);
-  
 
   if (!isLoaded) return <div>Carregando mapa...</div>;
 
-
-
-
-
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-  
+
     // Atualizar o campo "type" automaticamente com base na categoria selecionada
     let updatedValue = type === "checkbox" ? checked : value;
-  
+
     // Mapeamento de categoria para tipo de anúncio
     const categoryToTypeMap = {
       beleza: "beauty",
@@ -73,7 +64,7 @@ function AdForm() {
       empregos: "job_opportunities",
       animais: "pets",
     };
-  
+
     // Mapeamento de subcategorias
     const subCategoryMap = {
       beleza: ["makeup", "fragrances", "haircare", "skincare"],
@@ -83,11 +74,11 @@ function AdForm() {
       empregos: ["it_software", "healthcare", "education", "freelance"],
       animais: ["accessories"],
     };
-  
+
     if (name === "category") {
       const subCategoriesForCategory = subCategoryMap[updatedValue] || [];
       setSubCategories(subCategoriesForCategory);
-  
+
       setFormData((prev) => ({
         ...prev,
         [name]: updatedValue,
@@ -101,8 +92,7 @@ function AdForm() {
       }));
     }
   };
-  
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -151,64 +141,70 @@ function AdForm() {
         title: formData.title,
         description: formData.description,
         price: parseFloat(formData.price),
-        clothing_type: formData.clothing_type, 
+        clothing_type: formData.clothing_type,
         brand: formData.brand,
-        sizes: formData.sizes.split(",").map((size) => size.trim()), 
-        gender: formData.gender, 
-        colors: formData.colors.split(",").map((color) => color.trim()), 
-        materials: formData.materials.split(",").map((material) => material.trim()), 
-        features: formData.features.split(",").map((feature) => feature.trim()), 
+        sizes: formData.sizes.split(",").map((size) => size.trim()),
+        gender: formData.gender,
+        colors: formData.colors.split(",").map((color) => color.trim()),
+        materials: formData.materials
+          .split(",")
+          .map((material) => material.trim()),
+        features: formData.features.split(",").map((feature) => feature.trim()),
         designer: formData.designer,
-        isHandmade: formData.is_handmade === "true", 
+        isHandmade: formData.is_handmade === "true",
         releaseDate: new Date(formData.release_date).toISOString(),
-        isSustainable: formData.is_sustainable === "true", 
+        isSustainable: formData.is_sustainable === "true",
       };
     } else if (formData.category === "eventos") {
       payload.events_details = {
-          title: formData.title,
-          description: formData.description,
-          price: parseFloat(formData.price),
-          event_type: formData.event_type, 
-          event_date: new Date(formData.event_date).toISOString(),
-          organizer: formData.organizer,
-          age_restriction: formData.age_restriction,
-          dress_code: formData.dress_code,
-          highlights: formData.highlights.split(",").map((highlight) => highlight.trim()),
-          is_online: formData.is_online === "true",
-          contact_information: {
-              phone: {
-                  country_code: formData.phone_country_code,
-                  area_code: formData.phone_area_code,
-                  number: formData.phone_number
-              },
-              email: formData.contact_email,
-              website: formData.contact_website
-          }
+        title: formData.title,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        event_type: formData.event_type,
+        event_date: new Date(formData.event_date).toISOString(),
+        organizer: formData.organizer,
+        age_restriction: formData.age_restriction,
+        dress_code: formData.dress_code,
+        highlights: formData.highlights
+          .split(",")
+          .map((highlight) => highlight.trim()),
+        is_online: formData.is_online === "true",
+        contact_information: {
+          phone: {
+            country_code: formData.phone_country_code,
+            area_code: formData.phone_area_code,
+            number: formData.phone_number,
+          },
+          email: formData.contact_email,
+          website: formData.contact_website,
+        },
       };
     } else if (formData.category === "empregos") {
       payload.job_opportunities_details = {
-          title: formData.title,
-          description: formData.description,
-          position: formData.position,
-          company: formData.company,
-          salary: parseFloat(formData.salary),
-          is_salary_disclosed: formData.is_salary_disclosed,
-          work_location: formData.work_location,
-          employment_type: formData.employment_type,
-          experience_level: formData.experience_level,
-          skills: formData.skills.split(",").map((skill) => skill.trim()),
-          benefits: formData.benefits.split(",").map((benefit) => benefit.trim()),
-          realocation_help: formData.realocation_help === "true",
-          application_deadline: new Date(formData.application_deadline).toISOString(),
-          contact_information: {
-            phone: {
-                country_code: formData.phone_country_code,
-                area_code: formData.phone_area_code,
-                number: formData.phone_number
-            },
-            email: formData.contact_email,
-            website: formData.contact_website
-          }
+        title: formData.title,
+        description: formData.description,
+        position: formData.position,
+        company: formData.company,
+        salary: parseFloat(formData.salary),
+        is_salary_disclosed: formData.is_salary_disclosed,
+        work_location: formData.work_location,
+        employment_type: formData.employment_type,
+        experience_level: formData.experience_level,
+        skills: formData.skills.split(",").map((skill) => skill.trim()),
+        benefits: formData.benefits.split(",").map((benefit) => benefit.trim()),
+        realocation_help: formData.realocation_help === "true",
+        application_deadline: new Date(
+          formData.application_deadline
+        ).toISOString(),
+        contact_information: {
+          phone: {
+            country_code: formData.phone_country_code,
+            area_code: formData.phone_area_code,
+            number: formData.phone_number,
+          },
+          email: formData.contact_email,
+          website: formData.contact_website,
+        },
       };
     } else if (formData.category === "animais") {
       payload.pet_details = {
@@ -218,11 +214,12 @@ function AdForm() {
         pet_type: formData.pet_type,
         animal_type: formData.animal_type,
         accessory_type: formData.accessory_type,
-        materials: formData.materials.split(",").map((material) => material.trim()),
+        materials: formData.materials
+          .split(",")
+          .map((material) => material.trim()),
       };
     }
-    
-  
+
     console.log(JSON.stringify(payload, null, 2));
     try {
       const response = await fetch("http://localhost:5327/advertisements", {
@@ -277,7 +274,6 @@ function AdForm() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        
         <div className="mb-3">
           <label htmlFor="expires_at" className="form-label">
             Data de Expiração do Anúncio
@@ -290,7 +286,7 @@ function AdForm() {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className="mb-3">
           <label htmlFor="latitude" className="form-label">
             Latitude
@@ -320,18 +316,17 @@ function AdForm() {
         <div className="mb-3">
           <label>Escolha o local no mapa</label>
           <div style={{ height: "400px", width: "100%" }}>
-          <GoogleMap
-            zoom={10}
-            center={mapCenter} // Usa o estado como centro do mapa
-            mapContainerStyle={{ height: "100%", width: "100%" }}
-            onClick={handleMapClick}
-          >
-            {selectedLocation && <Marker position={selectedLocation} />}
-          </GoogleMap>
-
+            <GoogleMap
+              zoom={10}
+              center={mapCenter} // Usa o estado como centro do mapa
+              mapContainerStyle={{ height: "100%", width: "100%" }}
+              onClick={handleMapClick}
+            >
+              {selectedLocation && <Marker position={selectedLocation} />}
+            </GoogleMap>
           </div>
         </div>
-        
+
         <div className="mb-3">
           <label htmlFor="category" className="form-label">
             Categoria
@@ -371,7 +366,6 @@ function AdForm() {
             ))}
           </select>
         </div>
-
 
         {formData.category === "beleza" && (
           <>
@@ -877,201 +871,201 @@ function AdForm() {
         )}
 
         {formData.category === "eventos" && (
-            <>
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">
-                  Título
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  name="title"
-                  placeholder="Título"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="description" className="form-label">
-                  Descrição
-                </label>
-                <textarea
-                  className="form-control"
-                  id="description"
-                  name="description"
-                  placeholder="Descrição"
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="price" className="form-label">
-                  Preço
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="price"
-                  name="price"
-                  placeholder="Preço"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="event_type" className="form-label">
-                  Tipo de Evento
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="event_type"
-                  name="event_type"
-                  placeholder="Tipo de Evento"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="event_date" className="form-label">
-                  Data do Evento
-                </label>
-                <input
-                  type="datetime-local"
-                  className="form-control"
-                  id="event_date"
-                  name="event_date"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="organizer" className="form-label">
-                  Organizador
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="organizer"
-                  name="organizer"
-                  placeholder="Organizador"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="age_restriction" className="form-label">
-                  Restrição de Idade
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="age_restriction"
-                  name="age_restriction"
-                  placeholder="Restrição de Idade (age10, age12, age14, age16, age18, free)"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="dress_code" className="form-label">
-                  Dress Code
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="dress_code"
-                  name="dress_code"
-                  placeholder="Dress Code"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="highlights" className="form-label">
-                  Destaques (separados por vírgula)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="highlights"
-                  name="highlights"
-                  placeholder="Destaques"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-check mb-3">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="is_online"
-                  name="is_online"
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="is_online">
-                  É online?
-                </label>
-              </div>
-              <h5>Informações de Contato</h5>
-              <div className="mb-3">
-                <label htmlFor="phone_country_code" className="form-label">
-                  Código do País
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_country_code"
-                  name="phone_country_code"
-                  placeholder="Código do País"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="phone_area_code" className="form-label">
-                  Código de Área
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_area_code"
-                  name="phone_area_code"
-                  placeholder="Código de Área"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="phone_number" className="form-label">
-                  Número de Telefone
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_number"
-                  name="phone_number"
-                  placeholder="Número de Telefone"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="contact_email" className="form-label">
-                  E-mail de Contato
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="contact_email"
-                  name="contact_email"
-                  placeholder="E-mail de Contato"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="contact_website" className="form-label">
-                  Website
-                </label>
-                <input
-                  type="url"
-                  className="form-control"
-                  id="contact_website"
-                  name="contact_website"
-                  placeholder="Website"
-                  onChange={handleChange}
-                />
-              </div>
-            </>
+          <>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">
+                Título
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="title"
+                name="title"
+                placeholder="Título"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Descrição
+              </label>
+              <textarea
+                className="form-control"
+                id="description"
+                name="description"
+                placeholder="Descrição"
+                onChange={handleChange}
+              ></textarea>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="price" className="form-label">
+                Preço
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="price"
+                name="price"
+                placeholder="Preço"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="event_type" className="form-label">
+                Tipo de Evento
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="event_type"
+                name="event_type"
+                placeholder="Tipo de Evento"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="event_date" className="form-label">
+                Data do Evento
+              </label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                id="event_date"
+                name="event_date"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="organizer" className="form-label">
+                Organizador
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="organizer"
+                name="organizer"
+                placeholder="Organizador"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="age_restriction" className="form-label">
+                Restrição de Idade
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="age_restriction"
+                name="age_restriction"
+                placeholder="Restrição de Idade (age10, age12, age14, age16, age18, free)"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="dress_code" className="form-label">
+                Dress Code
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="dress_code"
+                name="dress_code"
+                placeholder="Dress Code"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="highlights" className="form-label">
+                Destaques (separados por vírgula)
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="highlights"
+                name="highlights"
+                placeholder="Destaques"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-check mb-3">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="is_online"
+                name="is_online"
+                onChange={handleChange}
+              />
+              <label className="form-check-label" htmlFor="is_online">
+                É online?
+              </label>
+            </div>
+            <h5>Informações de Contato</h5>
+            <div className="mb-3">
+              <label htmlFor="phone_country_code" className="form-label">
+                Código do País
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_country_code"
+                name="phone_country_code"
+                placeholder="Código do País"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phone_area_code" className="form-label">
+                Código de Área
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_area_code"
+                name="phone_area_code"
+                placeholder="Código de Área"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phone_number" className="form-label">
+                Número de Telefone
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_number"
+                name="phone_number"
+                placeholder="Número de Telefone"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="contact_email" className="form-label">
+                E-mail de Contato
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="contact_email"
+                name="contact_email"
+                placeholder="E-mail de Contato"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="contact_website" className="form-label">
+                Website
+              </label>
+              <input
+                type="url"
+                className="form-control"
+                id="contact_website"
+                name="contact_website"
+                placeholder="Website"
+                onChange={handleChange}
+              />
+            </div>
+          </>
         )}
 
         {formData.category === "empregos" && (
@@ -1243,44 +1237,44 @@ function AdForm() {
             </div>
             <h5>Informações de Contato</h5>
             <div className="mb-3">
-                <label htmlFor="phone_country_code" className="form-label">
-                  Código do País
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_country_code"
-                  name="phone_country_code"
-                  placeholder="Código do País"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="phone_area_code" className="form-label">
-                  Código de Área
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_area_code"
-                  name="phone_area_code"
-                  placeholder="Código de Área"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="phone_number" className="form-label">
-                  Número de Telefone
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phone_number"
-                  name="phone_number"
-                  placeholder="Número de Telefone"
-                  onChange={handleChange}
-                />
-              </div>
+              <label htmlFor="phone_country_code" className="form-label">
+                Código do País
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_country_code"
+                name="phone_country_code"
+                placeholder="Código do País"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phone_area_code" className="form-label">
+                Código de Área
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_area_code"
+                name="phone_area_code"
+                placeholder="Código de Área"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phone_number" className="form-label">
+                Número de Telefone
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone_number"
+                name="phone_number"
+                placeholder="Número de Telefone"
+                onChange={handleChange}
+              />
+            </div>
             <div className="mb-3">
               <label htmlFor="contact_email" className="form-label">
                 Email
@@ -1313,7 +1307,9 @@ function AdForm() {
         {formData.category === "animais" && (
           <>
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">Título</label>
+              <label htmlFor="title" className="form-label">
+                Título
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -1324,7 +1320,9 @@ function AdForm() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="description" className="form-label">Descrição</label>
+              <label htmlFor="description" className="form-label">
+                Descrição
+              </label>
               <textarea
                 className="form-control"
                 id="description"
@@ -1334,7 +1332,9 @@ function AdForm() {
               ></textarea>
             </div>
             <div className="mb-3">
-              <label htmlFor="price" className="form-label">Preço</label>
+              <label htmlFor="price" className="form-label">
+                Preço
+              </label>
               <input
                 type="number"
                 className="form-control"
@@ -1345,7 +1345,9 @@ function AdForm() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="pet_type" className="form-label">Tipo de Anúncio</label>
+              <label htmlFor="pet_type" className="form-label">
+                Tipo de Anúncio
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -1356,7 +1358,9 @@ function AdForm() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="animal_type" className="form-label">Animal</label>
+              <label htmlFor="animal_type" className="form-label">
+                Animal
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -1367,7 +1371,9 @@ function AdForm() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="accessory_type" className="form-label">Tipo de Acessório</label>
+              <label htmlFor="accessory_type" className="form-label">
+                Tipo de Acessório
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -1392,8 +1398,6 @@ function AdForm() {
             </div>
           </>
         )}
-
-
 
         <button type="submit" className="btn btn-primary mb-4">
           Cadastrar Anúncio
