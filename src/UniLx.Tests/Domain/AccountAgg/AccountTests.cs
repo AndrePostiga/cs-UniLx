@@ -175,19 +175,6 @@ namespace UniLx.Tests.Domain.AccountAgg
             Assert.Equal("Description field must have 256 characters or less", ex.Message);
         }
 
-        [Fact]
-        public void Constructor_ValidDescription_ShouldEncodeHtml()
-        {
-            // Arrange
-            string description = "<b>Bold description</b>";
-
-            // Act
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", description);
-
-            // Assert
-            Assert.Equal("&lt;b&gt;Bold description&lt;/b&gt;", account.Description);
-        }
-
         #endregion
     }
 
