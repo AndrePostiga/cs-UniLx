@@ -5,9 +5,9 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
 {
     public class Email
     {
-        public string Value { get; }
+        public string Value { get; private set; }
 
-        private Email(){}
+        public Email(){}
 
         // Define a static readonly Regex instance for email validation
         private static readonly Regex EmailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
