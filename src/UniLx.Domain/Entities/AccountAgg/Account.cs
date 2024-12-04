@@ -1,5 +1,4 @@
-﻿using System.Net;
-using UniLx.Domain.Entities.AdvertisementAgg;
+﻿using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 
@@ -69,7 +68,7 @@ namespace UniLx.Domain.Entities.AccountAgg
             DomainException.ThrowIf(description?.Length > 256, "Description field must have 256 characters or less");
 
             if (description is not null)
-                Description = WebUtility.HtmlEncode(description);
+                Description = description;
         }
     }
 }
