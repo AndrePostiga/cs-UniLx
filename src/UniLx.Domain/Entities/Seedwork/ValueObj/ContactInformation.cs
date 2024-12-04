@@ -4,9 +4,9 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
 {
     public class ContactInformation
     {
-        public Phone? Phone { get; }
-        public Email? Email { get; }
-        public Uri? Website { get; }
+        public Phone? Phone { get; private set; }
+        public Email? Email { get; private set; }
+        public Uri? Website { get; private set; }
 
         private ContactInformation() { }
 

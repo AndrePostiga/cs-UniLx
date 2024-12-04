@@ -60,7 +60,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             DomainException.ThrowIf(description?.Length > 256, "Description field must have 256 characters or less");
             
             if (description is not null)
-                Description = WebUtility.HtmlEncode(description);
+                Description = description;
         }
     }
 }

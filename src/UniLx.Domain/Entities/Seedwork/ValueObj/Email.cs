@@ -5,7 +5,7 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
 {
     public class Email
     {
-        public string Value { get; }
+        public string Value { get; private set; }
 
         private Email(){}
 

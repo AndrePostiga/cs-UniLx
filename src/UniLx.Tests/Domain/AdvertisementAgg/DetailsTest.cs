@@ -62,19 +62,6 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         }
 
         [Fact]
-        public void Details_Should_Encode_Valid_Description()
-        {
-            // Arrange
-            var description = "<b>This is a test.</b>";
-
-            // Act
-            var details = new TestDetailsStub("Title", description, 100);
-
-            // Assert
-            Assert.Equal(WebUtility.HtmlEncode(description), details.Description);
-        }
-
-        [Fact]
         public void Details_Should_Allow_Null_Description()
         {
             // Arrange

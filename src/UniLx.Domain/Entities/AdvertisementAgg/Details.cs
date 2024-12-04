@@ -1,5 +1,4 @@
-﻿using System.Net;
-using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
+﻿using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Exceptions;
 
 namespace UniLx.Domain.Entities.AdvertisementAgg
@@ -39,7 +38,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             DomainException.ThrowIf(description?.Length > 512, "Description field must have 512 characters or less");
 
             if (description is not null)
-                Description = WebUtility.HtmlEncode(description);
+                Description = description;
         }
 
         private void SetTittle(string? title)
