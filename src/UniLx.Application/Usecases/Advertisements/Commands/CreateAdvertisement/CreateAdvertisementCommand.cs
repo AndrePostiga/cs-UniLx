@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
+using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands.UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Shared.Abstractions;
 using UniLx.Shared.LibExtensions;
@@ -23,6 +24,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         public CreateFashionDetailsCommand? FashionDetails { get; set; }
         public CreateJobOpportunitiesDetailsCommand? JobOpportunitiesDetails { get; set; }
         public CreatePetDetailsCommand? PetDetails { get; set; }
+        public CreateRealEstateDetailsCommand? RealStateDetails { get; set; }
+        public CreateOthersDetailsCommand? OthersDetails { get; set; }
 
         public CreateAdvertisementCommand(
             string accountId,
@@ -35,7 +38,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             CreateElectronicsDetailsCommand? electronicsDetails,
             CreateFashionDetailsCommand? fashionDetails,
             CreateJobOpportunitiesDetailsCommand? jobOpportunitiesDetails,
-            CreatePetDetailsCommand? petDetails)
+            CreatePetDetailsCommand? petDetails,
+            CreateRealEstateDetailsCommand? realStateDetails,
+            CreateOthersDetailsCommand? othersDetails)
         {
             AccountId = accountId;
             Type = type;
@@ -48,6 +53,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             FashionDetails = fashionDetails;
             JobOpportunitiesDetails = jobOpportunitiesDetails;
             PetDetails = petDetails;
+            RealStateDetails = realStateDetails;
+            OthersDetails = othersDetails;
         }
     }
 
@@ -78,7 +85,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
             AddDetailsRules<CreateElectronicsDetailsCommand, CreateElectronicsDetailsCommandValidator>(AdvertisementType.Electronics, nameof(CreateAdvertisementCommand.ElectronicsDetails));
             AddDetailsRules<CreateFashionDetailsCommand, CreateFashionDetailsCommandValidator>(AdvertisementType.Fashion, nameof(CreateAdvertisementCommand.FashionDetails));
             AddDetailsRules<CreateJobOpportunitiesDetailsCommand, CreateJobOpportunitiesDetailsCommandValidator>(AdvertisementType.JobOpportunities, nameof(CreateAdvertisementCommand.JobOpportunitiesDetails));
-            AddDetailsRules<CreatePetDetailsCommand, CreatePetDetailsCommandValidator>(AdvertisementType.Pets, nameof(CreateAdvertisementCommand.PetDetails));
+            AddDetailsRules<CreatePetDetailsCommand, CreatePetDetailsCommandValidator>(AdvertisementType.Pets, nameof(CreateAdvertisementCommand.PetDetails));            
+            AddDetailsRules<CreateRealEstateDetailsCommand, CreateRealEstateDetailsCommandValidator>(AdvertisementType.RealEstate, nameof(CreateAdvertisementCommand.RealStateDetails));
+            AddDetailsRules<CreateOthersDetailsCommand, CreateOthersDetailsCommandValidator>(AdvertisementType.Others, nameof(CreateAdvertisementCommand.OthersDetails));
         }
 
         private void AddDetailsRules<TDetails, TValidator>(AdvertisementType expectedType, string detailsPropertyName)
