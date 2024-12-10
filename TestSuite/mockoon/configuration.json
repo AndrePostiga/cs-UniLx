@@ -1,0 +1,241 @@
+{
+  "name": "Google Maps API Mock",
+  "endpointPrefix": "",
+  "routes": [
+    {
+      "method": "get",
+      "endpoint": "maps/api/geocode/json",
+      "documentation": "Reverse Geocoding (latlng)",
+      "responses": [
+        {
+          "label": "Valid Coordinates",
+          "statusCode": 200,
+          "body": "{\r\n    \"plus_code\": {\r\n        \"compound_code\": \"5WHV+CCH Campo Redondo, São Pedro da Aldeia - RJ, Brasil\",\r\n        \"global_code\": \"589V5WHV+CCH\"\r\n    },\r\n    \"results\": [\r\n        {\r\n            \"address_components\": [\r\n                {\r\n                    \"long_name\": \"879\",\r\n                    \"short_name\": \"879\",\r\n                    \"types\": [\r\n                        \"street_number\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Rua Felíciano José Maurício\",\r\n                    \"short_name\": \"R. Felíciano José Maurício\",\r\n                    \"types\": [\r\n                        \"route\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Aldeia Nova\",\r\n                    \"short_name\": \"Aldeia Nova\",\r\n                    \"types\": [\r\n                        \"political\",\r\n                        \"sublocality\",\r\n                        \"sublocality_level_1\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"São Pedro da Aldeia\",\r\n                    \"short_name\": \"São Pedro da Aldeia\",\r\n                    \"types\": [\r\n                        \"administrative_area_level_2\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Rio de Janeiro\",\r\n                    \"short_name\": \"RJ\",\r\n                    \"types\": [\r\n                        \"administrative_area_level_1\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Brasil\",\r\n                    \"short_name\": \"BR\",\r\n                    \"types\": [\r\n                        \"country\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"28942-192\",\r\n                    \"short_name\": \"28942-192\",\r\n                    \"types\": [\r\n                        \"postal_code\"\r\n                    ]\r\n                }\r\n            ],\r\n            \"formatted_address\": \"R. Felíciano José Maurício, 879 - Aldeia Nova, São Pedro da Aldeia - RJ, 28942-192, Brasil\",\r\n            \"geometry\": {\r\n                \"location\": {\r\n                    \"lat\": -22.8200049,\r\n                    \"lng\": -42.057462\r\n                },\r\n                \"location_type\": \"ROOFTOP\",\r\n                \"viewport\": {\r\n                    \"northeast\": {\r\n                        \"lat\": -22.8186559197085,\r\n                        \"lng\": -42.0561130197085\r\n                    },\r\n                    \"southwest\": {\r\n                        \"lat\": -22.8213538802915,\r\n                        \"lng\": -42.0588109802915\r\n                    }\r\n                }\r\n            },\r\n            \"place_id\": \"ChIJHYJ17L0FlwAR_-gDp5rpr-E\",\r\n            \"plus_code\": {\r\n                \"compound_code\": \"5WHV+X2 Aldeia Nova, São Pedro da Aldeia - RJ, Brasil\",\r\n                \"global_code\": \"589V5WHV+X2\"\r\n            },\r\n            \"types\": [\r\n                \"street_address\"\r\n            ]\r\n        },\r\n        {\r\n            \"address_components\": [\r\n                {\r\n                    \"long_name\": \"2498\",\r\n                    \"short_name\": \"2498\",\r\n                    \"types\": [\r\n                        \"street_number\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Rua Felíciano José Maurício\",\r\n                    \"short_name\": \"R. Felíciano José Maurício\",\r\n                    \"types\": [\r\n                        \"route\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Campo Redondo\",\r\n                    \"short_name\": \"Campo Redondo\",\r\n                    \"types\": [\r\n                        \"political\",\r\n                        \"sublocality\",\r\n                        \"sublocality_level_1\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"São Pedro da Aldeia\",\r\n                    \"short_name\": \"São Pedro da Aldeia\",\r\n                    \"types\": [\r\n                        \"administrative_area_level_2\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Rio de Janeiro\",\r\n                    \"short_name\": \"RJ\",\r\n                    \"types\": [\r\n                        \"administrative_area_level_1\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"Brasil\",\r\n                    \"short_name\": \"BR\",\r\n                    \"types\": [\r\n                        \"country\",\r\n                        \"political\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"long_name\": \"28940-000\",\r\n                    \"short_name\": \"28940-000\",\r\n                    \"types\": [\r\n                        \"postal_code\"\r\n                    ]\r\n                }\r\n            ],\r\n            \"formatted_address\": \"R. Felíciano José Maurício, 2498 - Campo Redondo, São Pedro da Aldeia - RJ, 28940-000, Brasil\",\r\n            \"geometry\": {\r\n                \"location\": {\r\n                    \"lat\": -22.8212214,\r\n                    \"lng\": -42.0588953\r\n                },\r\n                \"location_type\": \"RANGE_INTERPOLATED\",\r\n                \"viewport\": {\r\n                    \"northeast\": {\r\n                        \"lat\": -22.8198724197085,\r\n                        \"lng\": -42.0575463197085\r\n                    },\r\n                    \"southwest\": {\r\n                        \"lat\": -22.8225703802915,\r\n                        \"lng\": -42.0602442802915\r\n                    }\r\n                }\r\n            },\r\n            \"place_id\": \"ElFSLiBGZWzDrWNpYW5vIEpvc8OpIE1hdXLDrWNpbywgMjQ5OCwgU8OjbyBQZWRybyBkYSBBbGRlaWEgLSBSSiwgMjg5NDAtMDAwLCBCcmF6aWwiGxIZChQKEglt3KLPlwWXABH1fjMYIfHCTRDCEw\",\r\n            \"types\": [\r\n                \"street_address\"\r\n            ]\r\n        }\r\n    ],\r\n    \"status\": \"OK\"\r\n}",
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "latlng",
+              "value": ":lat,lng",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "components",
+              "value": ":any",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "uuid": "8e93dfbf-5b7d-46c7-b779-f7d2560ff2d7",
+          "latency": 0,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "label": "Invalid Coordinates",
+          "statusCode": 200,
+          "body": "{\n    \"results\": [],\n    \"status\": \"ZERO_RESULTS\"\n}",
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "latlng",
+              "value": "0,0",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "components",
+              "value": "(^|.*\\|)postal_code:00000-000(\\||$)",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "uuid": "522d0f02-3d43-4307-8a07-4d4395df4368",
+          "latency": 0,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "uuid": "5d0ca299-07a9-4de5-9012-5868ff7c6095",
+      "type": "http",
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "8012ea4e-a7dd-48b5-8d76-cf313243d4c4",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "healthcheck",
+      "responses": [
+        {
+          "uuid": "59903ef9-2583-4885-ba91-c773d3a0e5b8",
+          "body": "{\n  \"message\": \"Alive!\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "method": "post",
+      "endpoint": "storage/v1/object/sign/:bucketName/:path1/:path2/:path3",
+      "documentation": "Retrieve Signed Url - Generates a presigned URL for uploading an object",
+      "responses": [
+        {
+          "label": "Signed Upload URL Response",
+          "statusCode": 200,
+          "body": "{\r\n  \"signedUrl\": \"/my_url_stub\"\r\n}\r\n",
+          "uuid": "8020077a-be33-42ac-8f7e-b7a5af3ba2c3",
+          "latency": 0,
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "uuid": "446dd639-aee7-4e1d-903d-d564c2ba3ccc",
+      "type": "http",
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "method": "post",
+      "endpoint": "storage/v1/object/upload/sign/:bucketName/:path1/:path2",
+      "documentation": "CreateSignedUploadUrl - Generates a presigned URL for uploading an object",
+      "responses": [
+        {
+          "label": "Signed Upload URL Response",
+          "statusCode": 200,
+          "body": "{\r\n  \"url\": \"https://localhost:3000/my_url_stub\",\r\n  \"token\": \"bla/bla.png\"\r\n}",
+          "uuid": "9c9d3d47-7be9-4aea-8a0c-2afd763b5e6a",
+          "latency": 0,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "uuid": "36b0a376-95d9-4dfc-938e-85b93f28db8f",
+      "type": "http",
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "uuid": "de4b5b77-5956-40d5-bd39-1c9a2c00916e",
+  "lastMigration": 33,
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "5d0ca299-07a9-4de5-9012-5868ff7c6095"
+    },
+    {
+      "type": "route",
+      "uuid": "8012ea4e-a7dd-48b5-8d76-cf313243d4c4"
+    },
+    {
+      "type": "route",
+      "uuid": "446dd639-aee7-4e1d-903d-d564c2ba3ccc"
+    },
+    {
+      "type": "route",
+      "uuid": "36b0a376-95d9-4dfc-938e-85b93f28db8f"
+    }
+  ],
+  "folders": [],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "data": [],
+  "callbacks": []
+}

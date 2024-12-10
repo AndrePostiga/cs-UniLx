@@ -1,0 +1,49 @@
+name: Main CI Workflow
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
+  push:
+    branches:
+      - develop
+      - main 
+  workflow_dispatch:
+    inputs:
+      runTests:
+        description: 'Trigger integration tests'
+        required: true
+        default: 'yes'
+
+jobs:
+  build:
+    name: Build Application
+    uses: ./.github/workflows/build.yml
+    with:
+      dotnet_version: '9.0.x'
+
+  test:
+    name: Test Application
+    needs: build
+    uses: ./.github/workflows/unit-test.yml
+    with:
+      dotnet_version: '9.0.x'
+
+  sonar-analysis:
+    name: Sonar Analysis
+    needs: 
+       - build
+    uses: ./.github/workflows/sonar-analysis.yml
+    with:
+      dotnet_version: '9.0.x'
+    secrets: inherit
+
+  integration-tests:
+    name: Integration Tests
+    needs: 
+      - build
+      - test
+      - sonar-analysis
+    uses: ./.github/workflows/integration-tests.yml
