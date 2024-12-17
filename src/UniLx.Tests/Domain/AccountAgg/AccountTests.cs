@@ -1,5 +1,6 @@
 ﻿using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
+using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Exceptions;
 using UniLx.Tests.Domain.AdvertisementAgg;
@@ -130,13 +131,13 @@ namespace UniLx.Tests.Domain.AccountAgg
             var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
 
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");            
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
             var advertisement = new Advertisement(
-                "services",
+                AdvertisementType.RealEstate.Name,
                 category,
                 details,
                 DateTime.UtcNow.AddDays(30),
