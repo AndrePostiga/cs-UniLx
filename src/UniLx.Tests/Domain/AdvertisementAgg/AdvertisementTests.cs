@@ -112,7 +112,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Should_Throw_When_Address_Is_Invalid()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var invalidAddress = Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
