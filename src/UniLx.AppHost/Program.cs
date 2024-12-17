@@ -1,10 +1,8 @@
-using TraceLens.Aspire;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder
     .AddPostgres("postgresdb")    
-    .WithLifetime(ContainerLifetime.Persistent)
+    .WithLifetime(ContainerLifetime.Session)
     .WithImage("postgis/postgis")
     .WithEndpoint(port: 5432, targetPort: 5432, name: "postgres-endpoint", isExternal: true)
     .WithDataVolume()    
@@ -23,12 +21,10 @@ var postgres = builder
 
 postgres
     .WithPgAdmin()
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithLifetime(ContainerLifetime.Session);
 
-builder.AddProject<Projects.UniLx_ApiService>("apiservice")    
+builder.AddProject<Projects.UniLx_ApiService>("apiservice")
     .WithReference(postgres)
     .WaitFor(postgres);
-
-builder.AddTraceLens();
 
 await builder.Build().RunAsync();

@@ -197,6 +197,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         {
             For<Account>()
                 .Identity(x => x.Id)
+                .Identity(x => x.CognitoSubscriptionId)
                 .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
                 .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
         }

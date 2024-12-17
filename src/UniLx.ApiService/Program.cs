@@ -3,7 +3,6 @@ using UniLx.ApiService.ExceptionHandlers;
 using UniLx.ApiService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.AddEnvironmentVariables("UniLx_");
 
 builder.Services.AddEndpointsApiExplorer();
@@ -14,18 +13,17 @@ builder.Services.AddSwaggerGen(opts =>
     opts.IncludeXmlComments(xmlPath);
 });
 
-// Add service defaults & Aspire components.
-builder.AddServiceDefaults();
-
-// Add services to the container.
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddExceptionHandler<SupabaseExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+// Add service defaults & Aspire components.
+builder.AddServiceDefaults();
+
 builder.AddApiConfiguration();
 builder.AddRegisteredServices();
-
+builder.AddCustomAuthenticationAndAuthorization();
 
 // APP
 var app = builder.Build();
@@ -37,4 +35,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.Run();
+await app.RunAsync();

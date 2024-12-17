@@ -1,8 +1,11 @@
 ﻿using Carter;
 using Carter.OpenApi;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
@@ -11,8 +14,10 @@ using UniLx.Application.Usecases.Accounts.Commands.UpdateRating;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating.Models;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Mappers;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models;
+using UniLx.Application.Usecases.Accounts.Queries.GetAccountByCognitoSub;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountById;
 using UniLx.Application.Usecases.Shared.CreatePresignedImage;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.ApiService.Controllers.Accounts
 {
@@ -26,22 +31,32 @@ namespace UniLx.ApiService.Controllers.Accounts
                                  .IncludeInOpenApi();
 
             adminGroup.MapPost("/", AdminControllerHandlers.CreateAccount)
-                  .WithName(nameof(AdminControllerHandlers.CreateAccount));
+                  .WithName(nameof(AdminControllerHandlers.CreateAccount))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
 
             adminGroup.MapGet("/profile-picture-sign", AdminControllerHandlers.CreateProfilePicturePresignUrl)
-                  .WithName(nameof(AdminControllerHandlers.CreateProfilePicturePresignUrl));
+                  .WithName(nameof(AdminControllerHandlers.CreateProfilePicturePresignUrl))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
 
             adminGroup.MapGet("/{id}", AdminControllerHandlers.GetAccountById)
-                  .WithName(nameof(AdminControllerHandlers.GetAccountById));
+                  .WithName(nameof(AdminControllerHandlers.GetAccountById))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
+
+            adminGroup.MapGet("/", AdminControllerHandlers.GetAccountByToken)
+                  .WithName(nameof(AdminControllerHandlers.GetAccountByToken))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
 
             adminGroup.MapPatch("/{id}/rating", AdminControllerHandlers.UpdateRating)
-                  .WithName(nameof(AdminControllerHandlers.UpdateRating));
+                  .WithName(nameof(AdminControllerHandlers.UpdateRating))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
 
             adminGroup.MapPatch("/{id}/profile-picture", AdminControllerHandlers.UpdateProfilePicture)
-                  .WithName(nameof(AdminControllerHandlers.UpdateProfilePicture));
+                  .WithName(nameof(AdminControllerHandlers.UpdateProfilePicture))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
 
             adminGroup.MapGet("/{id}/advertisements", AdminControllerHandlers.GetAccountAdvertisements)
-                  .WithName(nameof(AdminControllerHandlers.GetAccountAdvertisements));
+                  .WithName(nameof(AdminControllerHandlers.GetAccountAdvertisements))
+                  .RequireAuthorization(new AllowedGroups(Groups.User));
         }
     }
 
@@ -156,6 +171,22 @@ namespace UniLx.ApiService.Controllers.Accounts
                 CancellationToken ct)
         {
             var command = request.ToQuery(id);
+            var response = await mediator.Send(command, ct);
+            return response!;
+        }
+
+        /// <summary>
+        /// Gets account details by access token.
+        /// </summary>
+        /// <param name="mediator"></param>
+        /// <param name="requestContext"></param>
+        /// <param name="ct"></param>
+        /// <returns>The account details for the token.</returns>
+        internal static async Task<IResult> GetAccountByToken([FromServices] IMediator mediator,
+                [FromServices] IRequestContext requestContext,
+                CancellationToken ct)
+        {
+            var command = new GetAccountByCognitoSubQueryExternal(requestContext.CognitoIdentifier!);
             var response = await mediator.Send(command, ct);
             return response!;
         }

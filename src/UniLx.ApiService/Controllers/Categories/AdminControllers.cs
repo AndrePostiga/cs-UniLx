@@ -3,6 +3,7 @@ using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Categories.CreateCategory.Mappers;
 using UniLx.Application.Usecases.Categories.CreateCategory.Models;
 
@@ -18,7 +19,8 @@ namespace UniLx.ApiService.Controllers.Categories
                                      .IncludeInOpenApi();
 
             categoriesGroup.MapPost("/", AdminControllersHandlers.CreateCategory)
-                           .WithName(nameof(AdminControllersHandlers.CreateCategory));
+                           .WithName(nameof(AdminControllersHandlers.CreateCategory))
+                           .RequireAuthorization(new AllowedGroups(Groups.Admin, Groups.Moderator));
         }
     }
 
