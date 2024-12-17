@@ -354,8 +354,7 @@
 					"\r",
 					"    // Set the token as an environment variable for subsequent requests\r",
 					"    pm.collectionVariables.set('access_token', accessToken);\r",
-					"\r",
-					"    console.log('Access token retrieved and set:', accessToken);\r",
+					"    console.log('Access token retrieved and set');\r",
 					"});\r",
 					""
 				]
