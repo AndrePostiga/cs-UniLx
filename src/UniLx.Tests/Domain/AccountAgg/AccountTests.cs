@@ -20,9 +20,10 @@ namespace UniLx.Tests.Domain.AccountAgg
             string email = "john.doe@example.com";
             string cpf = "93541134780";
             string description = "Test description";
+            string cognitoId = Guid.NewGuid().ToString();
 
             // Act
-            var account = new Account(name, email, cpf, description);
+            var account = new Account(name, email, cpf, description, cognitoId);
 
             // Assert
             Assert.Equal(name, account.Name);
@@ -37,9 +38,10 @@ namespace UniLx.Tests.Domain.AccountAgg
             // Arrange
             string email = "john.doe@example.com";
             string cpf = "93541134780";
+            string cognitoId = Guid.NewGuid().ToString();
 
             // Act & Assert
-            var ex = Assert.Throws<DomainException>(() => new Account(null, email, cpf, null));
+            var ex = Assert.Throws<DomainException>(() => new Account(null, email, cpf, null, cognitoId));
             Assert.Equal("Name cannot be null.", ex.Message);
         }
 
@@ -49,9 +51,10 @@ namespace UniLx.Tests.Domain.AccountAgg
             // Arrange
             string email = "john.doe@example.com";
             string cpf = "93541134780";
+            string cognitoId = Guid.NewGuid().ToString();
 
             // Act & Assert
-            var ex = Assert.Throws<DomainException>(() => new Account("", email, cpf, null));
+            var ex = Assert.Throws<DomainException>(() => new Account("", email, cpf, null, cognitoId));
             Assert.Equal("Name cannot be null.", ex.Message);
         }
 
@@ -62,9 +65,10 @@ namespace UniLx.Tests.Domain.AccountAgg
             string longName = new string('A', 101);
             string email = "john.doe@example.com";
             string cpf = "93541134780";
+            string cognitoId = Guid.NewGuid().ToString();
 
             // Act & Assert
-            var ex = Assert.Throws<DomainException>(() => new Account(longName, email, cpf, null));
+            var ex = Assert.Throws<DomainException>(() => new Account(longName, email, cpf, null, cognitoId));
             Assert.Equal("Name field must have 100 characters or less", ex.Message);
         }
 
@@ -75,9 +79,10 @@ namespace UniLx.Tests.Domain.AccountAgg
             string name = "John Doe";
             string email = "john.doe@example.com";
             string invalidCpf = "123456789";
+            string cognitoId = Guid.NewGuid().ToString();
 
             // Act & Assert
-            var ex = Assert.Throws<DomainException>(() => new Account(name, email, invalidCpf, null));
+            var ex = Assert.Throws<DomainException>(() => new Account(name, email, invalidCpf, null, cognitoId));
             Assert.Equal("Invalid CPF.", ex.Message);
         }
 
@@ -89,7 +94,7 @@ namespace UniLx.Tests.Domain.AccountAgg
         public void UpdateProfilePicture_ValidInput_ShouldSetProfilePicture()
         {
             // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null);
+            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
             string profilePicturePath = "profile_picture.jpg";
             string expectedPath = $"{account.Id}/{profilePicturePath}";
 
@@ -106,7 +111,7 @@ namespace UniLx.Tests.Domain.AccountAgg
         public void UpdateProfilePicture_NullOrWhitespace_ShouldNotSetProfilePicture()
         {
             // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null);
+            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
 
             // Act
             account.UpdateProfilePicture(null);
@@ -123,7 +128,7 @@ namespace UniLx.Tests.Domain.AccountAgg
         public void AddAdvertisement_ValidAdvertisement_ShouldAddToAdvertisementIds()
         {
             // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null);
+            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
 
             // Arrange
             var category = Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
@@ -154,7 +159,7 @@ namespace UniLx.Tests.Domain.AccountAgg
         public void AddAdvertisement_NullAdvertisement_ShouldThrowException()
         {
             // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null);
+            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
 
             // Act & Assert
             var ex = Assert.Throws<DomainException>(() => account.AddAdvertisement(null));
@@ -172,7 +177,7 @@ namespace UniLx.Tests.Domain.AccountAgg
             string longDescription = new string('A', 257);
 
             // Act & Assert
-            var ex = Assert.Throws<DomainException>(() => new Account("John Doe", "john.doe@example.com", "93541134780", longDescription));
+            var ex = Assert.Throws<DomainException>(() => new Account("John Doe", "john.doe@example.com", "93541134780", longDescription, Guid.NewGuid().ToString()));
             Assert.Equal("Description field must have 256 characters or less", ex.Message);
         }
 

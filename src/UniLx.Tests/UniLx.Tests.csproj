@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -29,6 +29,7 @@
     <ProjectReference Include="..\UniLx.AppHost\UniLx.AppHost.csproj" />
     <ProjectReference Include="..\UniLx.Application\UniLx.Application.csproj" />
     <ProjectReference Include="..\UniLx.Domain\UniLx.Domain.csproj" />
+    <ProjectReference Include="..\UniLx.Infra.Services\UniLx.Infra.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -77,6 +77,11 @@ services:
       - UNILX_DATABASE__CONNECTIONSTRING=User Id=myuser;Password=mypassword;Server=postgis;Port=5432;Database=postgres;
       - UNILX_SUPABASESETTINGS__URL=mock_server:3000
       - UNILX_MAPSAPI__URL=mock_server:3000
+      - UNILX_AWS__COGNITOOPTIONS__AUTHORITY=http://mock_server:3000
+      - UNILX_AWS__COGNITOOPTIONS__METADATAADDRESS=http://mock_server:3000/.well-known/openid-configuration
+      - UNILX_AWS__COGNITOOPTIONS__WELLKNOWN=http://mock_server:3000/.well-known/jwks.json
+      - UNILX_AWS__COGNITOOPTIONS__DOMAIN=http://mock_server:3000
+      - UNILX_AWS__COGNITOOPTIONS__CLIENTID=mock-client-id
     networks:
       - default_network
 

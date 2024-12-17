@@ -36,7 +36,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
@@ -65,7 +65,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("Electronics", "products", "Eletrônicos", "Consumer electronics.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
@@ -85,7 +85,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
@@ -113,8 +113,8 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var invalidAddress = Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345"); // Assuming this is invalid for this domain rule
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var invalidAddress = Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
@@ -134,7 +134,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
@@ -156,7 +156,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
