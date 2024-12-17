@@ -64,7 +64,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetIsExotic(bool? isExotic)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(isExotic.HasValue, "IsExotic must not have a value for Accessories.");
                 return;
@@ -83,7 +83,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetPrice(int? price)
         {
-            if (PetType == PetType.Adoption)
+            if (PetType.Name == PetType.Adoption.Name)
             {
                 DomainException.ThrowIf(price.HasValue && price > 0, "Adoption cannot have a price.");
                 return;
@@ -101,7 +101,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetAge(int? age)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(age.HasValue, "Age must not have a value for Accessories.");
                 return;
@@ -113,7 +113,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetBreed(string? breed)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(!string.IsNullOrWhiteSpace(breed), "Breed must not have a value for Accessories.");
                 return;
@@ -125,7 +125,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetIsVaccinated(bool? isVaccinated)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             { 
                 DomainException.ThrowIf(isVaccinated.HasValue, "IsVaccinated must not have a value for Accessories.");
                 return;
@@ -136,7 +136,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetGender(string? gender)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(!string.IsNullOrWhiteSpace(gender), "Gender must not have a value for Accessories.");
                 return;
@@ -149,7 +149,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetAccessoryType(string? accessoryType)
         {
-            if (PetType == PetType.Sell || PetType == PetType.Adoption)
+            if (PetType.Name == PetType.Sell.Name || PetType.Name == PetType.Adoption.Name)
             {
                 DomainException.ThrowIf(!string.IsNullOrWhiteSpace(accessoryType), $"AccessoryType must not have value for {PetType}.");
                 return;
@@ -162,7 +162,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetMaterials(List<string>? materials)
         {
-            if (PetType == PetType.Sell || PetType == PetType.Adoption)
+            if (PetType.Name == PetType.Sell.Name || PetType.Name == PetType.Adoption.Name)
             {
                 DomainException.ThrowIf(materials != null && materials.Count != 0, $"Materials must only have values for {PetType}.");
                 return;
@@ -176,7 +176,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetAdoptionRequirements(string? adoptionRequirements)
         {
-            if (PetType == PetType.Sell || PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Sell.Name || PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(!string.IsNullOrWhiteSpace(adoptionRequirements), $"AdoptionRequirements must only have a value for {PetType}.");
                 return;
@@ -189,7 +189,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetHealthStatus(string? healthStatus)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(!string.IsNullOrWhiteSpace(healthStatus), "HealthStatus must not have a value for Accessories.");
                 return;
@@ -202,7 +202,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails
 
         private void SetIsSterilized(bool? isSterilized)
         {
-            if (PetType == PetType.Accessories)
+            if (PetType.Name == PetType.Accessories.Name)
             {
                 DomainException.ThrowIf(isSterilized.HasValue, "IsSterilized must not have a value for Accessories.");
                 return;

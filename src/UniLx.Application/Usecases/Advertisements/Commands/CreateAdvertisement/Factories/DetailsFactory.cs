@@ -1,4 +1,5 @@
 ﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
+using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands.UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
@@ -20,6 +21,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 var e when e.Equals(AdvertisementType.Fashion) => CreateSpecificDetails(command.FashionDetails!),
                 var e when e.Equals(AdvertisementType.JobOpportunities) => CreateSpecificDetails(command.JobOpportunitiesDetails!),
                 var e when e.Equals(AdvertisementType.Pets) => CreateSpecificDetails(command.PetDetails!),
+                var e when e.Equals(AdvertisementType.RealEstate) => CreateSpecificDetails(command.RealStateDetails!),
+                var e when e.Equals(AdvertisementType.Others) => CreateSpecificDetails(command.OthersDetails!),
                 _ => throw new DomainException($"Cannot create details from {command.Type}."),
             };
         }
@@ -129,6 +132,37 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 command.AdoptionRequirements,
                 command.HealthStatus,
                 command.IsSterilized);
+        }
+
+        private static RealEstateDetails CreateSpecificDetails(CreateRealEstateDetailsCommand command)
+        {
+            return new RealEstateDetails(
+                command.Title!,
+                command.Description,
+                command.Price.GetValueOrDefault(),
+                command.LotSizeInSquareMeters,
+                command.PropertyType,
+                command.Condition,
+                command.ConstructedSquareFootage,
+                command.Bedrooms,
+                command.Bathrooms,
+                command.ParkingSpaces,
+                command.Floors,
+                command.AdditionalFeatures
+            );
+        }
+
+        private static OthersDetails CreateSpecificDetails(CreateOthersDetailsCommand command)
+        {
+            return new OthersDetails(
+                command.Title,
+                command.Description,
+                command.Price,
+                command.Condition,
+                command.Brand,
+                command.Features,
+                command.WarrantyUntil
+            );
         }
     }
 }
