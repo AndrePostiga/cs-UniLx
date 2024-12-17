@@ -285,7 +285,7 @@
       "responses": [
         {
           "uuid": "4094b4fd-9a02-4b3e-b1ed-d27edcece555",
-          "body": "{\r\n  \"email\": \"mockuser@example.com\",\r\n  \"sub\": \"mocked-user-sub\",\r\n  \"username\": \"mocked-username\",\r\n  \"cognito:groups\": [\"mocked-group\"]\r\n}\r\n",
+          "body": "{\r\n  \"email\": \"{{faker 'internet.email'}}\",\r\n  \"sub\": \"{{faker 'string.uuid'}}\",\r\n  \"username\": \"{{faker 'internet.userName'}}\",\r\n  \"cognito:groups\": [\"UserRole\"]\r\n}\r\n",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -316,7 +316,7 @@
       "responses": [
         {
           "uuid": "8391e47e-9aee-4be6-9273-2cd8a73aea4a",
-          "body": "{\r\n  \"issuer\": \"http://localhost:3000\",\r\n  \"jwks_uri\": \"http://localhost:3000/.well-known/jwks.json\",\r\n  \"authorization_endpoint\": \"http://localhost:3000/oauth2/authorize\",\r\n  \"token_endpoint\": \"http://localhost:3000/oauth2/token\",\r\n  \"userinfo_endpoint\": \"http://localhost:3000/oauth2/userinfo\",\r\n  \"introspection_endpoint\": \"http://localhost:3000/oauth2/introspect\",\r\n  \"end_session_endpoint\": \"http://localhost:3000/logout\",\r\n  \"response_types_supported\": [\"code\", \"token\", \"id_token\"],\r\n  \"subject_types_supported\": [\"public\"],\r\n  \"id_token_signing_alg_values_supported\": [\"RS256\"]\r\n}\r\n",
+          "body": "{\r\n  \"issuer\": \"http://mock_server:3000\",\r\n  \"jwks_uri\": \"http://mock_server:3000/.well-known/jwks.json\",\r\n  \"authorization_endpoint\": \"http://mock_server:3000/oauth2/authorize\",\r\n  \"token_endpoint\": \"http://mock_server:3000/oauth2/token\",\r\n  \"userinfo_endpoint\": \"http://mock_server:3000/oauth2/userinfo\",\r\n  \"introspection_endpoint\": \"http://mock_server:3000/oauth2/introspect\",\r\n  \"end_session_endpoint\": \"http://mock_server:3000/logout\",\r\n  \"response_types_supported\": [\"code\", \"token\", \"id_token\"],\r\n  \"subject_types_supported\": [\"public\"],\r\n  \"id_token_signing_alg_values_supported\": [\"RS256\"]\r\n}\r\n",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -347,7 +347,7 @@
       "responses": [
         {
           "uuid": "0cb4ec0a-c701-459d-aec0-3c0ef37c8f05",
-          "body": "{\r\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1vY2sta2V5LWlkIn0.eyJzdWIiOiJtb2NrZWQtdXNlci1zdWIiLCJ1c2VybmFtZSI6Im1vY2tlZC11c2VybmFtZSIsImNvZ25pdG86Z3JvdXBzIjpbIkFkbWluUm9sZSIsIlVzZXJSb2xlIiwiTW9kZXJhdG9yUm9sZSIsIlNlcnZlclJvbGUiLCJDbGllbnRSb2xlIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImV4cCI6MTczNDQwMzM0OX0.IbyoCmzs9pVV-kIoPJ4TaDrAXTkVSIXovUuVLe_T6-vlKLBwwlQ2cTLaHYPG8WLcu86_bC4xd-s1vc2--VcX4yk7INQhoBNVL-WAaRtrw-5IkA872L4UNWGGd3qzaIkSLI51GFpcXh6afvJb-hmFQD6ccpskgDQRGDDa8LwA8EdTWuBk7YrsoTXARNNdp8CgwkKrPsUNex6zctYp4mYMJv1tMLJE1bjpQZh6b4YGXYnrCyBmxKlgOwPa96xY85P16qmzuCitwmYEaSwu--L8h_Btr28ZBXeYqQNiEq3yz81cWaElqtOHF323Zx-3A48yrijrJ-eKPgXb2R-8oKJ3Bg\",\r\n    \"expires_in\": 3600,\r\n    \"token_type\": \"Bearer\"\r\n}",
+          "body": "{\r\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1vY2sta2V5LWlkIn0.eyJzdWIiOiJtb2NrZWQtdXNlci1zdWIiLCJ1c2VybmFtZSI6Im1vY2tlZC11c2VybmFtZSIsImNvZ25pdG86Z3JvdXBzIjpbIkFkbWluUm9sZSIsIlVzZXJSb2xlIiwiTW9kZXJhdG9yUm9sZSIsIlNlcnZlclJvbGUiLCJDbGllbnRSb2xlIl0sImlzcyI6Imh0dHA6Ly9tb2NrX3NlcnZlcjozMDAwIiwiZXhwIjoxNzM0NDA1NDk5fQ.SWDZPVniLV5f4m4svsBb8MbN6fFCcaAZpkEIM8LGRcx_Dn2YP260oNONtSscSDYhdAr17g0HmhjeNpQBnpVvsAkzCbBOc-Cog6OAj7y7KzGRsU19mIiboACA3aGcQzUpJi04AKU4W0ckUh-OWiS9IfTU6eZYz83iMBTAvc0UvFpbJveaVFcmcFnqd2X02OjrWWSNbz59cqO8ihF9Kxj-KN9LH63XI2VIKLUEdKbE-b5G_EF3rOA6ojOwPPFzg3WYg-p6Suwu4JKE4y5pHHZKG2FtCE3gW_E7UiZ2FB4RCtlt92-8Ilm-3YytXU89e7_Yt1Qrx-Nl458yZvnEF0M63Q\",\r\n    \"expires_in\": 3600,\r\n    \"token_type\": \"Bearer\"\r\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

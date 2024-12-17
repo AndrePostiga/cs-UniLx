@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "26521ea4-e78d-4ce1-92e8-4c648a6a30b4",
-		"name": "UniLx API CreateAccount Tests",
+		"_postman_id": "cfe8bf09-44d8-4839-a5fd-ccc37f5aae62",
+		"name": "UniLx API CreateAccount Tests Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "14658494"
 	},
@@ -56,16 +56,24 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/accounts",
@@ -110,12 +118,18 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
+					"raw": "{\n  \"name\": \"\",\n  \"cpf\": \"{{cpf}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/accounts",
@@ -160,62 +174,18 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"invalid_cpf\",\n  \"email\": \"{{$randomEmail}}\",\n  \"description\": \"A short bio or description of the account\"\n}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/accounts",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"accounts"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Account - Validation Error (Invalid Email)",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 400\", function () {",
-							"    pm.response.to.have.status(400);",
-							"});",
-							"",
-							"pm.test(\"Response contains Problem Details format\", function () {",
-							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('type');",
-							"    pm.expect(jsonData).to.have.property('title');",
-							"    pm.expect(jsonData).to.have.property('status');",
-							"    pm.expect(jsonData).to.have.property('errors');",
-							"    pm.expect(jsonData.errors).to.have.property('Email');",
-							"    pm.expect(jsonData.errors.Email[0]).to.equal(\"Invalid email format.\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
+						"value": "application/json",
+						"type": "text"
+					},
 					{
-						"key": "Content-Type",
-						"value": "application/json"
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"any\",\n  \"description\": \"A short bio or description of the account\"\n}"
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"invalid_cpf\",\n  \"description\": \"A short bio or description of the account\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/accounts",
@@ -270,12 +240,75 @@
 				"header": [
 					{
 						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"description\": \"Duplicate account test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Unauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Response contains Problem Details format\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData.detail).to.equal(\"Authentication failed.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
 						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"email\": \"duplicate@doe.com\",\n  \"description\": \"Duplicate account test\"\n}"
+					"raw": "{\n  \"name\": \"John Doe\",\n  \"cpf\": \"{{cpf}}\",\n  \"description\": \"Duplicate account test\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/accounts",
@@ -297,6 +330,33 @@
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
+					"const tokenUrl = 'http://localhost:3000/oauth2/token';\r",
+					"\r",
+					"pm.sendRequest({\r",
+					"    url: tokenUrl,\r",
+					"    method: 'POST',\r",
+					"    header: {\r",
+					"        'Content-Type': 'application/json'\r",
+					"    }\r",
+					"}, function (err, res) {\r",
+					"    if (err) {\r",
+					"        console.error('Error fetching token:', err);\r",
+					"        return;\r",
+					"    }\r",
+					"\r",
+					"    const jsonResponse = res.json();\r",
+					"    const accessToken = jsonResponse.access_token;\r",
+					"\r",
+					"    if (!accessToken) {\r",
+					"        console.error('Access token not found in response:', jsonResponse);\r",
+					"        return;\r",
+					"    }\r",
+					"\r",
+					"    // Set the token as an environment variable for subsequent requests\r",
+					"    pm.collectionVariables.set('access_token', accessToken);\r",
+					"\r",
+					"    console.log('Access token retrieved and set:', accessToken);\r",
+					"});\r",
 					""
 				]
 			}
@@ -326,6 +386,11 @@
 		{
 			"key": "cpf",
 			"value": "11617704458",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
 			"type": "string"
 		}
 	]

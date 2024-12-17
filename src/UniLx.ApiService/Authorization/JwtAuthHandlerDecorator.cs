@@ -45,7 +45,7 @@ namespace UniLx.ApiService.Authorization
                 return FailWithMessage("Access token not found");
 
             var userInfo = await _cognitoService.GetUserInfo($"Bearer {accessToken}");
-            var userSub = ExtractClaim(result.Principal, "username");
+            var userSub = userInfo.UserName;
             var userGroup = ExtractClaim(result.Principal, "cognito:groups");
 
             if (string.IsNullOrEmpty(userSub) || userInfo is null || string.IsNullOrEmpty(userGroup))
