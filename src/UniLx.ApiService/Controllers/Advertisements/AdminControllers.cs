@@ -3,6 +3,7 @@ using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 
@@ -19,7 +20,8 @@ namespace UniLx.ApiService.Controllers.Advertisements
 
             advertisementsGroup
                 .MapPost("/", AdminControllerHandlers.CreateAdvertisement)
-                .WithName(nameof(AdminControllerHandlers.CreateAdvertisement));
+                .WithName(nameof(AdminControllerHandlers.CreateAdvertisement))
+                .RequireAuthorization(new AllowedGroups(Groups.User));
         }
     }
 

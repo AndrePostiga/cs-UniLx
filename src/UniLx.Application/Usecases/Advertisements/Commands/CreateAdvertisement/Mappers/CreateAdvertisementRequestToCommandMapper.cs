@@ -1,5 +1,6 @@
 ﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Commands;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
+using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands.UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.DetailsCommands;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request.DetailsRequest;
 using UniLx.Application.Usecases.SharedModels.Requests;
@@ -20,7 +21,9 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 electronicsDetails: source.ElectronicsDetails?.ToCommand(),
                 fashionDetails: source.FashionDetails?.ToCommand(), 
                 jobOpportunitiesDetails: source.JobOpportunitiesDetails?.ToCommand(),
-                petDetails: source.PetDetails?.ToCommand());
+                petDetails: source.PetDetails?.ToCommand(),
+                realStateDetails: source.RealEstateDetails?.ToCommand(),
+                othersDetails: source.OthersDetails?.ToCommand());
 
         public static CreateAddressCommand ToCommand(this AddressRequest source)
             => new (
@@ -136,6 +139,33 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 source.AdoptionRequirements,
                 source.HealthStatus,
                 source.IsSterilized
+            );
+
+        public static CreateRealEstateDetailsCommand ToCommand(this RealEstateDetailsRequest source)
+        => new(
+            title: source.Title,
+            description: source.Description,
+            price: source.Price,
+            lotSizeInSquareMeters: source.LotSizeInSquareMeters.GetValueOrDefault(),
+            constructedSquareFootage: source.ConstructedSquareFootage,
+            bedrooms: source.Bedrooms,
+            bathrooms: source.Bathrooms,
+            parkingSpaces: source.ParkingSpaces,
+            propertyType: source.PropertyType,
+            condition: source.Condition,
+            floors: source.Floors,
+            additionalFeatures: source.AdditionalFeatures
+        );
+
+        public static CreateOthersDetailsCommand ToCommand(this OthersDetailsRequest source)
+            => new(
+                title: source.Title,
+                description: source.Description,
+                price: source.Price,
+                condition: source.Condition,
+                brand: source.Brand,
+                features: source.Features,
+                warrantyUntil: source.WarrantyUntil
             );
 
         public static CreateContactInformationCommand ToCommand(this ContactInformationRequest source)

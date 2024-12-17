@@ -4,6 +4,7 @@ using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Exceptions;
+using Xunit;
 
 namespace UniLx.Tests.Domain.AdvertisementAgg
 {
@@ -33,14 +34,14 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Should_Create_Valid_Instance()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
             var advertisement = new Advertisement(
-                "services",
+                "real_estate",
                 category,
                 details,
                 DateTime.UtcNow.AddDays(30),
@@ -49,7 +50,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
 
             // Assert
             Assert.NotNull(advertisement);
-            Assert.Equal("services", advertisement.Type.Name);
+            Assert.Equal("real_estate", advertisement.Type.Name);
             Assert.Equal(category.Id, advertisement.CategoryId);
             Assert.Equal(category.Name, advertisement.CategoryName);
             Assert.Equal(address, advertisement.Address);
@@ -64,13 +65,13 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             // Arrange
             var category = Category.CreateNewCategory("Electronics", "products", "Eletrônicos", "Consumer electronics.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
             Assert.Throws<DomainException>(() =>
                 new Advertisement(
-                    "services",
+                    "real_estate",
                     category,
                     details,
                     DateTime.UtcNow.AddDays(30),
@@ -82,15 +83,15 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Should_Throw_When_Expiration_Is_Invalid()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
             Assert.Throws<DomainException>(() =>
                 new Advertisement(
-                    "services",
+                    "real_estate",
                     category,
                     details,
                     DateTime.UtcNow.AddDays(-1),
@@ -99,7 +100,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
 
             Assert.Throws<DomainException>(() =>
                 new Advertisement(
-                    "services",
+                    "real_estate",
                     category,
                     details,
                     DateTime.UtcNow.AddDays(91),
@@ -111,15 +112,15 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Should_Throw_When_Address_Is_Invalid()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var invalidAddress = Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act & Assert
             Assert.Throws<DomainException>(() =>
                 new Advertisement(
-                    "services",
+                    "real_estate",
                     category,
                     details,
                     DateTime.UtcNow.AddDays(30),
@@ -131,14 +132,14 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Should_Set_Default_Expiration_Date_When_None_Is_Provided()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
             var advertisement = new Advertisement(
-                "services",
+                "real_estate",
                 category,
                 details,
                 null, // No expiration date provided
@@ -153,14 +154,14 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         public void Advertisement_Status_Should_Be_Created_After_Initialization()
         {
             // Arrange
-            var category = Category.CreateNewCategory("services", "HomeCleaning", "Limpeza Doméstica", "Residential cleaning services.");
+            var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
             var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
-            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description");
+            var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
             // Act
             var advertisement = new Advertisement(
-                "services",
+                "real_estate",
                 category,
                 details,
                 DateTime.UtcNow.AddDays(30),
@@ -175,7 +176,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
     // Mock Details Implementation for Testing
     public class TestDetailsStub : Details
     {
-        protected override AdvertisementType Type => AdvertisementType.Services;
+        protected override AdvertisementType Type => AdvertisementType.RealEstate;
 
         public TestDetailsStub(string title, string description, int price) : base(title, description, price) { }
     }

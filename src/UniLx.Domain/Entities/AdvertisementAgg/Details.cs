@@ -23,7 +23,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 
         public new AdvertisementType GetType() => Type;
 
-        private void SetPrice(int? price)
+        protected virtual void SetPrice(int? price)
         {
             if (!price.HasValue)
                 return;

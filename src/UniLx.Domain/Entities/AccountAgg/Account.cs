@@ -20,16 +20,25 @@ namespace UniLx.Domain.Entities.AccountAgg
         
         public HashSet<string>? AdvertisementIds { get; private set; } = [];
 
+        public string CognitoSubscriptionId { get; private set; }
+
         private Account()
         {}
 
-        public Account(string? name, string? email, string? Cpf, string? description) : base(ProduceExternalId("account_"))
+        public Account(string? name, string? email, string? Cpf, string? description, string? cognitoSubscriptionId) : base(ProduceExternalId("account_"))
         {
             SetName(name);
             SetDescription(description);
             SetEmail(email);
             SetCpf(Cpf);
             Rating = new Rating();
+            SetCognitoSub(cognitoSubscriptionId);
+        }
+
+        private void SetCognitoSub(string? cognitoSubscriptionId)
+        {
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(cognitoSubscriptionId), "CognitoSubscriptionId cannot be null.");
+            CognitoSubscriptionId = cognitoSubscriptionId!;
         }
 
         public void UpdateProfilePicture(string? profilePicture)
