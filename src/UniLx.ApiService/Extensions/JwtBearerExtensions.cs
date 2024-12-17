@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using UniLx.ApiService.Authorization;
 using UniLx.Infra.Services.ExternalServices.Cognito;
 
 namespace UniLx.ApiService.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class JwtBearerExtensions
     {
         public static WebApplicationBuilder AddCustomAuthenticationAndAuthorization(this WebApplicationBuilder builder)

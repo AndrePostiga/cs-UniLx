@@ -1,5 +1,8 @@
-﻿namespace UniLx.ApiService.Authorization
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace UniLx.ApiService.Authorization
 {
+    [ExcludeFromCodeCoverage]
     public static class Groups
     {
         public const string GroupSection = "cognito:groups";

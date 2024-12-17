@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UniLx.Infra.Services.ExternalServices.Cognito
 {
+    [ExcludeFromCodeCoverage]
     public static class CognitoExtensions
     {
         public static WebApplicationBuilder AddCognitoService(this WebApplicationBuilder builder)
