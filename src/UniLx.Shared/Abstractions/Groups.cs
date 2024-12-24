@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace UniLx.ApiService.Authorization
+namespace UniLx.Shared.Abstractions
 {
     [ExcludeFromCodeCoverage]
     public static class Groups

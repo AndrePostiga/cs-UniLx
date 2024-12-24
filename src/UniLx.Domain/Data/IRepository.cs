@@ -11,5 +11,18 @@ namespace UniLx.Domain.Data
         void InsertOne(T entity);
         void CustomSql(string sql, params object[] objects);
         IUnitOfWork UnitOfWork {  get; }
+
+        Task<T?> FindOneWithIncludes<TInclude>(
+            Expression<Func<T, bool>> expression,
+            Expression<Func<T, object>> includeExpression,
+            Action<TInclude> includeAction,
+            CancellationToken ct) where TInclude : notnull;
+
+        Task<Tuple<IEnumerable<T>?, int>> FindAllWithInclude<TInclude>(
+            int skip, int limit, bool sortAsc, bool? sortUpdatedAtAsc,
+            Expression<Func<T, bool>> expression,
+            Expression<Func<T, object>> includeExpression,
+            Dictionary<string, TInclude> includeAction,
+            CancellationToken ct) where TInclude : notnull;
     }
 }

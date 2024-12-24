@@ -13,6 +13,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public DateTime ExpiresAt { get; private set; }
         public Address Address { get; private set; }
         public string OwnerId { get; private set; }
+        public string OwnerName { get; private set; }
         public string CategoryId { get; private set; }
         public string CategoryName { get; private set; }
 
@@ -43,6 +44,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             DomainException.ThrowIf(account is null, "Cannot create advertisement without account.");
             account!.AddAdvertisement(this);
             OwnerId = account!.Id;
+            OwnerName = account!.Name;
         }
 
         private void SetDetails(Details details)
@@ -76,6 +78,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         private void SetInitialStatus()
         {
             Status = AdvertisementStatus.Created;
+        }
+
+        public bool IsExpired()
+        {
+            return ExpiresAt < DateTime.UtcNow;
         }
     }
 }

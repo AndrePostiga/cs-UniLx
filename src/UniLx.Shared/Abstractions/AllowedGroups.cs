@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace UniLx.ApiService.Authorization
+namespace UniLx.Shared.Abstractions
 {
     public class AllowedGroups(params string[] roles)
     {

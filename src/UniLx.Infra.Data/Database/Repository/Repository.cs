@@ -1,10 +1,7 @@
 ﻿using Marten;
-using NetTopologySuite.Geometries;
 using System.Linq.Expressions;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities;
-using UniLx.Domain.Entities.AccountAgg;
-using UniLx.Domain.Entities.AdvertisementAgg;
 using IUnitOfWork = UniLx.Domain.Data.IUnitOfWork;
 
 namespace UniLx.Infra.Data.Database.Repository
@@ -40,6 +37,23 @@ namespace UniLx.Infra.Data.Database.Repository
                     .FirstOrDefaultAsync(token: ct);
         }
 
+        public async Task<T?> FindOneWithIncludes<TInclude>(
+           Expression<Func<T, bool>> expression,
+           Expression<Func<T, object>> includeExpression,
+           Action<TInclude> includeAction,
+           CancellationToken ct) where TInclude : notnull
+        {
+            using var session = _martenContext.QuerySession();
+            var result = await session
+                .Query<T>()
+                .Include<TInclude>(includeExpression, includeAction)
+                .Where(expression)                
+                .FirstOrDefaultAsync(token: ct);
+
+            return result;
+        }
+
+
         public void InsertOne(T entity)
         {
             Action<IDatabaseSession> insertCommand = (session) => session.Insert(entity);
@@ -56,6 +70,23 @@ namespace UniLx.Infra.Data.Database.Repository
         {
             Action<IDatabaseSession> updateCommand = (session) => session.Update(entity);
             _unitOfWork.AddCommand(updateCommand);
+        }
+
+        public async Task<Tuple<IEnumerable<T>?, int>> FindAllWithInclude<TInclude>(int skip, int limit, bool sortAsc, bool? sortUpdatedAtAsc, Expression<Func<T, bool>> expression, Expression<Func<T, object>> includeExpression, Dictionary<string, TInclude> includeAction, CancellationToken ct) where TInclude : notnull
+        {
+            using var session = _martenContext.QuerySession();
+            var query = session
+                .Query<T>()
+                .Include(includeAction).On(includeExpression)
+                .Where(expression);
+
+            query = sortAsc ? query.OrderBy(e => e.CreatedAt) : query.OrderByDescending(e => e.CreatedAt);
+            query = sortUpdatedAtAsc.HasValue && sortUpdatedAtAsc.Value ? query.OrderBy(e => e.UpdatedAt) : query.OrderByDescending(e => e.UpdatedAt);
+
+            int calculatedSkip = (skip - 1) * limit;
+            var result = await query.Skip(calculatedSkip).Take(limit).ToListAsync(ct);
+            var total = await query.CountAsync(ct);
+            return Tuple.Create((IEnumerable<T>?)result, total);
         }
     }
 }

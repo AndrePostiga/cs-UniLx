@@ -10,9 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using UniLx.Domain.Data;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
+using UniLx.Domain.Entities.ChatAgg;
 using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Infra.Data.Database;
@@ -47,6 +49,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 opts.Schema.Include<AccountRegistry>();
                 opts.Schema.Include<CategoryRegistry>();
                 opts.Schema.Include<AdvertisementRegistry>();
+                opts.Schema.Include<ChatRoomRegistry>();
+                opts.Schema.Include<MessageRegistry>();
 
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementStatus>());
                 opts.Linq.MethodCallParsers.Add(new HasSmartEnumValueParser<AdvertisementType>());
@@ -85,6 +89,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
             builder.Services.AddScoped<Domain.Data.IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<Domain.Data.ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<Domain.Data.IAdvertisementRepository, AdvertisementRepository>();
+            builder.Services.AddScoped<Domain.Data.IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<Domain.Data.IChatRoomRepository, ChatRoomRepository>();
 
 
             return builder;
@@ -230,7 +236,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         {
             For<Account>()
                 .Identity(x => x.Id)
-                .Identity(x => x.CognitoSubscriptionId)
+                .Duplicate(x => x.CognitoSubscriptionId, pgType: "varchar(50)", notNull: true)
                 .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
                 .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
         }
@@ -261,6 +267,31 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 .Index(x => x.Id)
                 .ForeignKey<Category>(x => x.CategoryId)
                 .ForeignKey<Account>(x => x.OwnerId);
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class ChatRoomRegistry : MartenRegistry
+    {
+        public ChatRoomRegistry()
+        {
+            For<ChatRoom>()
+                .Index(x => x.Id)
+                .ForeignKey<Account>(x => x.SenderId)
+                .ForeignKey<Account>(x => x.AdvertisementOwnerId)
+                .ForeignKey<Advertisement>(x => x.AdvertisementId);
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class MessageRegistry : MartenRegistry
+    {
+        public MessageRegistry()
+        {
+            For<Message>()
+                .Index(x => x.Id)
+                .ForeignKey<Account>(x => x.MessageOwnerId)
+                .ForeignKey<ChatRoom>(x => x.RoomId);
         }
     }
     #endregion
