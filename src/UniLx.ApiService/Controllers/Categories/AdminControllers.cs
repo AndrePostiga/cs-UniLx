@@ -3,7 +3,6 @@ using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
-using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Categories.CreateCategory.Mappers;
 using UniLx.Application.Usecases.Categories.CreateCategory.Models;
 using UniLx.Shared.Abstractions;
