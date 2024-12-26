@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Usecases.Advertisements.Commands.AdvertisementGeneratePresignUrl;
+using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers;
 using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Request;
 using UniLx.Shared.Abstractions;

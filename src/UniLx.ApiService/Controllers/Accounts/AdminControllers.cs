@@ -3,6 +3,7 @@ using Carter.OpenApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
+using UniLx.ApiService.Authorization;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
