@@ -17,7 +17,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mod
         public string Title { get; set; }
         public string? Description { get; set; }
         public int? Price { get; set; }
-
+        public List<string>? Images { get; set; }
         public BeautyDetailsResponse? BeautyDetails { get; set; }
         public EventsDetailsResponse? EventsDetails { get; set; }
         public ElectronicsDetailsResponse? ElectronicsDetails { get; set; }

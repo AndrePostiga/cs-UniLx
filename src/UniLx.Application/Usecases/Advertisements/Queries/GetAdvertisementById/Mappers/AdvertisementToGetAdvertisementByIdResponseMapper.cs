@@ -1,5 +1,4 @@
-﻿using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Models.Response;
-using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mappers;
+﻿using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById.Models;
 using UniLx.Application.Usecases.SharedModels.Mappers;
 using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
@@ -8,11 +7,11 @@ using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.AdvertisementAgg.SpecificDetails;
 
-namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers
+namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById.Mappers
 {
-    internal static class AdvertisementToCreateAdvertisementResponseMapper
+    internal static class AdvertisementToGetAdvertisementByIdResponseMapper
     {
-        public static CreateAdvertisementResponse ToResponse(this Advertisement source, Account owner)
+        public static GetAdvertisementByIdResponse ToResponse(this Advertisement source, Account owner)
             => new()
             {
                 Id = source.Id,
@@ -25,7 +24,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 UpdatedAt = source.UpdatedAt,
                 Title = source.Details.Title,
                 Description = source.Details.Description,
-                Price = source.Details.Price,                
+                Price = source.Details.Price,
+                Images = source.Details.Images,
                 Address = source.Address.ToResponse(),
                 BeautyDetails = source.Type == AdvertisementType.Beauty ? (BeautyDetailsResponse?)(source.Details as BeautyDetails)!.ToResponse() : null,
                 EventsDetails = source.Type == AdvertisementType.Events ? (EventsDetailsResponse?)(source.Details as EventsDetails)!.ToResponse() : null,
@@ -45,6 +45,6 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 Email = source.Email.Value,
                 Name = source.Name,
                 ProfilePictureUrl = source.ProfilePictureUrl
-            };        
+            };
     }
 }

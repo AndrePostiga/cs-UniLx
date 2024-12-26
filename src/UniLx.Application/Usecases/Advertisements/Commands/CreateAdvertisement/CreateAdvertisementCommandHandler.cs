@@ -17,18 +17,18 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
         private readonly IAccountRepository _accountRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICreateAdvertisementDomainService _createAdvertisementDomainService;
-        private readonly IStorageRepository<AccountAvatarBucketOptions> _storageRepository;      
+        private readonly IStorageRepository<AccountBucketOptions> _accountStorage;      
 
         public CreateAdvertisementCommandHandler(
             IAccountRepository accountRepository,
-            IStorageRepository<AccountAvatarBucketOptions> storageRepository,
+            IStorageRepository<AccountBucketOptions> accountStorage,
             ICategoryRepository categoryRepository, 
             ICreateAdvertisementDomainService createAdvertisementDomainService)
         {
             _accountRepository = accountRepository;
             _categoryRepository = categoryRepository;
             _createAdvertisementDomainService = createAdvertisementDomainService;
-            _storageRepository = storageRepository;
+            _accountStorage = accountStorage;
         }
 
         public async Task<IResult> Handle(CreateAdvertisementCommand request, CancellationToken cancellationToken)
@@ -57,9 +57,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
 
             if (advertisement.IsError)
                 return advertisement.Error.ToBadRequest();
-
-            var imageUrl = await _storageRepository.GetImageUrl(account.ProfilePicture, DateTime.UtcNow.AddMinutes(30));            
-            var result = advertisement.Content!.ToResponse(account, imageUrl);
+            
+            var result = advertisement.Content!.ToResponse(account);
             return Results.Ok(result);
         }
     }

@@ -3,6 +3,8 @@ using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mappers
 using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Models;
 using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Spec;
 using UniLx.Domain.Data;
+using UniLx.Infra.Data.Storage;
+using UniLx.Infra.Data.Storage.Buckets;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
@@ -10,10 +12,14 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
     internal class GetAdvertisementsQueryHandler : IQueryHandler<GetAdvertisementsQuery, IResult>
     {
         private readonly IAdvertisementRepository _advertisementRepository;
+        private readonly IStorageRepository<AdvertisementBucketOptions> _storageRepository;
 
-        public GetAdvertisementsQueryHandler(IAdvertisementRepository advertisementRepository)
+
+        public GetAdvertisementsQueryHandler(IAdvertisementRepository advertisementRepository,
+             IStorageRepository<AdvertisementBucketOptions> storageRepository)
         {
             _advertisementRepository = advertisementRepository;
+            _storageRepository = storageRepository;
         }
 
         public async Task<IResult> Handle(GetAdvertisementsQuery request, CancellationToken cancellationToken)
@@ -25,7 +31,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement
                 request.ToSpec(),
                 cancellationToken);
 
-            var response = advertisements!.Select(ad => ad.ToResponse());
+            var response = advertisements?.Select(x => x.ToResponse());
             var result = PaginatedQueryResponse<GetAdvertisementsResponse>.WithContent(response, request.Page, request.PageSize, count);
             return Results.Ok(result);
         }

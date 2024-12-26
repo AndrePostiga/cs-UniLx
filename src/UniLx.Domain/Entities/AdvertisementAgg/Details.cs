@@ -8,9 +8,8 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         protected abstract AdvertisementType Type { get; }
         public string Title { get; protected set; }
         public string? Description { get; protected set; }
-        public int? Price { get; protected set; }
-        //public IReadOnlyList<Image>? Images => _images?.AsReadOnly();
-        //private List<Image>? _images;
+        public int? Price { get; protected set; }                
+        public List<string>? Images { get; private set; }
 
         protected Details() { }
 
@@ -46,6 +45,29 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             DomainException.ThrowIf(string.IsNullOrWhiteSpace(title), $"{nameof(Title)} cannot be null.");
             DomainException.ThrowIf(title!.Length > 256, "nameof(Title)} field must have 256 characters or less");
             Title = title;
+        }
+
+        private void AddImageUrl(string? uri)
+        {
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(uri), $"{nameof(uri)} cannot be null.");
+
+            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+            {
+                throw new DomainException($"{nameof(uri)} is not a valid URL.");
+            }
+
+            Images ??= [];   
+            Images.Add(uri!.ToString());
+        }
+
+        public void AddImageUrls(IEnumerable<string?> uris)
+        {
+            DomainException.ThrowIf(uris == null, "The list of URIs cannot be null.");           
+
+            foreach (var uri in uris!)
+            {
+                AddImageUrl(uri);
+            }
         }
     }
 }

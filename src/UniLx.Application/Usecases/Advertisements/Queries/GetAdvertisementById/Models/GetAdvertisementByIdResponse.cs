@@ -1,11 +1,12 @@
 ﻿using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 
-namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models
+namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById.Models
 {
-    internal class GetAccountAdvertisementsResponse
+    internal class GetAdvertisementByIdResponse
     {
         public string Id { get; set; }
+        public OwnerSummaryResponse Owner { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }

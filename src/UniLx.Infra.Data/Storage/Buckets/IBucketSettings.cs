@@ -4,5 +4,6 @@
     {
         public string? BucketName { get; set; }
         public string? Folder { get; set; }
+        public bool IsPrivate { get; set; }
     }
 }

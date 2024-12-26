@@ -1,6 +1,8 @@
-﻿using UniLx.Domain.Entities.AdvertisementAgg;
+﻿using System;
+using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace UniLx.Domain.Entities.AccountAgg
 {
@@ -14,7 +16,7 @@ namespace UniLx.Domain.Entities.AccountAgg
 
         public Email Email { get;  private set; }
 
-        public StorageImage? ProfilePicture { get;  private set; }
+        public string? ProfilePictureUrl { get;  private set; }
 
         public Rating Rating { get; private set; }
         
@@ -41,10 +43,16 @@ namespace UniLx.Domain.Entities.AccountAgg
             CognitoSubscriptionId = cognitoSubscriptionId!;
         }
 
-        public void UpdateProfilePicture(string? profilePicture)
+        public void UpdateProfilePicture(string? profilePictureUrl)
         {
-            if (!string.IsNullOrWhiteSpace(profilePicture))
-                ProfilePicture = StorageImage.CreatePrivateImage(Id, profilePicture);
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(profilePictureUrl), $"{nameof(profilePictureUrl)} cannot be null.");
+
+            if (!Uri.IsWellFormedUriString(profilePictureUrl, UriKind.Absolute))
+            {
+                throw new DomainException($"{nameof(profilePictureUrl)} is not a valid URL.");
+            }
+
+            ProfilePictureUrl = profilePictureUrl;
         }
 
         public void AddAdvertisement(Advertisement? advertisement)
