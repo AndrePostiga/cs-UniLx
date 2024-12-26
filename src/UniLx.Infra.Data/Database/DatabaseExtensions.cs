@@ -17,13 +17,12 @@ using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Domain.Entities.ChatAgg;
 using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
-using UniLx.Infra.Data.Database;
 using UniLx.Infra.Data.Database.Options;
 using UniLx.Infra.Data.Database.Repository;
 using Weasel.Core;
 using Weasel.Postgresql.SqlGeneration;
 
-namespace UniLx.Infra.Data.ServiceExtensions
+namespace UniLx.Infra.Data.Database
 {
     [ExcludeFromCodeCoverage]
     public static class DatabaseExtensions
@@ -85,12 +84,12 @@ namespace UniLx.Infra.Data.ServiceExtensions
             .UseNpgsqlDataSource();
 
             builder.Services.AddSingleton<IMartenContext, MartenContext>();
-            builder.Services.AddScoped<Domain.Data.IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<Domain.Data.IAccountRepository, AccountRepository>();
-            builder.Services.AddScoped<Domain.Data.ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<Domain.Data.IAdvertisementRepository, AdvertisementRepository>();
-            builder.Services.AddScoped<Domain.Data.IMessageRepository, MessageRepository>();
-            builder.Services.AddScoped<Domain.Data.IChatRoomRepository, ChatRoomRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 
 
             return builder;
@@ -100,7 +99,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
     [ExcludeFromCodeCoverage]
     public class SeedData : IInitialData
     {
-        private readonly object[] _initialData;        
+        private readonly object[] _initialData;
 
         public SeedData()
         {
@@ -208,8 +207,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
 
 
             _initialData = [
-                .. beautyCategories, 
-                .. electronicsCategories, 
+                .. beautyCategories,
+                .. electronicsCategories,
                 .. eventsCategories,
                 .. fashionCategories,
                 .. jobOpportunitiesCategories,
@@ -267,6 +266,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 .Index(x => x.Id)
                 .ForeignKey<Category>(x => x.CategoryId)
                 .ForeignKey<Account>(x => x.OwnerId);
+
         }
     }
 
@@ -302,7 +302,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         public bool Matches(MethodCallExpression expression)
         {
             // Ensure the method name matches
-            if (expression.Method.Name != nameof(UniLx.Shared.LibExtensions.SmartEnumExtensions.HasSmartEnumValue))
+            if (expression.Method.Name != nameof(Shared.LibExtensions.SmartEnumExtensions.HasSmartEnumValue))
             {
                 return false;
             }

@@ -102,9 +102,9 @@ namespace UniLx.Tests.Domain.AccountAgg
             account.UpdateProfilePicture(profilePicturePath);
 
             // Assert
-            Assert.NotNull(account.ProfilePicture);
+            Assert.NotNull(account.ProfilePictureUrl);
             
-            Assert.Equal(expectedPath, account.ProfilePicture!.FullPath);
+            Assert.Equal(expectedPath, account.ProfilePictureUrl!.FullPath);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace UniLx.Tests.Domain.AccountAgg
             account.UpdateProfilePicture(null);
 
             // Assert
-            Assert.Null(account.ProfilePicture);
+            Assert.Null(account.ProfilePictureUrl);
         }
 
         #endregion

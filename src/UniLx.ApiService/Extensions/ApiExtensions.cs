@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using UniLx.ApiService.ExceptionHandlers;
 using UniLx.Infra.Services.ChatHubs;
 using UniLx.Shared.Abstractions;
 using UniLx.Shared.Converters;
@@ -35,6 +34,7 @@ namespace UniLx.ApiService.Extensions
             });
             
             builder.Services.AddCarter();
+            builder.Services.AddSignalR();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IRequestContext, RequestContext.RequestContext>();
             return builder;

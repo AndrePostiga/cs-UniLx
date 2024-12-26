@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities.ChatAgg;
-using UniLx.Shared.Abstractions;
 
 namespace UniLx.Infra.Services.ChatHubs
 {

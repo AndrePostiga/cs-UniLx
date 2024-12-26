@@ -1,21 +1,17 @@
 ﻿using Carter;
 using Carter.OpenApi;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture;
-using UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture.Models;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating;
 using UniLx.Application.Usecases.Accounts.Commands.UpdateRating.Models;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Mappers;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountByCognitoSub;
 using UniLx.Application.Usecases.Accounts.Queries.GetAccountById;
-using UniLx.Application.Usecases.Shared.CreatePresignedImage;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.ApiService.Controllers.Accounts
@@ -33,10 +29,6 @@ namespace UniLx.ApiService.Controllers.Accounts
                   .WithName(nameof(AdminControllerHandlers.CreateAccount))
                   .RequireAuthorization(new AllowedGroups(Groups.User));
 
-            adminGroup.MapGet("/profile-picture-sign", AdminControllerHandlers.CreateProfilePicturePresignUrl)
-                  .WithName(nameof(AdminControllerHandlers.CreateProfilePicturePresignUrl))
-                  .RequireAuthorization(new AllowedGroups(Groups.User));
-
             adminGroup.MapGet("/{id}", AdminControllerHandlers.GetAccountById)
                   .WithName(nameof(AdminControllerHandlers.GetAccountById))
                   .RequireAuthorization(new AllowedGroups(Groups.User));
@@ -49,7 +41,7 @@ namespace UniLx.ApiService.Controllers.Accounts
                   .WithName(nameof(AdminControllerHandlers.UpdateRating))
                   .RequireAuthorization(new AllowedGroups(Groups.User));
 
-            adminGroup.MapPatch("/{id}/profile-picture", AdminControllerHandlers.UpdateProfilePicture)
+            adminGroup.MapPatch("/{id}/presign-url/{fileName}", AdminControllerHandlers.UpdateProfilePicture)
                   .WithName(nameof(AdminControllerHandlers.UpdateProfilePicture))
                   .RequireAuthorization(new AllowedGroups(Groups.User));
 
@@ -83,21 +75,6 @@ namespace UniLx.ApiService.Controllers.Accounts
         }
 
         /// <summary>
-        /// Generates a presigned URL for profile picture upload.
-        /// </summary>
-        /// <remarks>
-        /// This endpoint provides a presigned URL that allows clients to securely upload profile pictures.
-        /// </remarks>
-        internal static async Task<IResult> CreateProfilePicturePresignUrl(
-                [FromServices] IMediator mediator,
-                CancellationToken ct)
-        {
-            var command = new CreatePresignedImageCommand();
-            var response = await mediator.Send(command, ct);
-            return response!;
-        }
-
-        /// <summary>
         /// Gets account details by account ID.
         /// </summary>
         /// <param name="id">The account ID.</param>
@@ -119,17 +96,17 @@ namespace UniLx.ApiService.Controllers.Accounts
         /// </summary>
         /// <param name="context"></param>
         /// <param name="id">The account ID.</param>
-        /// <param name="request">The rating update request.</param>
+        /// <param name="fileName">The filename to upload.</param>
         /// <param name="mediator"></param>
         /// <param name="ct"></param>
         /// <returns>A result indicating success or failure.</returns>
         internal static async Task<IResult> UpdateProfilePicture(HttpContext context,
                 string id,
-                [FromBody] UpdateProfilePictureRequest request,
+                string fileName,
                 [FromServices] IMediator mediator,
                 CancellationToken ct)
         {
-            var command = new UpdateProfilePictureCommand(request.ProfilePicture, id);
+            var command = new UpdateProfilePictureCommand(id, fileName);
             var response = await mediator.Send(command, ct);
             return response!;
         }
