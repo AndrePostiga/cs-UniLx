@@ -13,11 +13,8 @@ namespace UniLx.Tests.Domain.AdvertisementAgg.Enumerations
         [InlineData("events", 4)]
         [InlineData("fashion", 5)]
         [InlineData("real_estate", 6)]
-        [InlineData("services", 7)]
-        [InlineData("vehicles", 8)]
-        [InlineData("job_opportunities", 9)]
-        [InlineData("toys", 10)]
-        [InlineData("others", 11)]
+        [InlineData("job_opportunities", 7)]
+        [InlineData("others", 8)]
         public void AdvertisementType_ShouldHaveCorrectNameAndValue(string expectedName, int expectedValue)
         {
             // Act
@@ -54,7 +51,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg.Enumerations
         public void AdvertisementType_List_ShouldContainAllTypes()
         {
             // Arrange
-            var expectedCount = 11;
+            var expectedCount = 8;
 
             // Act
             var allTypes = AdvertisementType.List;
@@ -67,17 +64,14 @@ namespace UniLx.Tests.Domain.AdvertisementAgg.Enumerations
             Assert.Contains(AdvertisementType.Events, allTypes);
             Assert.Contains(AdvertisementType.Fashion, allTypes);
             Assert.Contains(AdvertisementType.RealEstate, allTypes);
-            Assert.Contains(AdvertisementType.Services, allTypes);
-            Assert.Contains(AdvertisementType.Vehicles, allTypes);
             Assert.Contains(AdvertisementType.JobOpportunities, allTypes);
-            Assert.Contains(AdvertisementType.Toys, allTypes);
             Assert.Contains(AdvertisementType.Others, allTypes);
         }
 
         [Theory]
         [InlineData(1, "pets")]
         [InlineData(5, "fashion")]
-        [InlineData(11, "others")]
+        [InlineData(8, "others")]
         public void AdvertisementType_FromValue_ShouldReturnCorrectType(int value, string expectedName)
         {
             // Act

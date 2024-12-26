@@ -8,7 +8,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
     {
         private class TestDetailsStub : Details
         {
-            protected override AdvertisementType Type => AdvertisementType.Services;
+            protected override AdvertisementType Type => AdvertisementType.RealEstate;
 
             public TestDetailsStub(string? title, string? description, int? price)
                 : base(title, description, price) { }
@@ -117,7 +117,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             var type = details.GetType();
 
             // Assert
-            Assert.Equal(AdvertisementType.Services, type);
+            Assert.Equal(AdvertisementType.RealEstate, type);
         }
     }
 

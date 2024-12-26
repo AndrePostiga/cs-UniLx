@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using UniLx.ApiService.ExceptionHandlers;
+using UniLx.Shared.Abstractions;
 using UniLx.Shared.Converters;
 
 namespace UniLx.ApiService.Extensions
@@ -29,14 +31,19 @@ namespace UniLx.ApiService.Extensions
                 options.SerializerOptions.Converters.Add(new FloatConverter(2));
 
             });
-
+            
             builder.Services.AddCarter();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IRequestContext, RequestContext.RequestContext>();
             return builder;
         }
 
         public static WebApplication UseApiConfiguration(this WebApplication webApplication)
         {
             webApplication.UseCors("AllAllowed");
+
+            webApplication.UseAuthentication();
+            webApplication.UseAuthorization();
 
             webApplication
                 .MapDefaultEndpoints()

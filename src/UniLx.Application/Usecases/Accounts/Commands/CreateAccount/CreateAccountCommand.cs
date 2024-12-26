@@ -11,15 +11,12 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
 
         public string? Cpf { get; set; }
 
-        public string? Email { get; set; }
-
         public string? Description { get; set; }
 
         public CreateAccountCommand(string? name, string? cpf, string? email, string? description)
         {
             Name = name;
             Cpf = cpf;
-            Email = email;
             Description = description;
         }        
     }
@@ -39,12 +36,6 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount
                 .WithMessage("CPF is required.")
                 .Must(BeAValidCpf)
                 .WithMessage("Invalid CPF format.");
-
-            RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage("Email is required.")
-                .EmailAddress()
-                .WithMessage("Invalid email format.");
 
             RuleFor(x => x.Description)
                 .MaximumLength(256)

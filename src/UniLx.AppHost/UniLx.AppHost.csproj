@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\andre\.nuget\packages\tracelens.aspire\6.0.0\contentFiles\any\net8.0\asynkron.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\UniLx.ApiService\UniLx.ApiService.csproj" />
   </ItemGroup>
 
@@ -20,7 +24,6 @@
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.0.0" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="9.0.0" />
-    <PackageReference Include="TraceLens.Aspire" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

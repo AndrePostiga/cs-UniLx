@@ -123,5 +123,36 @@ namespace UniLx.Application.Usecases.SharedModels.Mappers
                 HealthStatus = source.HealthStatus,
                 IsSterilized = source.IsSterilized,
             };
+
+        public static RealEstateDetailsResponse ToResponse(this RealEstateDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                LotSizeInSquareMeters = source.LotSizeInSquareMeters,
+                ConstructedSquareFootage = source.ConstructedSquareFootage,
+                Bedrooms = source.Bedrooms,
+                Bathrooms = source.Bathrooms,
+                ParkingSpaces = source.ParkingSpaces,
+                PropertyType = source.PropertyType.Name,
+                Condition = source.Condition?.Name,
+                Floors = source.Floors,
+                AdditionalFeatures = source.AdditionalFeatures
+            };
+
+        public static OthersDetailsResponse ToResponse(this OthersDetails source)
+            => new()
+            {
+                Title = source.Title,
+                Price = source.Price,
+                Description = source.Description,
+
+                Condition = source.Condition?.Name,
+                Brand = source.Brand,
+                Features = source.Features,
+                WarrantyUntil = source.WarrantyUntil
+            };
     }
 }

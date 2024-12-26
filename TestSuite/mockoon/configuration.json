@@ -194,6 +194,185 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "9c2b5f28-ed68-4731-8141-87deeac0dae1",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": ".well-known/jwks.json",
+      "responses": [
+        {
+          "uuid": "6c1a5ec8-9da2-4551-b66a-42a148093356",
+          "body": "{\r\n  \"keys\": [\r\n    {\r\n      \"kty\": \"RSA\",\r\n      \"kid\": \"mock-key-id\",\r\n      \"use\": \"sig\",\r\n      \"alg\": \"RS256\",\r\n      \"n\": \"5X8HR3PwlwTefykyXRYsMQnMSg3h2PVvG3eEgjPq2glH5Nti25REkb5QiYrG1gqyhAy4k156BLpeZMiMJcSJoFJgOafGPBVyiVNTtQjSrwV8rvSJebpPCGAQ2PCQUPRThI5SKfZQjz1rTyvF8WYbMOW5_ktQazYlfglpdb4tKHkXx3CFsFvTy04ttqQgiOKfYRsUK2d9W01E0ZBZQdaeuUOyb8htuDauwQldtFv7lp-rsSFa0GFcgMUcB6kVeQPI1Ya0uxnbtxH3LNvBbW-bONT9p9QisMNqM9friKFy8FKsNe_Bd2fcUMN8J3M2PTcbHLcf3QXsennriNFf4y6Q0Q\",\r\n      \"e\": \"AQAB\"\r\n    }\r\n  ]\r\n}\r\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "a6663014-38e2-4c34-93e4-065e851bf535",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "oauth2/introspect",
+      "responses": [
+        {
+          "uuid": "29ff1885-44cd-4297-819d-ec4ef1803444",
+          "body": "{\r\n  \"active\": true,\r\n  \"sub\": \"mocked-user-sub\",\r\n  \"username\": \"mocked-username\",\r\n  \"cognito:groups\": [\"AdminRole\",\"UserRole\",\"ModeratorRole\",\"ServerRole\",\"ClientRole\"],\r\n  \"exp\": 9999999999\r\n}\r\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "807dcb10-7922-4b39-9743-bcde3fb1e1cc",
+          "body": "{\r\n  \"active\": false\r\n}\r\n",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "119bd481-f492-4983-9b17-1361b46b3ce3",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "oauth2/userinfo",
+      "responses": [
+        {
+          "uuid": "4094b4fd-9a02-4b3e-b1ed-d27edcece555",
+          "body": "{\r\n  \"email\": \"{{faker 'internet.email'}}\",\r\n  \"sub\": \"{{faker 'string.uuid'}}\",\r\n  \"username\": \"{{faker 'internet.userName'}}\",\r\n  \"cognito:groups\": [\"UserRole\"]\r\n}\r\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "9e33e2b6-c282-49a1-9e4e-9a81178a496d",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": ".well-known/openid-configuration",
+      "responses": [
+        {
+          "uuid": "8391e47e-9aee-4be6-9273-2cd8a73aea4a",
+          "body": "{\r\n  \"issuer\": \"http://mock_server:3000\",\r\n  \"jwks_uri\": \"http://mock_server:3000/.well-known/jwks.json\",\r\n  \"authorization_endpoint\": \"http://mock_server:3000/oauth2/authorize\",\r\n  \"token_endpoint\": \"http://mock_server:3000/oauth2/token\",\r\n  \"userinfo_endpoint\": \"http://mock_server:3000/oauth2/userinfo\",\r\n  \"introspection_endpoint\": \"http://mock_server:3000/oauth2/introspect\",\r\n  \"end_session_endpoint\": \"http://mock_server:3000/logout\",\r\n  \"response_types_supported\": [\"code\", \"token\", \"id_token\"],\r\n  \"subject_types_supported\": [\"public\"],\r\n  \"id_token_signing_alg_values_supported\": [\"RS256\"]\r\n}\r\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "9521e546-80c9-45b9-9902-6f9bf51c0fd2",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "oauth2/token",
+      "responses": [
+        {
+          "uuid": "0cb4ec0a-c701-459d-aec0-3c0ef37c8f05",
+          "body": "{\r\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1vY2sta2V5LWlkIn0.eyJzdWIiOiJtb2NrZWQtdXNlci1zdWIiLCJ1c2VybmFtZSI6Im1vY2tlZC11c2VybmFtZSIsImNvZ25pdG86Z3JvdXBzIjpbIkFkbWluUm9sZSIsIlVzZXJSb2xlIiwiTW9kZXJhdG9yUm9sZSIsIlNlcnZlclJvbGUiLCJDbGllbnRSb2xlIl0sImlzcyI6Imh0dHA6Ly9tb2NrX3NlcnZlcjozMDAwIiwiZXhwIjo2NDA2MDU4ODgwMH0.lqUy6slaoKMd8e8-rGisYC5itPb5-m5JU_-xB4rauXLoD_36epnnd_zrKJvGlaMRRHIKU8-21_ClLJKLJTqYB3TEbWQXNFLNKc9dSSgVxiFsYa0dL3Qonc4vb_7wvfxAOVV1CIDjjq9pe1ULz5Rm9kHhvpJ_pswbNJXfznyrRSYYTXYDs3iFhBdSoHn3t5q4WIWcO5LKf3k_w4u8KJ3GYnStt3XEPvg6XxLMXuU-OX-EO2ipsp5WVc0Y1CKIkCjZJawSznBlp7Ng4rjUNlx0_A9i_9RVuvobq3NKBaNoe1E1a2kATv7fkPFVz4665Eh1-4H-fqXH03nO-aC85b-uuQ\",\r\n    \"expires_in\": 3600,\r\n    \"token_type\": \"Bearer\"\r\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "uuid": "de4b5b77-5956-40d5-bd39-1c9a2c00916e",
@@ -217,6 +396,26 @@
     {
       "type": "route",
       "uuid": "36b0a376-95d9-4dfc-938e-85b93f28db8f"
+    },
+    {
+      "type": "route",
+      "uuid": "9c2b5f28-ed68-4731-8141-87deeac0dae1"
+    },
+    {
+      "type": "route",
+      "uuid": "a6663014-38e2-4c34-93e4-065e851bf535"
+    },
+    {
+      "type": "route",
+      "uuid": "119bd481-f492-4983-9b17-1361b46b3ce3"
+    },
+    {
+      "type": "route",
+      "uuid": "9e33e2b6-c282-49a1-9e4e-9a81178a496d"
+    },
+    {
+      "type": "route",
+      "uuid": "9521e546-80c9-45b9-9902-6f9bf51c0fd2"
     }
   ],
   "folders": [],

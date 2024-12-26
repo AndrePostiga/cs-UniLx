@@ -30,6 +30,8 @@ namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
                 FashionDetails = source.Type == AdvertisementType.Fashion ? (FashionDetailsResponse?)(source.Details as FashionDetails)!.ToResponse() : null,
                 JobOpportunitiesDetails = source.Type == AdvertisementType.JobOpportunities ? (JobOpportunitiesDetailsResponse?)(source.Details as JobOpportunitiesDetails)!.ToResponse() : null,
                 PetDetails = source.Type == AdvertisementType.Pets ? (PetDetailsResponse?)(source.Details as PetDetails)!.ToResponse() : null,
+                RealEstateDetails = source.Type == AdvertisementType.RealEstate ? (RealEstateDetailsResponse?)(source.Details as RealEstateDetails)!.ToResponse() : null,
+                OthersDetails = source.Type == AdvertisementType.Others ? (OthersDetailsResponse?)(source.Details as OthersDetails)!.ToResponse() : null,
             };
 
         public static OwnerSummaryResponse ToResponse(this Account source, string? ownerProfilePicture)

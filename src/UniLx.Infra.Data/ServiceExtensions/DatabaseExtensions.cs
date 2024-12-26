@@ -69,6 +69,8 @@ namespace UniLx.Infra.Data.ServiceExtensions
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<EmploymentType, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<PetGender, int>());
                         serializerOptions.Converters.Add(new SmartEnumNameConverter<PetType, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PropertyCondition, int>());
+                        serializerOptions.Converters.Add(new SmartEnumNameConverter<PropertyType, int>());
 
                         serializerOptions.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     });
@@ -170,13 +172,44 @@ namespace UniLx.Infra.Data.ServiceExtensions
                 Category.CreateNewCategory(AdvertisementType.Pets.Name, "selling", "Venda", "Animais disponíveis para venda"),
             };
 
+            var realEstateCategories = new[]
+            {
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "apartments_for_rent", "Apartamentos para Alugar", "Opções de apartamentos disponíveis para locação"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "apartments_for_sale", "Apartamentos à Venda", "Apartamentos disponíveis para compra"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "houses_for_rent", "Casas para Alugar", "Casas e sobrados para locação"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "houses_for_sale", "Casas à Venda", "Casas e sobrados disponíveis para compra"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "commercial_properties", "Imóveis Comerciais", "Lojas, escritórios e espaços comerciais"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "industrial", "Imóveis Industriais", "Galpões, fábricas e espaços industriais"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "land", "Terrenos e Lotes", "Terrenos para construção ou investimento"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "vacation_properties", "Imóveis de Temporada", "Casas de praia, campo ou montanha para temporadas"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "rural", "Propriedades Rurais", "Fazendas, sítios e chácaras"),
+                Category.CreateNewCategory(AdvertisementType.RealEstate.Name, "condos", "Condomínios e Coberturas", "Coberturas, lofts e unidades em condomínio")
+            };
+
+            var othersCategories = new[]
+            {
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "miscellaneous", "Miscelânea", "Itens diversos que não se encaixam em outras categorias"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "collectibles", "Colecionáveis", "Itens raros, de valor sentimental ou histórico"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "handmade", "Artesanato e Produtos Feitos à Mão", "Peças únicas criadas por artesãos"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "tools", "Ferramentas e Equipamentos", "Ferramentas para uso doméstico ou profissional"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "instruments", "Instrumentos Musicais", "Instrumentos, acessórios e equipamentos musicais"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "antiques", "Antiguidades", "Objetos antigos, mobília vintage e relíquias"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "office_supplies", "Material de Escritório", "Suprimentos, móveis e equipamentos de escritório"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "garden", "Jardim e Paisagismo", "Ferramentas, plantas e decoração para jardim"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "sports_equipment", "Equipamentos Esportivos", "Artigos para esportes e atividades físicas"),
+                Category.CreateNewCategory(AdvertisementType.Others.Name, "artifacts", "Artefatos e Decoração", "Objetos de decoração, arte e itens de coleção")
+            };
+
+
             _initialData = [
                 .. beautyCategories, 
                 .. electronicsCategories, 
                 .. eventsCategories,
                 .. fashionCategories,
                 .. jobOpportunitiesCategories,
-                .. petsCategories
+                .. petsCategories,
+                .. realEstateCategories,
+                .. othersCategories
             ];
         }
 
@@ -197,6 +230,7 @@ namespace UniLx.Infra.Data.ServiceExtensions
         {
             For<Account>()
                 .Identity(x => x.Id)
+                .Identity(x => x.CognitoSubscriptionId)
                 .Duplicate(x => x.Cpf.Value, pgType: "varchar(20)", notNull: true)
                 .Duplicate(x => x.Email.Value, pgType: "varchar(128)", notNull: true);
         }
