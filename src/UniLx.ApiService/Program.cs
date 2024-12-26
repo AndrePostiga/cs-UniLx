@@ -18,8 +18,8 @@ builder.Services.AddExceptionHandler<SupabaseExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddSignalR();
 
+builder.Services.AddSignalR();
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
@@ -37,4 +37,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.Run();
+await app.RunAsync();
