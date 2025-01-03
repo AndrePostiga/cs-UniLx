@@ -1,10 +1,11 @@
-﻿using System.Reflection;
+﻿using Bogus.DataSets;
+using System.Reflection;
 using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
+using UniLx.Domain.Entities.ChatAgg;
 using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Exceptions;
-using Xunit;
 
 namespace UniLx.Tests.Domain.AdvertisementAgg
 {
@@ -35,7 +36,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
+            var address = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -64,7 +65,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("Electronics", "products", "Eletrônicos", "Consumer electronics.");
-            var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
+            var address = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -84,7 +85,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
+            var address = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -113,7 +114,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var invalidAddress = Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345");
+            var invalidAddress = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "US", state: "NY", city: "New York", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -133,7 +134,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
+            var address = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -155,7 +156,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
-            var address = Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
+            var address = UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345");
             var account = new Account("Test User", "test@example.com", "15480563084", "Test account description", Guid.NewGuid().ToString());
             var details = new TestDetailsStub("Valid Title", "Valid Description", 100);
 
@@ -170,6 +171,135 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
 
             // Assert
             Assert.Equal(AdvertisementStatus.Active, advertisement.Status);
+        }
+
+        [Fact]
+        public void Advertisement_IsExpired_Should_Return_True_For_Expired_Advertisement()
+        {
+            // Arrange
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddSeconds(1),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                new Account("Owner", "owner@example.com", "15480563084", "Test owner", Guid.NewGuid().ToString())
+            );
+
+            Thread.Sleep(1001);
+
+            // Act
+            var isExpired = advertisement.IsExpired();
+
+            // Assert
+            Assert.True(isExpired);
+        }
+
+        [Fact]
+        public void Advertisement_IsExpired_Should_Return_False_For_Non_Expired_Advertisement()
+        {
+            // Arrange
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddDays(10),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                new Account("Owner", "owner@example.com", "15480563084", "Test owner", Guid.NewGuid().ToString())
+            );
+
+            // Act
+            var isExpired = advertisement.IsExpired();
+
+            // Assert
+            Assert.False(isExpired);
+        }
+
+        [Fact]
+        public void Advertisement_Rate_Should_Update_Ratings()
+        {
+            // Arrange
+            var advertisementOwner = new Account("Owner", "owner@example.com", "24313678352", "Test owner", Guid.NewGuid().ToString());
+            var account = new Account("User", "user@example.com", "24313678352", "Test user", Guid.NewGuid().ToString());
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddDays(10),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                advertisementOwner
+            );
+
+            var chatRoom = new ChatRoom(account, advertisement);
+            advertisement.Finish(advertisementOwner);
+
+            // Act
+            advertisement.Rate(4.5f, account, advertisementOwner);
+
+            // Assert
+            Assert.Equal(4.5f, advertisement.Rating.Value);
+            Assert.Equal(4.5f, advertisementOwner.Rating.Value);
+        }
+
+        [Fact]
+        public void Advertisement_Rate_Should_Throw_For_Invalid_Status()
+        {
+            // Arrange
+            var advertisementOwner = new Account("Owner", "owner@example.com", "24313678352", "Test owner", Guid.NewGuid().ToString());
+            var account = new Account("User", "user@example.com", "24313678352", "Test user", Guid.NewGuid().ToString());
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddDays(10),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                advertisementOwner
+            );
+
+            var chatRoom = new ChatRoom(account, advertisement);
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => advertisement.Rate(4.5f, account, advertisementOwner));
+        }
+
+        [Fact]
+        public void Advertisement_Finish_Should_Update_Status_To_Finished()
+        {
+            // Arrange
+            var advertisementOwner = new Account("Owner", "owner@example.com", "15480563084", "Test owner", Guid.NewGuid().ToString());
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddDays(30),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                advertisementOwner
+            );
+
+            // Act
+            advertisement.Finish(advertisementOwner);
+
+            // Assert
+            Assert.Equal(AdvertisementStatus.Finished, advertisement.Status);
+        }
+
+        [Fact]
+        public void Advertisement_Finish_Should_Throw_For_Invalid_Owner()
+        {
+            // Arrange
+            var advertisementOwner = new Account("Owner", "owner@example.com", "15480563084", "Test owner", Guid.NewGuid().ToString());
+            var anotherAccount = new Account("Other User", "other@example.com", "12345678909", "Other user", Guid.NewGuid().ToString());
+            var advertisement = new Advertisement(
+                "real_estate",
+                Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties."),
+                new TestDetailsStub("Valid Title", "Valid Description", 100),
+                DateTime.UtcNow.AddDays(30),
+                UniLx.Domain.Entities.Seedwork.Address.CreateAddress(country: "BR", state: "RJ", city: "Rio de Janeiro", zipCode: "12345"),
+                advertisementOwner
+            );
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => advertisement.Finish(anotherAccount));
         }
     }
 
