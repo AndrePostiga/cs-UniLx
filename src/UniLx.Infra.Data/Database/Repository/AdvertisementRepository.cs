@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using UniLx.Domain.Data;
+using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;

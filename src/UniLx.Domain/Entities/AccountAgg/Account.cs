@@ -1,5 +1,6 @@
 ﻿using System;
 using UniLx.Domain.Entities.AdvertisementAgg;
+using UniLx.Domain.Entities.Seedwork;
 using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Domain.Exceptions;
 using static System.Net.Mime.MediaTypeNames;
@@ -20,7 +21,8 @@ namespace UniLx.Domain.Entities.AccountAgg
 
         public Rating Rating { get; private set; }
         
-        public HashSet<string>? AdvertisementIds { get; private set; } = [];
+        public HashSet<string> AdvertisementIds { get; private set; } = [];
+        public HashSet<string> InterestAdvertisementIds { get; private set; } = [];
 
         public string CognitoSubscriptionId { get; private set; }
 
@@ -86,6 +88,12 @@ namespace UniLx.Domain.Entities.AccountAgg
 
             if (description is not null)
                 Description = description;
+        }
+
+        public void AddInterest(string advertisementId)
+        {
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(advertisementId), "AdvertisementId cannot be null.");
+            InterestAdvertisementIds!.Add(advertisementId);
         }
     }
 }

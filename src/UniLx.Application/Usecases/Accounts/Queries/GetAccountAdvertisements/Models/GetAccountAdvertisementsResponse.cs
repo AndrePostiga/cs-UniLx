@@ -9,6 +9,7 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.M
         public string Status { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
+        public RatingResponse Rating { get; set; }
         public DateTime ExpiresAt { get; set; }
         public AddressResponse Address { get; set; }
         public DateTime CreatedAt { get; set; }

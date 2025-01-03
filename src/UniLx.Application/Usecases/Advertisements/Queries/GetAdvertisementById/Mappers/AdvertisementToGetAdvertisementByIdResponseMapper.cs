@@ -22,6 +22,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById
                 ExpiresAt = source.ExpiresAt,
                 CreatedAt = source.CreatedAt,
                 UpdatedAt = source.UpdatedAt,
+                Rating = source.Rating.ToResponse(),
                 Title = source.Details.Title,
                 Description = source.Details.Description,
                 Price = source.Details.Price,

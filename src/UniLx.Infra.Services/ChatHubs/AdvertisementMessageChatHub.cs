@@ -6,18 +6,15 @@ namespace UniLx.Infra.Services.ChatHubs
 {
     public class AdvertisementMessageChatHub : Hub
     {
-        private readonly IAdvertisementRepository _advertisementRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IChatRoomRepository _chatRoomRepository;
         private readonly IMessageRepository _messageRepository;
 
         public AdvertisementMessageChatHub(
-            IAdvertisementRepository advertisementRepository,
             IAccountRepository accountRepository,
             IChatRoomRepository chatRoomRepository,
             IMessageRepository messageRepository)
         {
-            _advertisementRepository = advertisementRepository;
             _accountRepository = accountRepository;
             _chatRoomRepository = chatRoomRepository;
             _messageRepository = messageRepository;
@@ -34,6 +31,13 @@ namespace UniLx.Infra.Services.ChatHubs
                 Context.Abort();
                 return;
             }           
+
+            if (existingChatRoom.IsExpired)
+            {
+                await Clients.Caller.SendAsync("Error", "Chat room is expired.");
+                Context.Abort();
+                return;
+            }
 
             await Groups.AddToGroupAsync(Context.ConnectionId, existingChatRoom.Id);            
             var (messages, count) = await _messageRepository.FindAll(
@@ -61,18 +65,25 @@ namespace UniLx.Infra.Services.ChatHubs
                 (x => x.Id == chatRoomId,
                 CancellationToken.None);
 
-            var senderAccount = await _accountRepository.FindOne(x => x.Id == senderId, CancellationToken.None);
-
-            if (chatRoom is null || senderAccount is null)
+            if (chatRoom is null)
             {
-                await Clients.Caller.SendAsync("Error", "Chat room or sender account does not exist.");
+                await Clients.Caller.SendAsync("Error", "Chat room does not exist.");
                 Context.Abort();
                 return;
             }
 
-            if (chatRoom is null)
+            if (chatRoom.IsExpired)
             {
-                await Clients.Caller.SendAsync("Error", "Chat room not found.");
+                await Clients.Caller.SendAsync("Error", "Chat room is expired.");
+                Context.Abort();
+                return;
+            }
+
+            var senderAccount = await _accountRepository.FindOne(x => x.Id == senderId, CancellationToken.None);
+            if (senderAccount is null)
+            {
+                await Clients.Caller.SendAsync("Error", "Sender account does not exist.");
+                Context.Abort();
                 return;
             }
 

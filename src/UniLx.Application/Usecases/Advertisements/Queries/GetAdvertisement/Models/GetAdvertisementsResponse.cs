@@ -10,6 +10,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Mod
         public string Status { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
+        public RatingResponse Rating { get; set; }
         public DateTime ExpiresAt { get; set; }
         public AddressResponse Address { get; set; }
         public DateTime CreatedAt { get; set; }

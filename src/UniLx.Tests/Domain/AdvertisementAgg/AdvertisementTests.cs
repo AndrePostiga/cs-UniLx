@@ -56,7 +56,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
             Assert.Equal(address, advertisement.Address);
             Assert.Equal(account.Id, advertisement.OwnerId);
             Assert.NotNull(advertisement.Details);
-            Assert.Equal(AdvertisementStatus.Created, advertisement.Status);
+            Assert.Equal(AdvertisementStatus.Active, advertisement.Status);
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
         }
 
         [Fact]
-        public void Advertisement_Status_Should_Be_Created_After_Initialization()
+        public void Advertisement_Status_Should_Be_Active_After_Initialization()
         {
             // Arrange
             var category = Category.CreateNewCategory("real_estate", "Rentals", "Apartamentos Para Alugar", "Residential rental properties.");
@@ -169,7 +169,7 @@ namespace UniLx.Tests.Domain.AdvertisementAgg
                 account);
 
             // Assert
-            Assert.Equal(AdvertisementStatus.Created, advertisement.Status);
+            Assert.Equal(AdvertisementStatus.Active, advertisement.Status);
         }
     }
 

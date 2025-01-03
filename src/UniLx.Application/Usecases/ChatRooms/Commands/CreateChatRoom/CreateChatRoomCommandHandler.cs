@@ -44,7 +44,7 @@ namespace UniLx.Application.Usecases.ChatRooms.Commands.CreateChatRoom
                 return ChatRoomErrors.Conflict.ToBadRequest();
 
             Account advertisementOwner;
-            var advertisement = await _advertisementRepository.FindOneWithIncludes<Account>(
+            var advertisement = await _advertisementRepository.FindOneWithInclude<Account>(
                 x => x.Id == request.AdvertisementId,
                 x => x.OwnerId,
                 x => advertisementOwner = x,
@@ -62,6 +62,7 @@ namespace UniLx.Application.Usecases.ChatRooms.Commands.CreateChatRoom
             var chatRoom = new ChatRoom(account, advertisement);
 
             _chatRoomRepository.InsertOne(chatRoom);
+            _accountRepository.UpdateOne(account);
             await _chatRoomRepository.UnitOfWork.Commit(cancellationToken);
             return Results.Ok(chatRoom.ToResponse(advertisement));
         }
