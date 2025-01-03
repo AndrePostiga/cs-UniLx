@@ -1,6 +1,5 @@
 ﻿using UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.Models;
 using UniLx.Application.Usecases.SharedModels.Mappers;
-using UniLx.Application.Usecases.SharedModels.Responses;
 using UniLx.Application.Usecases.SharedModels.Responses.DetailsResponse;
 using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
@@ -20,6 +19,7 @@ namespace UniLx.Application.Usecases.Accounts.Queries.GetAccountAdvertisements.M
                 ExpiresAt = source.ExpiresAt,
                 CreatedAt = source.CreatedAt,
                 UpdatedAt = source.UpdatedAt,
+                Rating = source.Rating.ToResponse(),
                 Title = source.Details.Title,
                 Description = source.Details.Description,
                 Price = source.Details.Price,

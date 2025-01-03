@@ -12,7 +12,7 @@ namespace UniLx.Domain.Data
         void CustomSql(string sql, params object[] objects);
         IUnitOfWork UnitOfWork {  get; }
 
-        Task<T?> FindOneWithIncludes<TInclude>(
+        Task<T?> FindOneWithInclude<TInclude>(
             Expression<Func<T, bool>> expression,
             Expression<Func<T, object>> includeExpression,
             Action<TInclude> includeAction,

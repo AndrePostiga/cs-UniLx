@@ -10,6 +10,8 @@ namespace UniLx.Domain.Entities.Seedwork.ValueObj
         public string FileName { get; private set; }
         public string Extension { get; private set; }
 
+        private Image() { }
+
         public static Image Create(string originalFileName)
         {
             ValidateFileName(originalFileName);

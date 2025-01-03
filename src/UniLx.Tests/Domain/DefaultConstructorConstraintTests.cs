@@ -35,7 +35,7 @@ namespace UniLx.Tests.Domain
                     null);
 
                 // Assert
-                Assert.True(privateConstructor != null || publicConstructor != null,
+                Assert.True(publicConstructor != null || privateConstructor != null,
                     $"{type.Name} must have either a private or public default constructor.");
             }
         }

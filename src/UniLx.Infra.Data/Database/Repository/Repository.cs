@@ -37,7 +37,7 @@ namespace UniLx.Infra.Data.Database.Repository
                     .FirstOrDefaultAsync(token: ct);
         }
 
-        public async Task<T?> FindOneWithIncludes<TInclude>(
+        public virtual async Task<T?> FindOneWithInclude<TInclude>(
            Expression<Func<T, bool>> expression,
            Expression<Func<T, object>> includeExpression,
            Action<TInclude> includeAction,

@@ -1,4 +1,5 @@
 ﻿using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models;
+using UniLx.Application.Usecases.SharedModels.Mappers;
 using UniLx.Domain.Entities.AccountAgg;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
@@ -12,8 +13,9 @@ namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers
                 Description: source.Description,
                 Email: source.Email.Value,
                 ProfilePictureUrl: source.ProfilePictureUrl,
-                Rating: source.Rating.Value,
+                Rating: source.Rating.ToResponse(),
                 Advertisements: [..(source.AdvertisementIds ?? [])],
+                InterestedAdvertisements: [..(source.InterestAdvertisementIds ?? [])],
                 CreatedAt: source.CreatedAt!);
     }
 }

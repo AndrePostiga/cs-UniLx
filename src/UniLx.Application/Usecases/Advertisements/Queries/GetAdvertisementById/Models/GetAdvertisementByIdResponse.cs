@@ -14,6 +14,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById
         public AddressResponse Address { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public RatingResponse Rating { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
         public int? Price { get; set; }
