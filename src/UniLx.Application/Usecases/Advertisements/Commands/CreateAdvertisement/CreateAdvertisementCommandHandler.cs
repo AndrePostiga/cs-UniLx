@@ -12,7 +12,7 @@ using UniLx.Shared.LibExtensions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement
 {
-    internal class CreateAdvertisementCommandHandler : ICommandHandler<CreateAdvertisementCommand, IResult>
+    public class CreateAdvertisementCommandHandler : ICommandHandler<CreateAdvertisementCommand, IResult>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ICategoryRepository _categoryRepository;
