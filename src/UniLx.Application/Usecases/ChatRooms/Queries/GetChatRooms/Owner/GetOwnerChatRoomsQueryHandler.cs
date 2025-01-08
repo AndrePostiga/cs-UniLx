@@ -46,8 +46,13 @@ namespace UniLx.Application.Usecases.ChatRooms.Queries.GetChatRooms.Owner
             if (chatRooms == null)
                 return ChatRoomErrors.NotFound.ToBadRequest();
 
+            var activeChatRooms = chatRooms
+                .Where(chatRoom =>
+                    includes.TryGetValue(chatRoom.AdvertisementId, out var advertisement) &&
+                    advertisement.IsActive())
+                .ToList();
 
-            var response = chatRooms!.Select(c => c.ToResponse(includes[c.AdvertisementId]));
+            var response = activeChatRooms!.Select(c => c.ToResponse(includes[c.AdvertisementId]));
             var result = PaginatedQueryResponse<GetChatRoomsResponse>.WithContent(response, request.Page, request.PageSize, count);
             return Results.Ok(result);
         }
