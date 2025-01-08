@@ -34,4 +34,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-await app.RunAsync();
+app.Run();

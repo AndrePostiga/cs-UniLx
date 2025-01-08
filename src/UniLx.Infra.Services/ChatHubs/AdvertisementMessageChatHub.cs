@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using UniLx.Domain.Data;
+using UniLx.Domain.Entities.AdvertisementAgg;
 using UniLx.Domain.Entities.ChatAgg;
 
 namespace UniLx.Infra.Services.ChatHubs
@@ -24,15 +25,21 @@ namespace UniLx.Infra.Services.ChatHubs
         public async Task ConnectToChat(string chatRoomId, string userId)
         {
             // Verifica e o usuário está logado
-            var existingChatRoom = await _chatRoomRepository.FindOne(x => x.Id == chatRoomId, CancellationToken.None);
-            if (existingChatRoom is null)
+            Advertisement advertisement = null;
+            var existingChatRoom = await _chatRoomRepository.FindOneWithInclude<Advertisement>(
+                x => x.Id == chatRoomId, 
+                x => x.AdvertisementId,
+                x => advertisement = x,
+                CancellationToken.None);
+
+            if (existingChatRoom is null || advertisement is null)
             {
                 await Clients.Caller.SendAsync("Error", "Chat room does not exist.");
                 Context.Abort();
                 return;
             }           
 
-            if (existingChatRoom.IsExpired)
+            if (existingChatRoom.IsExpired || !advertisement!.IsActive())
             {
                 await Clients.Caller.SendAsync("Error", "Chat room is expired.");
                 Context.Abort();
@@ -61,18 +68,21 @@ namespace UniLx.Infra.Services.ChatHubs
         
         public async Task SendMessageToChat(string chatRoomId, string content, string senderId)
         {
-            var chatRoom = await _chatRoomRepository.FindOne
-                (x => x.Id == chatRoomId,
+            Advertisement advertisement = null;
+            var chatRoom = await _chatRoomRepository.FindOneWithInclude<Advertisement>(
+                x => x.Id == chatRoomId,
+                x => x.AdvertisementId,
+                x => advertisement = x,
                 CancellationToken.None);
 
-            if (chatRoom is null)
+            if (chatRoom is null || advertisement is null)
             {
                 await Clients.Caller.SendAsync("Error", "Chat room does not exist.");
                 Context.Abort();
                 return;
             }
 
-            if (chatRoom.IsExpired)
+            if (chatRoom.IsExpired || !advertisement!.IsActive())
             {
                 await Clients.Caller.SendAsync("Error", "Chat room is expired.");
                 Context.Abort();

@@ -3,6 +3,7 @@ using UniLx.Application.Usecases.ChatRooms.Queries.GetChatRooms.Mappers;
 using UniLx.Application.Usecases.ChatRooms.Queries.GetChatRooms.Models;
 using UniLx.Domain.Data;
 using UniLx.Domain.Entities.AdvertisementAgg;
+using UniLx.Domain.Entities.AdvertisementAgg.Enumerations;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.ChatRooms.Queries.GetChatRooms.User
@@ -46,7 +47,13 @@ namespace UniLx.Application.Usecases.ChatRooms.Queries.GetChatRooms.User
             if (chatRooms == null)
                 return ChatRoomErrors.NotFound.ToBadRequest();
 
-            var response = chatRooms!.Select(c => c.ToResponse(includes[c.AdvertisementId]));
+            var activeChatRooms = chatRooms
+                .Where(chatRoom =>
+                    includes.TryGetValue(chatRoom.AdvertisementId, out var advertisement) &&
+                    advertisement.IsActive())
+                .ToList();
+
+            var response = activeChatRooms!.Select(c => c.ToResponse(includes[c.AdvertisementId]));
             var result = PaginatedQueryResponse<GetChatRoomsResponse>.WithContent(response, request.Page, request.PageSize, count);
             return Results.Ok(result);
         }

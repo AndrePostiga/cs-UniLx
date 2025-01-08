@@ -115,5 +115,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 
             Status = AdvertisementStatus.Finished;
         }
+
+        public bool IsActive() => Status.Name == AdvertisementStatus.Active.Name;
     }
 }
