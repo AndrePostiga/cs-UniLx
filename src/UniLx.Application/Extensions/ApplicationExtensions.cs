@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Behaviors;
+using UniLx.Domain.Extensions;
 
 namespace UniLx.Application.Extensions
 {
@@ -13,12 +14,11 @@ namespace UniLx.Application.Extensions
         {
             builder.Services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssemblies(typeof(ApplicationExtensions).Assembly);
-                cfg.AddOpenBehavior(typeof(CommandValidatorBehavior<,>));
+                cfg.RegisterServicesFromAssemblies(typeof(ApplicationExtensions).Assembly, typeof(DomainExtensions).Assembly);
+                cfg.AddOpenBehavior(typeof(CommandValidatorBehavior<,>));                
             });
 
-            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);          
-
+            builder.Services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly, includeInternalTypes:true);
             return builder;
         }
     }

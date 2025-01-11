@@ -10,8 +10,10 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Ardalis.SmartEnum.JsonNet" Version="8.1.0" />
+    <PackageReference Include="Aspire.Confluent.Kafka" Version="9.0.0" />
 	<PackageReference Include="Aspire.Npgsql" Version="9.0.0" />
 	<PackageReference Include="AWSSDK.S3" Version="3.7.410.11" />
+	<PackageReference Include="Confluent.Kafka" Version="2.8.0" />
     <PackageReference Include="Marten" Version="7.33.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
     <PackageReference Include="Supabase" Version="1.1.1" />
