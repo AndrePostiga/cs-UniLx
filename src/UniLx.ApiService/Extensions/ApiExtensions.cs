@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using UniLx.ApiService.ExceptionHandlers;
+using UniLx.Infra.Services.ChatHubs;
 using UniLx.Shared.Abstractions;
 using UniLx.Shared.Converters;
 
@@ -18,9 +18,10 @@ namespace UniLx.ApiService.Extensions
             {
                 options.AddPolicy("AllAllowed", 
                     services => services
-                            .AllowAnyOrigin()
+                            .WithOrigins("http://localhost:5173", "http://10.255.255.254:5173", "http://127.0.0.1:5173", "http://172.17.240.1:5173")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
+                            .AllowCredentials()
                             .WithExposedHeaders("Location"));
             });
 
@@ -33,6 +34,7 @@ namespace UniLx.ApiService.Extensions
             });
             
             builder.Services.AddCarter();
+            builder.Services.AddSignalR();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IRequestContext, RequestContext.RequestContext>();
             return builder;
@@ -48,6 +50,12 @@ namespace UniLx.ApiService.Extensions
             webApplication
                 .MapDefaultEndpoints()
                 .MapCarter();
+
+            webApplication
+                .MapHub<AdvertisementMessageChatHub>("/chat/advertisement")
+                .RequireAuthorization(new AllowedGroups(Groups.User));
+
+            webApplication.UseWebSockets();
 
             webApplication
                 .UseExceptionHandler();

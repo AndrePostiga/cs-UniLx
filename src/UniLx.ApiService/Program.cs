@@ -14,7 +14,6 @@ builder.Services.AddSwaggerGen(opts =>
 });
 
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
-builder.Services.AddExceptionHandler<SupabaseExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
@@ -35,4 +34,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-await app.RunAsync();
+app.Run();

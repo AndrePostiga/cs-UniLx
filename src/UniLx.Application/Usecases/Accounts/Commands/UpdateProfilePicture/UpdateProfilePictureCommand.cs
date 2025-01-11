@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using UniLx.Domain.Entities.Seedwork.ValueObj;
 using UniLx.Shared.Abstractions;
 
 namespace UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture
@@ -8,13 +7,12 @@ namespace UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture
     public class UpdateProfilePictureCommand : ICommand<IResult>
     {
         public string AccountId { get; set; }
+        public string FileName { get; set; }
 
-        public string? ProfilePicture { get; set; }
-
-        public UpdateProfilePictureCommand(string? profilePicturePath, string accountId)
+        public UpdateProfilePictureCommand(string? accountId, string? fileName)
         {
-            ProfilePicture = profilePicturePath;
-            AccountId = accountId;
+            AccountId = accountId ?? string.Empty;
+            FileName = fileName ?? string.Empty;
         }
     }
 
@@ -22,10 +20,15 @@ namespace UniLx.Application.Usecases.Accounts.Commands.UpdateProfilePicture
     {
         public UpdateProfilePictureCommandValidator()
         {
-            RuleFor(x => x.ProfilePicture)
+            RuleFor(x => x.AccountId)
                 .NotEmpty()
-                .WithMessage("ProfilePicturePath is required.")
-                .Must(StorageImage.ValidateImageFileName);
+                .WithMessage("Account ID is required.");
+
+            RuleFor(x => x.FileName)
+                .NotEmpty()
+                .WithMessage("File name is required.")
+                .Matches(@"^[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|bmp)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+                .WithMessage("Invalid file name or extension. Supported extensions: .jpg, .jpeg, .png, .bmp.");
         }
     }
 }

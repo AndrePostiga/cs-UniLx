@@ -13,8 +13,10 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
         public DateTime ExpiresAt { get; private set; }
         public Address Address { get; private set; }
         public string OwnerId { get; private set; }
+        public string OwnerName { get; private set; }
         public string CategoryId { get; private set; }
         public string CategoryName { get; private set; }
+        public Rating Rating { get; private set; }
 
         private Advertisement() { }
 
@@ -28,6 +30,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             SetDetails(details);
             SetOwner(account);
             SetAddress(address);
+            Rating = new Rating();
         }
 
         private void SetAddress(Address address)
@@ -43,6 +46,7 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
             DomainException.ThrowIf(account is null, "Cannot create advertisement without account.");
             account!.AddAdvertisement(this);
             OwnerId = account!.Id;
+            OwnerName = account!.Name;
         }
 
         private void SetDetails(Details details)
@@ -75,7 +79,43 @@ namespace UniLx.Domain.Entities.AdvertisementAgg
 
         private void SetInitialStatus()
         {
-            Status = AdvertisementStatus.Created;
+            Status = AdvertisementStatus.Active;
         }
+
+        public bool IsExpired()
+        {
+            return ExpiresAt < DateTime.UtcNow;
+        }
+
+        public void Rate(float rating, Account account, Account advertisementOwnerAccount)
+        {
+            DomainException.ThrowIf(account == null, "Account cannot be null.");
+            DomainException.ThrowIf(advertisementOwnerAccount == null, "Account owner cannot be null.");
+
+            if (Status.Name != AdvertisementStatus.Finished.Name && Status.Name != AdvertisementStatus.Expired.Name)
+            {
+                throw new DomainException("Only finished or expired advertisements can be rated.");
+            }
+
+
+            if (!account!.InterestAdvertisementIds.Contains(Id))
+            {
+                throw new DomainException("This account is not authorized to rate this advertisement.");
+            }
+
+            Rating.UpdateRating(rating);
+            advertisementOwnerAccount!.Rating.UpdateRating(rating);
+        }
+
+        public void Finish(Account advertisementOwner)
+        {
+            DomainException.ThrowIf(advertisementOwner == null, "Advertisement owner cannot be null.");
+            DomainException.ThrowIf(OwnerId != advertisementOwner!.Id, "The advertisement can only be finished by its owner.");
+            DomainException.ThrowIf(!Status.CanChangeTo(AdvertisementStatus.Finished), "Only active advertisements can be finished.");         
+
+            Status = AdvertisementStatus.Finished;
+        }
+
+        public bool IsActive() => Status.Name == AdvertisementStatus.Active.Name;
     }
 }

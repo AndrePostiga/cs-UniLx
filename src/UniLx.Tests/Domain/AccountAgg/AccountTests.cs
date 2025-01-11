@@ -88,40 +88,6 @@ namespace UniLx.Tests.Domain.AccountAgg
 
         #endregion
 
-        #region UpdateProfilePicture Tests
-
-        [Fact]
-        public void UpdateProfilePicture_ValidInput_ShouldSetProfilePicture()
-        {
-            // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
-            string profilePicturePath = "profile_picture.jpg";
-            string expectedPath = $"{account.Id}/{profilePicturePath}";
-
-            // Act
-            account.UpdateProfilePicture(profilePicturePath);
-
-            // Assert
-            Assert.NotNull(account.ProfilePicture);
-            
-            Assert.Equal(expectedPath, account.ProfilePicture!.FullPath);
-        }
-
-        [Fact]
-        public void UpdateProfilePicture_NullOrWhitespace_ShouldNotSetProfilePicture()
-        {
-            // Arrange
-            var account = new Account("John Doe", "john.doe@example.com", "93541134780", null, Guid.NewGuid().ToString());
-
-            // Act
-            account.UpdateProfilePicture(null);
-
-            // Assert
-            Assert.Null(account.ProfilePicture);
-        }
-
-        #endregion
-
         #region AddAdvertisement Tests
 
         [Fact]

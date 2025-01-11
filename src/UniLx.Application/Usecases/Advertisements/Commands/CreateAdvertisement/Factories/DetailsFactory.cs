@@ -7,7 +7,7 @@ using UniLx.Domain.Exceptions;
 
 namespace UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Factories
 {
-    internal static class DetailsFactory
+    public static class DetailsFactory
     {
         public static Details ToDetails(this CreateAdvertisementCommand command)
         {
