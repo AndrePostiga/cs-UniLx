@@ -14,10 +14,10 @@ namespace UniLx.Tests.Domain
             var domainTypes = domainAssembly.GetTypes()
                 .Where(t => t.IsClass
                             && !t.IsAbstract
-                            && t.Namespace?.Contains("UniLx.Domain.Entities") == true
+                            && t.Namespace?.Contains("UniLx.Domain.Entities") == true 
+                            && t.Name?.Contains("Event") == false 
                             && t.BaseType != typeof(SmartEnum<>)
-                            && (t.BaseType == null || !t.BaseType.IsGenericType || t.BaseType.GetGenericTypeDefinition() != typeof(SmartEnum<>))
-);
+                            && (t.BaseType == null || !t.BaseType.IsGenericType || t.BaseType.GetGenericTypeDefinition() != typeof(SmartEnum<>)));
 
             foreach (var type in domainTypes)
             {

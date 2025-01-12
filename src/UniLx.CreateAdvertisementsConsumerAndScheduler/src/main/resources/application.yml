@@ -1,0 +1,23 @@
+app:
+  name: MyKotlinApp
+  environment: development
+
+worker:
+  maxThreads: 5
+  delay: 100
+
+kafka:
+  bootstrap-servers: localhost:9092
+  create-advertisement-consumer:
+    group-id: create-advertisement-group
+    auto-offset-reset: latest
+    max-poll-records: 10
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  expire-advertisement-consumer:
+    group-id: expire-advertisement-group
+    auto-offset-reset: latest
+    max-poll-records: 5
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
