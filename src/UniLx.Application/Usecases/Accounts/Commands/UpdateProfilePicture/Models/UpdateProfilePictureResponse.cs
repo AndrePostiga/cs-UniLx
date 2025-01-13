@@ -2,13 +2,14 @@
 {
     internal class UpdateProfilePictureResponse
     {
-        public string? ProfilePictureUrl { get; set; }
+        public string SignedUrl { get; set; }
+        public string FileName { get; set; }
+        public DateTime UrlExpiresAt { get; set; }
 
-        public DateTime? UrlExpiresAt { get; set; }
-
-        public UpdateProfilePictureResponse(string? profilePicturePath, DateTime? urlExpiresAt)
+        public UpdateProfilePictureResponse(string signedUrl, string fileName, DateTime urlExpiresAt)
         {
-            ProfilePictureUrl = profilePicturePath;
+            SignedUrl = signedUrl;
+            FileName = fileName;
             UrlExpiresAt = urlExpiresAt;
         }
     }

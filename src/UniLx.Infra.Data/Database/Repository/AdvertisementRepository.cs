@@ -1,44 +1,55 @@
-﻿using Marten;
-using Marten.Linq.MatchesSql;
-using NetTopologySuite.Geometries;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using UniLx.Domain.Data;
+using UniLx.Domain.Entities.AccountAgg;
 using UniLx.Domain.Entities.AdvertisementAgg;
+using UniLx.Infra.Data.Storage;
+using UniLx.Infra.Data.Storage.Buckets;
 
 namespace UniLx.Infra.Data.Database.Repository
 {
     internal class AdvertisementRepository : Repository<Advertisement>, IAdvertisementRepository
     {
-        public AdvertisementRepository(IMartenContext martenContext, IUnitOfWork unitOfWork) : base(martenContext, unitOfWork)
-        {                    
+        private readonly IStorageRepository<AdvertisementBucketOptions> _storageRepository;
+
+        public AdvertisementRepository(IMartenContext martenContext, 
+            IUnitOfWork unitOfWork, 
+            IStorageRepository<AdvertisementBucketOptions> storageRepository) 
+            : base(martenContext, unitOfWork)
+        {
+            _storageRepository = storageRepository;
         }
 
-        public async Task<Tuple<IEnumerable<Advertisement>?, int>> FindNearestLocation(int skip, int limit, bool sortAsc, 
-            Expression<Func<Advertisement, bool>> expression,
-            Geometry geopoint,
-            double? radiusInKm,
-            CancellationToken ct)
+        public async override Task<Tuple<IEnumerable<Advertisement>?, int>> FindAll(int skip, int limit, bool sortAsc, Expression<Func<Advertisement, bool>> expression, CancellationToken ct)
         {
-            using var session = _martenContext.QuerySession();
+            var martenFinds = await base.FindAll(skip, limit, sortAsc, expression, ct);
 
-            // Start with the initial expression filter
-            var query = session.Query<Advertisement>().Where(expression);
+            if (martenFinds.Item1 == null)
+                return martenFinds;
 
-            // Add location-based filtering if Geopoint and Radius are specified
-            if (geopoint is Point point)
+            var advertisementTasks = martenFinds.Item1!.Select(async advertisement =>
             {
-                var radiusInMeters = radiusInKm is null ? 10* 1000 : radiusInKm.Value * 1000; // Convert radius from km to meters
-                query = query.Where(x => x.MatchesSql(CustomQueries.FindNearestAdvertisements, point.X, point.Y, radiusInMeters));
-            }
+                var images = await _storageRepository.ListFilesAsync(advertisement.Id);
+                if (images is not null)
+                    advertisement.Details.AddImageUrls(images);
+            });
 
-            // Apply sorting
-            query = sortAsc ? query.OrderBy(e => e.Id) : query.OrderByDescending(e => e.Id);
+            await Task.WhenAll(advertisementTasks);
+            return martenFinds;
+        }
 
-            int calculatedSkip = (skip - 1) * limit;
+        public async override Task<Advertisement?> FindOne(Expression<Func<Advertisement, bool>> expression, CancellationToken ct)
+        {
+            var martenFind = await base.FindOne(expression, ct);
 
-            var result = await query.Skip(calculatedSkip).Take(limit).ToListAsync(ct);
-            var total = await query.CountAsync(ct);
-            return Tuple.Create((IEnumerable<Advertisement>?)result, total);
+            if (martenFind is null)
+                return martenFind;
+
+            var images = await _storageRepository.ListFilesAsync(martenFind.Id);
+
+            if (images is not null)
+                martenFind.Details.AddImageUrls(images);
+
+            return martenFind;
         }
     }
 }

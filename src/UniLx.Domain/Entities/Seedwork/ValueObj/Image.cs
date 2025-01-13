@@ -2,48 +2,47 @@
 
 namespace UniLx.Domain.Entities.Seedwork.ValueObj
 {
-    public record Image
+    public class Image
     {
-        public Uri Url { get; }
-        public string Format { get; }
-        public long SizeInBytes { get; }
-        public int Width { get; }
-        public int Height { get; }
-        public string? Alt { get; }
-        public string? Target { get; }
+        private static readonly string[] SupportedImageFormats = { "jpg", "jpeg", "png", "bmp" };
 
-        private static readonly string[] SupportedFormats = { "jpg", "jpeg", "png", "bmp" };
-        private static readonly long MaxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB max size
-        private static readonly int MaxWidth = 1280;  // Maximum allowed width
-        private static readonly int MaxHeight = 720;  // Maximum allowed height
-        private static readonly int MaxAlt = 256;  // Maximum Alt Text
-        private static readonly string[] ValidTargets = { "_self", "_blank", "_parent", "_top" };
+        public string OriginalFileName { get; private set; }
+        public string FileName { get; private set; }
+        public string Extension { get; private set; }
 
         private Image() { }
 
-        public Image(Uri url, string format, long sizeInBytes, int width, int height, string? alt, string? target)
+        public static Image Create(string originalFileName)
         {
-            DomainException.ThrowIf(url == null || !url.IsAbsoluteUri, "Url must be a valid absolute URI.");
-            DomainException.ThrowIf(Array.IndexOf(SupportedFormats, format.ToLower()) == -1, $"Unsupported image format: {format}. Supported formats are: {string.Join(", ", SupportedFormats)}");
-            DomainException.ThrowIf(sizeInBytes <= 0, "File size must be greater than zero.");
-            DomainException.ThrowIf(sizeInBytes > MaxFileSizeInBytes, $"File size exceeds the maximum limit of {MaxFileSizeInBytes / (1024 * 1024)} MB.");
-            DomainException.ThrowIf(width <= 0 || height <= 0, "Image dimensions must be positive.");
-            DomainException.ThrowIf(width > MaxWidth || height > MaxHeight, $"Image dimensions exceed the maximum allowed resolution of {MaxWidth}x{MaxHeight} pixels.");
-            DomainException.ThrowIf(string.IsNullOrWhiteSpace(alt), $"Image dimensions exceed the maximum allowed resolution of {MaxWidth}x{MaxHeight} pixels.");
+            ValidateFileName(originalFileName);
 
-            if (!string.IsNullOrWhiteSpace(alt))
-                DomainException.ThrowIf(alt.Length > MaxAlt, $"Alt text must has {MaxAlt} characters or less");
+            var extension = Path.GetExtension(originalFileName).ToLowerInvariant();
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
 
-            if (!string.IsNullOrWhiteSpace(target))
-                DomainException.ThrowIf(Array.IndexOf(ValidTargets, target) == -1, $"Invalid target value: {target}. Valid targets are: {string.Join(", ", ValidTargets)}");
+            return new Image(originalFileName, uniqueFileName, extension);
+        }
 
-            Url = url!;
-            Format = format;
-            SizeInBytes = sizeInBytes;
-            Width = width;
-            Height = height;
-            Alt = alt;
-            Target = target;
+        private Image(string originalFileName, string fileName, string extension)
+        {
+            OriginalFileName = originalFileName;
+            FileName = fileName;
+            Extension = extension;
+        }
+
+        public static void ValidateFileName(string fileName)
+        {
+            DomainException.ThrowIf(string.IsNullOrWhiteSpace(fileName), "File name cannot be null or empty.");
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            DomainException.ThrowIf(!ValidateExtension(extension), $"Invalid file format: {extension}. Supported formats are: {string.Join(", ", SupportedImageFormats)}");
+        }
+
+        public static bool ValidateExtension(string extension)
+        {
+            if (string.IsNullOrWhiteSpace(extension))
+                return false;
+
+            extension = extension.ToLowerInvariant().TrimStart('.');
+            return Array.Exists(SupportedImageFormats, format => format == extension);
         }
     }
 }

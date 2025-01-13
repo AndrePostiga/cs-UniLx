@@ -23,20 +23,11 @@ namespace UniLx.Domain.Entities.AdvertisementAgg.Enumerations
         // Imóveis
         public static readonly AdvertisementType RealEstate = new AdvertisementType(nameof(RealEstate).ToSnakeCase(), 6);
 
-        // Serviços
-        public static readonly AdvertisementType Services = new AdvertisementType(nameof(Services).ToSnakeCase(), 7);
-
-        // Veículos
-        public static readonly AdvertisementType Vehicles = new AdvertisementType(nameof(Vehicles).ToSnakeCase(), 8);
-
         // Oportunidades de emprego
-        public static readonly AdvertisementType JobOpportunities = new AdvertisementType(nameof(JobOpportunities).ToSnakeCase(), 9);
-
-        // Brinquedos
-        public static readonly AdvertisementType Toys = new AdvertisementType(nameof(Toys).ToSnakeCase(), 10);
+        public static readonly AdvertisementType JobOpportunities = new AdvertisementType(nameof(JobOpportunities).ToSnakeCase(), 7);
 
         // Outros
-        public static readonly AdvertisementType Others = new AdvertisementType(nameof(Others).ToSnakeCase(), 11);
+        public static readonly AdvertisementType Others = new AdvertisementType(nameof(Others).ToSnakeCase(), 8);
 
         private AdvertisementType(string name, int value) : base(name, value) { }
     }

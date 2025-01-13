@@ -20,4 +20,8 @@
     <ProjectReference Include="..\UniLx.Shared\UniLx.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Usecases\ChatRooms\Queries\GetChatRoomById\" />
+  </ItemGroup>
+
 </Project>

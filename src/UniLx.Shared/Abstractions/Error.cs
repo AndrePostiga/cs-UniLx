@@ -6,6 +6,7 @@ namespace UniLx.Shared.Abstractions
     public sealed record Error(HttpStatusCode StatusCode, string Code, string? Description = null)
     {
         public static readonly Error None = new(HttpStatusCode.OK, string.Empty);
+        public static readonly Error BadRequest = new(HttpStatusCode.BadRequest, string.Empty);
 
         public static implicit operator ValidationProblemDetails(Error error) => new(error);
 

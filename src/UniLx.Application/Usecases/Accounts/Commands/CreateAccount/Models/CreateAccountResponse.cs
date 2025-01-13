@@ -1,4 +1,6 @@
-﻿namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models
+﻿using UniLx.Application.Usecases.SharedModels.Responses;
+
+namespace UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Models
 {
     internal record CreateAccountResponse(
         string Id, 
@@ -7,7 +9,8 @@
         string? Description, 
         string Email, 
         string? ProfilePictureUrl, 
-        float Rating, 
+        RatingResponse Rating, 
         List<string>? Advertisements, 
+        List<string>? InterestedAdvertisements, 
         DateTime CreatedAt);
 }

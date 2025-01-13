@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using UniLx.Application.Usecases.Categories.CreateCategory.Mappers;
 using UniLx.Application.Usecases.Categories.CreateCategory.Models;
+using UniLx.Shared.Abstractions;
 
 namespace UniLx.ApiService.Controllers.Categories
 {
@@ -18,7 +19,8 @@ namespace UniLx.ApiService.Controllers.Categories
                                      .IncludeInOpenApi();
 
             categoriesGroup.MapPost("/", AdminControllersHandlers.CreateCategory)
-                           .WithName(nameof(AdminControllersHandlers.CreateCategory));
+                           .WithName(nameof(AdminControllersHandlers.CreateCategory))
+                           .RequireAuthorization(new AllowedGroups(Groups.Admin, Groups.Moderator));
         }
     }
 

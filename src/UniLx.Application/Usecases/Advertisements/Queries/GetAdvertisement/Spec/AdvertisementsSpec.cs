@@ -12,7 +12,7 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisement.Spe
     {
         public static Expression<Func<Advertisement, bool>> ToSpec(this GetAdvertisementsQuery query) 
         {
-            Expression<Func<Advertisement, bool>> expression = ad => ad.Status.HasSmartEnumValue(AdvertisementStatus.Created);
+            Expression<Func<Advertisement, bool>> expression = ad => ad.Status.HasSmartEnumValue(AdvertisementStatus.Active);
 
             if (!string.IsNullOrWhiteSpace(query.CategoryName) && string.IsNullOrWhiteSpace(query.Type))
             {

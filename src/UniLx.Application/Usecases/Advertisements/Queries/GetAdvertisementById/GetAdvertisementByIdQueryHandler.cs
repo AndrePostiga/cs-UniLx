@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using UniLx.Application.Usecases.Accounts.Commands.CreateAccount.Mappers;
-using UniLx.Application.Usecases.Advertisements.Commands.CreateAdvertisement.Mappers;
+using UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById.Mappers;
 using UniLx.Domain.Data;
 using UniLx.Infra.Data.Storage;
 using UniLx.Infra.Data.Storage.Buckets;
@@ -12,15 +12,19 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAdvertisementRepository _advertisementRepository;
-        private readonly IStorageRepository<AccountAvatarBucketOptions> _accountStorage;
+        private readonly IStorageRepository<AccountBucketOptions> _accountStorage;
+        private readonly IStorageRepository<AdvertisementBucketOptions> _advertisementStorage;
+
 
         public GetAdvertisementByIdQueryHandler(IAdvertisementRepository advertisementRepository,
             IAccountRepository accountRepository,
-            IStorageRepository<AccountAvatarBucketOptions> accountStorage)
+            IStorageRepository<AccountBucketOptions> accountStorage,
+            IStorageRepository<AdvertisementBucketOptions> advertisementStorage)
         {
             _advertisementRepository = advertisementRepository;
             _accountRepository = accountRepository;
             _accountStorage = accountStorage;
+            _advertisementStorage = advertisementStorage;
         }
 
         public async Task<IResult> Handle(GetAdvertisementByIdQuery request, CancellationToken cancellationToken)
@@ -29,12 +33,11 @@ namespace UniLx.Application.Usecases.Advertisements.Queries.GetAdvertisementById
             if (advertisement == null)
                 return AdvertisementErrors.NotFound.ToBadRequest();
 
-            var account = await _accountRepository.FindOne(x => x.Id == advertisement.OwnerId, cancellationToken);
-            if (account == null)
-                return AdvertisementErrors.AccountNotFound.ToBadRequest();
+            var owner = await _accountRepository.FindOne(x => x.Id == advertisement.OwnerId, cancellationToken);
+            if (owner == null)
+                return AdvertisementErrors.AccountNotFound.ToBadRequest();            
 
-            var imageUrl = await _accountStorage.GetImageUrl(account.ProfilePicture);
-            return Results.Ok(advertisement.ToResponse(account, imageUrl));
+            return Results.Ok(advertisement.ToResponse(owner));
         }
     }
 }

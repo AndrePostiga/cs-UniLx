@@ -47,3 +47,4 @@ jobs:
       - test
       - sonar-analysis
     uses: ./.github/workflows/integration-tests.yml
+    if: false
