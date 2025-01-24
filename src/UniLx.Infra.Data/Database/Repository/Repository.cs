@@ -58,6 +58,7 @@ namespace UniLx.Infra.Data.Database.Repository
         {
             Action<IDatabaseSession> insertCommand = (session) => session.Insert(entity);
             _unitOfWork.AddCommand(insertCommand);
+            _unitOfWork.AddEvents(entity.Events?.ToList());
         }
 
         public void CustomSql(string sql, params object[] objects)

@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql" Version="9.0.0" />
     <PackageReference Include="Carter" Version="9.0.0" />
+    <PackageReference Include="Confluent.Kafka" Version="2.8.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="Marten" Version="7.33.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
